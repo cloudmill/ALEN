@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 
     <head>
         <meta charset="UTF-8" />
@@ -14,21 +14,22 @@
     <body>
         <div class="wrapper">
             <div class="header">
-                <a href="" class="header__logo"></a>
+                <a href="index.html" class="header__logo"></a>
                 <div class="header__search__wrapper">
                     <a href="" class="header__search__but"></a>
                     <div class="header__search__input__wrapper">
-                        <input type="text" class="header__search__input" placeholder="Поиск" />
+                        <input name="s" type="text" class="header__search__input" />
+                        <label for="s">Поиск</label>
                         <a href="" class="header__search__input__close"></a>
                     </div>
                 </div>
                 <div class="header__menu">
-                    <a href="" class="header__menu__item">Проекты</a>
-                    <a href="" class="header__menu__item">Компания</a>
-                    <a href="" class="header__menu__item">Услуги</a>
-                    <a href="" class="header__menu__item">Лаборатория</a>
-                    <a href="" class="header__menu__item">Пресс-центр</a>
-                    <a href="" class="header__menu__item">Контакты</a>
+                    <a href="projects.html" class="header__menu__item">Проекты</a>
+                    <a href="about.html" class="header__menu__item">Компания</a>
+                    <a href="services.html" class="header__menu__item">Услуги</a>
+                    <a href="lab.html" class="header__menu__item">Лаборатория</a>
+                    <a href="press-center.html" class="header__menu__item">Пресс-центр</a>
+                    <a href="contacts.html" class="header__menu__item">Контакты</a>
                 </div>
                 <div class="header__mobileButs">
                     <a href="" class="header__mobile__call">
@@ -38,30 +39,29 @@
                         <span></span>
                     </a>
                 </div>
+                <a href="" class="header__mobile__search">
+                    <span></span>
+                </a>
                 <div class="header__mobileMenu">
                     <div class="header__mobileMenu__list">
-                        <div class="header__mobileSearch__wrapper">
-                            <a href="" class="header__mobileSearch__but">Поиск</a>
-                            <div class="header__mobileSearch__input__wrapper">
-                                <input type="text" class="header__mobileSearch__input" placeholder="Поиск" />
-                                <a href="" class="header__mobileSearch__input__close"></a>
-                            </div>
-                        </div>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="" class="header__mobileMenu__item header__mobileMenu__search">
+                            Поиск
+                        </a>
+                        <a href="projects.html" class="header__mobileMenu__item">
                             Проекты
                         </a>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="about.html" class="header__mobileMenu__item">
                             Компания </a>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="services.html" class="header__mobileMenu__item">
                             Услуги
                         </a>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="lab.html" class="header__mobileMenu__item">
                             Лаборатория
                         </a>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="press-center.html" class="header__mobileMenu__item">
                             Пресс-центр
                         </a>
-                        <a href="" class="header__mobileMenu__item">
+                        <a href="contacts.html" class="header__mobileMenu__item">
                             Контакты
                         </a>
                         <div class="header__mobileMenu__item language">
@@ -207,11 +207,13 @@
                 <div class="footer__col">
                     <div class="footer__menu__wrapper">
                         <div class="footer__title">Компания</div>
-                        <a href="" class="footer__link">Сергей Орешкин </a>
-                        <a href="" class="footer__link">История</a>
-                        <a href="" class="footer__link">Награды</a>
-                        <a href="" class="footer__link">Сертификаты</a>
-                        <a href="" class="footer__link">Карьера</a>
+                        <div class="footer__menu">
+                            <a href="" class="footer__link">Сергей Орешкин </a>
+                            <a href="" class="footer__link">История</a>
+                            <a href="" class="footer__link">Награды</a>
+                            <a href="" class="footer__link">Сертификаты</a>
+                            <a href="" class="footer__link">Карьера</a>
+                        </div>
                     </div>
                     <div class="footer__menu__wrapper">
                         <div class="footer__title">Лаборатория</div>

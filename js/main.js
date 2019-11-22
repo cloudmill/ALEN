@@ -8,7 +8,7 @@ var init_js = function() {
 var templs = {
   header: {
     usersNoScroll: 0,
-    box: $(".header"),
+    box: null,
     srcrollFix: {
       del: function() {
         this.parent.usersNoScroll--;
@@ -24,17 +24,25 @@ var templs = {
     search: {
       state: "closed",
       animate: false,
-      box: $(".header__search__wrapper"),
-      closeBut: $(".header__search__input__close"),
-      searchBut: $(".header__search__but"),
+      box: null,
+      closeBut: null,
+      searchBut: null,
       backgroundPage: "<div class='header__bg bg_search'></div>",
       basicTimeAnimate: 600,
+      mobileSearchBut: null,
       _appendBg: function() {
         var _this = this;
-        this.parent.box.find(".header__bg").remove();
+        //this.parent.box.find(".header__bg").remove();
         this.parent.box.append(this.backgroundPage);
         var bg = this.parent.box.find(".header__bg.bg_search");
         bg.css("display", "block");
+        $(".header__mobile__search").animate(
+          {
+            opacity: 1
+          },
+          this.basicTimeAnimate,
+          "linear"
+        );
         bg.animate(
           {
             opacity: 1
@@ -50,6 +58,13 @@ var templs = {
       _removeBg: function(callback) {
         var _this = this;
         var bg = this.parent.box.find(".header__bg.bg_search");
+        $(".header__mobile__search").animate(
+          {
+            opacity: 0
+          },
+          this.basicTimeAnimate,
+          "linear"
+        );
         bg.animate(
           {
             opacity: 0
@@ -69,6 +84,7 @@ var templs = {
         this.animate = true;
         this.parent.box.toggleClass("searchOpen");
         this.box.toggleClass("open");
+
         var _this = this;
         setTimeout(function() {
           _this._appendBg();
@@ -80,6 +96,7 @@ var templs = {
         this.animate = true;
         this.box.toggleClass("open");
         this._removeBg(function() {
+          $(".header__mobileMenu").animate({ opacity: 1 });
           _this.parent.box.toggleClass("searchOpen");
         });
       },
@@ -91,6 +108,27 @@ var templs = {
             if (_this.state === "closed") _this.open();
             else if (_this.state === "opened") {
               _this.close();
+            }
+          }
+        });
+        this.mobileSearchBut.click(function(e) {
+          if ($(window).width() <= 1024) {
+            e.preventDefault();
+            if (!_this.animate) {
+              if (_this.state === "closed") {
+                $(".header__mobileMenu").animate({ opacity: 0 });
+                _this.open();
+              }
+            }
+          }
+        });
+        $(".header__mobile__search").click(function(e) {
+          if ($(window).width() <= 1024) {
+            e.preventDefault();
+            if (!_this.animate) {
+              if (_this.state === "opened") {
+                if ($(".header__mobileMenu").hasClass("open")) _this.close();
+              }
             }
           }
         });
@@ -106,6 +144,7 @@ var templs = {
         this.parent.box = $(".header");
         this.closeBut = $(".header__search__input__close");
         this.searchBut = $(".header__search__but");
+        this.mobileSearchBut = $(".header__mobileMenu__search");
         this._events();
       }
     },
@@ -119,10 +158,11 @@ var templs = {
           _this._doing($(this).scrollTop());
         });
       },
-      _doing: function(scrollTop) {
+      _doing: function(scrollTop, firstInit = false) {
         if (
           this.dMove < Math.abs(scrollTop - this.oldScroll) ||
-          scrollTop == 0
+          scrollTop == 0 ||
+          firstInit
         ) {
           if (this.oldScroll < scrollTop) {
             if (scrollTop > this.header.height()) {
@@ -130,23 +170,27 @@ var templs = {
               this.header.addClass("scrolled");
             }
           } else {
-            if (scrollTop > this.header.height()) {
+            if (scrollTop > this.header.height() || firstInit) {
               this.header.removeClass("hide");
               this.header.addClass("scrolled");
             }
           }
           if (scrollTop == 0) {
-            this.header.removeClass("scrolled");
+            if(!this.header.hasClass('scrolled-ever'))
+              this.header.removeClass("scrolled");
           }
           this.oldScroll = scrollTop;
         }
         if (scrollTop == 0) {
-          this.header.removeClass("scrolled");
+          if(!this.header.hasClass('scrolled-ever'))
+            this.header.removeClass("scrolled");
         }
       },
       init: function() {
         this.header = $(".header");
         this._events();
+        this.oldScroll = $(document).scrollTop();
+        this._doing($(document).scrollTop(), true);
       }
     },
     burger: {
@@ -156,6 +200,7 @@ var templs = {
       menu: $(".header__mobileMenu"),
       backgroundPage: "<div class='header__bg bg_burger'></div>",
       basicTimeAnimate: 600,
+      basicDelay: 50,
       language: {
         state: "closed",
         but: $(".header__mobileMenu__lang__title"),
@@ -195,7 +240,6 @@ var templs = {
               .eq(i)
               .delay(_this.basicDelay * (_this.items.length - i - 1))
               .fadeIn(_this.basicTimeAnimate);
-            console.log(_this.basicDelay * (_this.items.length - i - 1));
           }
           setTimeout(function() {
             _this.animate = false;
@@ -216,14 +260,13 @@ var templs = {
               .eq(i)
               .delay(_this.basicDelay * i)
               .fadeOut(_this.basicTimeAnimate);
-            console.log(_this.basicDelay * i);
           }
           setTimeout(function() {
             setTimeout(function() {
               callBack();
             }, _this.basicTimeAnimate * 2);
             _this.animate = false;
-          }, _this.basicDelay * this.items.length-1);
+          }, _this.basicDelay * (this.items.length - 1));
         },
         init: function() {
           this.but = $(".header__mobileMenu__lang__title");
@@ -273,35 +316,74 @@ var templs = {
         var _this = this;
         this.but.click(function(e) {
           e.preventDefault();
-          if (_this.state === "closed") {
-            _this.parent.srcrollFix.add();
-            _this.open();
-          } else {
-            _this.close();
-            _this.parent.srcrollFix.del();
+          if (!_this.animate) {
+            _this.animate = true;
+            if (_this.state === "closed") {
+              _this.parent.srcrollFix.add();
+              _this.open();
+            } else {
+              _this.close();
+              _this.parent.srcrollFix.del();
+            }
           }
         });
+        $(window).on("resize", function() {
+          if (_this.state === "opened" && $(window).width() > 1024) {
+            _this.close();
+          }
+        });
+      },
+      _elementsFadeIn: function() {
+        var _this = this;
+        var num = 0;
+        var fadeInEl = setInterval(() => {
+          if (num < $(".header__mobileMenu__item").length) {
+            $(".header__mobileMenu__item").eq(num).addClass("faded");
+            num++;
+          } else {
+            clearInterval(fadeInEl);
+          }
+        }, _this.basicDelay);
+      },
+      _elementsFadeOut: function(callback = function() {}) {
+        var _this = this;
+        var num = $(".header__mobileMenu__item").length -1;
+        var fadeOutEl = setInterval(() => {
+          if (num >= 0) {
+            $(".header__mobileMenu__item").eq(num).removeClass("faded");
+            num--;
+          } else {
+            callback();
+            clearInterval(fadeOutEl);
+          }
+        }, _this.basicDelay);
       },
       open: function() {
         this.menu.addClass("open");
         this.parent.box.addClass("burgerOpen");
-        this.menu.animate(
+        var _this = this;
+        $(".header__mobileMenu__item");
+        this._elementsFadeIn();
+        _this.menu.animate(
           {
             opacity: 1
           },
-          this.basicTimeAnimate
+          _this.basicTimeAnimate
         );
         this._appendBg();
       },
       close: function() {
         var _this = this;
+        this.language.close();
+        _this._elementsFadeOut(function() {
+          _this.menu.removeClass("open");
+        });
         this.menu.animate(
           {
             opacity: 0
           },
           this.basicTimeAnimate,
           function() {
-            _this.menu.removeClass("open");
             _this._removeBg();
             _this.parent.box.removeClass("burgerOpen");
           }
@@ -326,8 +408,40 @@ var templs = {
       this.burger.init();
     }
   },
+  footer:{
+    box: null,
+    menus:null,
+    _events: function(){
+      var _this = this;
+      this.menus.click(function(){
+        if($(window).width()<=1024){
+          if($(this).hasClass('active')){
+            _this.close($(this));
+          }else{
+            _this.open($(this));
+          }
+        }
+      })
+    },
+    open: function(targetC){
+      targetC.addClass('active')
+        var tempH = targetC.find('.footer__menu').height() + targetC.height();
+        targetC.height(tempH)
+    },
+    close: function(targetC){
+      targetC.removeClass('active')
+      targetC.height(50)
+    },
+    init: function(){
+      this.box = $('.footer')
+      this.menus = $('.footer__menu__wrapper');
+
+      this._events();
+    }
+  },
   init: function() {
     this.header.init();
+    this.footer.init();
   }
 };
 var pages = {
@@ -425,3 +539,20 @@ var pages = {
     this.main.init();
   }
 };
+
+var wid_go;
+wid_go = function () {
+  var e = document.createElement("script");
+  e.type = "text/javascript";
+  e.async = true;
+  e.src = "//widget.premiumbonus.su/get?id=" + "c9798a06-8e7d-dbfb-a82c-5222fcc43ea5";
+  var s = document.getElementsByTagName("script")[0];
+  s.parentNode.insertBefore(e, s);
+};
+
+(function(){
+  setTimeout(function(){
+    wid_go();
+}, 1000);
+})()
+
