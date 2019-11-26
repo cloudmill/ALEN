@@ -73,9 +73,10 @@ body {
   }
 }
 .wrapper {
-  width: 100vw;
+  width: 100%;
   overflow: hidden;
   min-height: 100vh;
+ 
   * {
     font-family: Rubik;
     outline: none;
@@ -1277,6 +1278,12 @@ body {
   }
 }
 @media (max-width: 1024px) {
+  .wrapper{
+    &.only-fp{
+      height: 100vh;
+      overflow: hidden;
+    }
+  }
   .header {
     height: 62px;
     &__logo {
