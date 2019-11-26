@@ -1359,6 +1359,23 @@ body.scrollDis {
   .page .textAbout__col {
     flex-basis: 100%;
   }
+  .page .projects__item__content__title {
+    font-size: 19px;
+    line-height: 23px;
+  }
+}
+@media (max-width: 768px) {
+  .page__bar {
+    flex-wrap: wrap;
+  }
+  .page__bar__title {
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  .page .projects__item {
+    width: 100%;
+    max-height: none;
+  }
 }
 @media (max-width: 600px) {
   .page .fpSlider .swiper-button-next,

@@ -76,7 +76,7 @@ body {
   width: 100%;
   overflow: hidden;
   min-height: 100vh;
- 
+
   * {
     font-family: Rubik;
     outline: none;
@@ -974,14 +974,14 @@ body {
             transparent 80%
           );
         }
-        .projects__item__img{
+        .projects__item__img {
           opacity: 1;
         }
       }
       &.is-proccess {
-        .loadMonitor{
+        .loadMonitor {
           .preloaders .preloader;
-          &.show{
+          &.show {
             opacity: 1;
           }
         }
@@ -1181,7 +1181,7 @@ body {
     }
   }
 }
-.preloaders{
+.preloaders {
   .preloader {
     opacity: 0;
     will-change: opacity;
@@ -1278,8 +1278,8 @@ body {
   }
 }
 @media (max-width: 1024px) {
-  .wrapper{
-    &.only-fp{
+  .wrapper {
+    &.only-fp {
       height: 100vh;
       overflow: hidden;
     }
@@ -1440,6 +1440,34 @@ body {
       }
       &__col {
         flex-basis: 100%;
+      }
+    }
+    .projects {
+      
+      &__item {
+        &__content {
+          &__title {
+            font-size: 19px;
+            line-height: 23px;
+          }
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .page {
+    &__bar{
+        flex-wrap: wrap;
+        &__title{
+          margin-bottom: 20px;
+          width: 100%;
+        }
+    }
+    .projects {
+      &__item {
+        width: 100%;
+        max-height: none;
       }
     }
   }

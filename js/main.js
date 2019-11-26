@@ -567,14 +567,14 @@ var pages = {
           $(document).scrollTop() + $(window).height() >
           $(this).offset().top
         ) {
-          clearTimeout(_this.intrvl[y]);
+          if(!_this.intrvl[y]){
           _this.intrvl[y] = setTimeout(function() {
 
             if ($this.hasClass("is-hidden")) {
               _this.imageLoad($this);
             }
 
-          }, _this.index * _this.basicDelay);
+          }, _this.index * _this.basicDelay) }
           
           if ($this.hasClass("is-hidden")) _this.index++;
         }
