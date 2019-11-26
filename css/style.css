@@ -897,6 +897,7 @@ body.scrollDis {
   flex-wrap: wrap;
   width: 100%;
   overflow: hidden;
+  background-color: #000;
 }
 .page .projects__item {
   width: 50%;
@@ -904,12 +905,59 @@ body.scrollDis {
   position: relative;
   overflow: hidden;
   border-bottom: 1px solid #000000;
+  transition: transform 0.9s ease-in-out, opacity 0.9s;
 }
 .page .projects__item:nth-child(2n + 1) {
   border-right: 1px solid #000000;
 }
 .page .projects__item:hover .projects__item__img {
   transform: translate3d(-50%, -50%, 0) scale(1.05);
+}
+.page .projects__item.is-hidden {
+  opacity: 0;
+  transform: translate(0, 35%);
+}
+.page .projects__item.is-hidden:before {
+  opacity: 0;
+  transition: opacity 1s ease;
+  z-index: 2;
+}
+.page .projects__item.is-loaded:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.7;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 30%, transparent 80%);
+}
+.page .projects__item.is-loaded .projects__item__img {
+  opacity: 1;
+}
+.page .projects__item.is-proccess .loadMonitor {
+  opacity: 0;
+  will-change: opacity;
+  content: '';
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  z-index: 75;
+  -webkit-animation: loaderAnimation 0.8s infinite linear;
+  animation: loaderAnimation 0.8s infinite linear;
+  height: 40px;
+  left: calc(50% - 20px);
+  top: calc(50% - 20px);
+  transition: opacity 0.3s ease-in-out;
+  width: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='40' height='40' viewBox='0 0 40 40'%3E %3Ccircle cx='20' cy='20' r='19' fill='none' stroke='%23b2b2b2' stroke-width='1.5px' /%3E %3Ccircle cx='20' cy='20' r='19' fill='none' stroke='%23000000' stroke-width='1px' stroke-linecap='round' stroke-dashoffset='95' stroke-dasharray='16, 57.123'/%3E %3C/svg%3E");
+}
+.page .projects__item.is-proccess .loadMonitor.show {
+  opacity: 1;
+}
+.page .projects__item__spacer {
+  width: 100%;
+  padding-top: 56.24082232%;
 }
 .page .projects__item__loadBg {
   position: absolute;
@@ -921,9 +969,10 @@ body.scrollDis {
 }
 .page .projects__item__img {
   width: auto;
+  opacity: 0;
   height: 100%;
   min-width: 100%;
-  position: relative;
+  position: absolute;
   left: 50%;
   top: 50%;
   transform: translate3d(-50%, -50%, 0) scale(1.01);
@@ -1083,6 +1132,33 @@ body.scrollDis {
 }
 .default-btn.btn-gray:hover {
   background: #dddddd;
+}
+.preloaders .preloader {
+  opacity: 0;
+  will-change: opacity;
+  content: '';
+  display: block;
+  position: absolute;
+  overflow: hidden;
+  z-index: 75;
+  -webkit-animation: loaderAnimation 0.8s infinite linear;
+  animation: loaderAnimation 0.8s infinite linear;
+  height: 40px;
+  left: calc(50% - 20px);
+  top: calc(50% - 20px);
+  transition: opacity 0.3s ease-in-out;
+  width: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='40' height='40' viewBox='0 0 40 40'%3E %3Ccircle cx='20' cy='20' r='19' fill='none' stroke='%23b2b2b2' stroke-width='1.5px' /%3E %3Ccircle cx='20' cy='20' r='19' fill='none' stroke='%23000000' stroke-width='1px' stroke-linecap='round' stroke-dashoffset='95' stroke-dasharray='16, 57.123'/%3E %3C/svg%3E");
+}
+@keyframes loaderAnimation {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
 }
 .icon {
   background-repeat: no-repeat;

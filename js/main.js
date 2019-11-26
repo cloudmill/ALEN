@@ -176,13 +176,13 @@ var templs = {
             }
           }
           if (scrollTop == 0) {
-            if(!this.header.hasClass('scrolled-ever'))
+            if (!this.header.hasClass("scrolled-ever"))
               this.header.removeClass("scrolled");
           }
           this.oldScroll = scrollTop;
         }
         if (scrollTop == 0) {
-          if(!this.header.hasClass('scrolled-ever'))
+          if (!this.header.hasClass("scrolled-ever"))
             this.header.removeClass("scrolled");
         }
       },
@@ -347,7 +347,7 @@ var templs = {
       },
       _elementsFadeOut: function(callback = function() {}) {
         var _this = this;
-        var num = $(".header__mobileMenu__item").length -1;
+        var num = $(".header__mobileMenu__item").length - 1;
         var fadeOutEl = setInterval(() => {
           if (num >= 0) {
             $(".header__mobileMenu__item").eq(num).removeClass("faded");
@@ -408,33 +408,33 @@ var templs = {
       this.burger.init();
     }
   },
-  footer:{
+  footer: {
     box: null,
-    menus:null,
-    _events: function(){
+    menus: null,
+    _events: function() {
       var _this = this;
-      this.menus.click(function(){
-        if($(window).width()<=1024){
-          if($(this).hasClass('active')){
+      this.menus.click(function() {
+        if ($(window).width() <= 1024) {
+          if ($(this).hasClass("active")) {
             _this.close($(this));
-          }else{
+          } else {
             _this.open($(this));
           }
         }
-      })
+      });
     },
-    open: function(targetC){
-      targetC.addClass('active')
-        var tempH = targetC.find('.footer__menu').height() + targetC.height();
-        targetC.height(tempH)
+    open: function(targetC) {
+      targetC.addClass("active");
+      var tempH = targetC.find(".footer__menu").height() + targetC.height();
+      targetC.height(tempH);
     },
-    close: function(targetC){
-      targetC.removeClass('active')
-      targetC.height(50)
+    close: function(targetC) {
+      targetC.removeClass("active");
+      targetC.height(50);
     },
-    init: function(){
-      this.box = $('.footer')
-      this.menus = $('.footer__menu__wrapper');
+    init: function() {
+      this.box = $(".footer");
+      this.menus = $(".footer__menu__wrapper");
 
       this._events();
     }
@@ -535,24 +535,87 @@ var pages = {
       this.slider.init();
     }
   },
+  projects: {
+    items: null,
+    basicDelay: 400,
+    index: 0,
+    loaded: false,
+    intrvl: [],
+    bgSet: function() {
+      this.items.each(function() {
+          var container = this.querySelector(".projects__item__loadBg");
+          var img = this.querySelector(".projects__item__img")
+          $.ajax({
+            url: 'colorCalc.php',
+            type: "POST",
+            data: {
+              src: $(img).attr('data-src'),
+            },
+            success: function(rgb){
+              $(container).css('background',rgb);
+            },
+          });
+      });
+    },
+    showImg: function() {
+      this.index = 0;
+      _this = this;
+      var y = 0;
+      this.items.each(function() {
+        var $this = $(this);
+        if (
+          $(document).scrollTop() + $(window).height() >
+          $(this).offset().top
+        ) {
+          clearTimeout(_this.intrvl[y]);
+          _this.intrvl[y] = setTimeout(function() {
+
+            if ($this.hasClass("is-hidden")) {
+              _this.imageLoad($this);
+            }
+
+          }, _this.index * _this.basicDelay);
+          
+          if ($this.hasClass("is-hidden")) _this.index++;
+        }
+        y++;
+      });
+    },
+    imageLoad: function($this) {
+      $this.removeClass("is-hidden");
+      $this.addClass("is-proccess");
+      $this.append("<span class='loadMonitor show'></span>");
+      $this.find(".projects__item__img").load(
+        $this.find(".projects__item__img").attr("data-src"),
+        //callback
+        function() {
+          $(this).attr("src", $(this).attr("data-src"));
+          $this.addClass("is-loaded");
+          $this.find(".loadMonitor").removeClass("show");
+          setTimeout(function() {
+            $this.removeClass("is-proccess");
+            $this.find(".loadMonitor").remove();
+          }, 500);
+        }
+      );
+    },
+    _events: function() {
+      _this = this;
+      var loaded = false;
+      $(document).on("scroll", function() {
+        _this.showImg();
+      });
+      _this.showImg();
+    },
+    init: function() {
+      this.items = $(".projects__item");
+      this.bgSet();
+      this._events();
+    }
+  },
   init: function() {
     this.main.init();
+    if($('.projects'))
+    this.projects.init();
   }
 };
-
-var wid_go;
-wid_go = function () {
-  var e = document.createElement("script");
-  e.type = "text/javascript";
-  e.async = true;
-  e.src = "//widget.premiumbonus.su/get?id=" + "c9798a06-8e7d-dbfb-a82c-5222fcc43ea5";
-  var s = document.getElementsByTagName("script")[0];
-  s.parentNode.insertBefore(e, s);
-};
-
-(function(){
-  setTimeout(function(){
-    wid_go();
-}, 1000);
-})()
-
