@@ -27,16 +27,16 @@ var templs = {
       box: null,
       closeBut: null,
       searchBut: null,
-      backgroundPage: "<div class='header__bg bg_search'></div>",
+      backgroundPage: "<div class='header_bg bg_search'></div>",
       basicTimeAnimate: 600,
       mobileSearchBut: null,
       _appendBg: function() {
         var _this = this;
-        //this.parent.box.find(".header__bg").remove();
+        //this.parent.box.find(".header_bg").remove();
         this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header__bg.bg_search");
+        var bg = this.parent.box.find(".header_bg.bg_search");
         bg.css("display", "block");
-        $(".header__mobile__search").animate(
+        $(".header_mobile_search").animate(
           {
             opacity: 1
           },
@@ -57,8 +57,8 @@ var templs = {
       },
       _removeBg: function(callback) {
         var _this = this;
-        var bg = this.parent.box.find(".header__bg.bg_search");
-        $(".header__mobile__search").animate(
+        var bg = this.parent.box.find(".header_bg.bg_search");
+        $(".header_mobile_search").animate(
           {
             opacity: 0
           },
@@ -96,11 +96,11 @@ var templs = {
         this.animate = true;
         this.box.toggleClass("open");
         this._removeBg(function() {
-          $(".header__mobileMenu").animate({ opacity: 1 });
+          $(".header_mobileMenu").animate({ opacity: 1 });
           _this.parent.box.toggleClass("searchOpen");
         });
       },
-      _events: function() {
+      events: function() {
         var _this = this;
         this.searchBut.click(function(e) {
           e.preventDefault();
@@ -116,18 +116,18 @@ var templs = {
             e.preventDefault();
             if (!_this.animate) {
               if (_this.state === "closed") {
-                $(".header__mobileMenu").animate({ opacity: 0 });
+                $(".header_mobileMenu").animate({ opacity: 0 });
                 _this.open();
               }
             }
           }
         });
-        $(".header__mobile__search").click(function(e) {
+        $(".header_mobile_search").click(function(e) {
           if ($(window).width() <= 1024) {
             e.preventDefault();
             if (!_this.animate) {
               if (_this.state === "opened") {
-                if ($(".header__mobileMenu").hasClass("open")) _this.close();
+                if ($(".header_mobileMenu").hasClass("open")) _this.close();
               }
             }
           }
@@ -140,19 +140,19 @@ var templs = {
         });
       },
       init: function() {
-        this.box = $(".header__search__wrapper");
+        this.box = $(".header_search_wrapper");
         this.parent.box = $(".header");
-        this.closeBut = $(".header__search__input__close");
-        this.searchBut = $(".header__search__but");
-        this.mobileSearchBut = $(".header__mobileMenu__search");
-        this._events();
+        this.closeBut = $(".header_search_input_close");
+        this.searchBut = $(".header_search_but");
+        this.mobileSearchBut = $(".header_mobileMenu_search");
+        this.events();
       }
     },
     scrolling: {
       header: $(".header"),
       dMove: 20,
       oldScroll: 0,
-      _events: function() {
+      events: function() {
         var _this = this;
         $(document).scroll(function() {
           _this._doing($(this).scrollTop());
@@ -188,7 +188,7 @@ var templs = {
       },
       init: function() {
         this.header = $(".header");
-        this._events();
+        this.events();
         this.oldScroll = $(document).scrollTop();
         this._doing($(document).scrollTop(), true);
       }
@@ -196,21 +196,21 @@ var templs = {
     burger: {
       state: "closed",
       animate: false,
-      but: $(".header__mobile__burger"),
-      menu: $(".header__mobileMenu"),
-      backgroundPage: "<div class='header__bg bg_burger'></div>",
+      but: $(".header_mobile_burger"),
+      menu: $(".header_mobileMenu"),
+      backgroundPage: "<div class='header_bg bg_burger'></div>",
       basicTimeAnimate: 600,
       basicDelay: 50,
       language: {
         state: "closed",
-        but: $(".header__mobileMenu__lang__title"),
-        wrapper: $(".header__mobileMenu__lang__wrapper"),
-        list: $(".header__mobileMenu__lang__list"),
+        but: $(".header_mobileMenu_lang_title"),
+        wrapper: $(".header_mobileMenu_lang_wrapper"),
+        list: $(".header_mobileMenu_lang_list"),
         items: null,
         animate: false,
         basicTimeAnimate: 500,
         basicDelay: 100,
-        _events: function() {
+        events: function() {
           var _this = this;
           this.but.click(function(e) {
             e.preventDefault();
@@ -269,19 +269,19 @@ var templs = {
           }, _this.basicDelay * (this.items.length - 1));
         },
         init: function() {
-          this.but = $(".header__mobileMenu__lang__title");
-          this.wrapper = $(".header__mobileMenu__lang__wrapper");
-          this.list = $(".header__mobileMenu__lang__list");
-          this.items = this.list.find(".header__mobileMenu__lang__item");
+          this.but = $(".header_mobileMenu_lang_title");
+          this.wrapper = $(".header_mobileMenu_lang_wrapper");
+          this.list = $(".header_mobileMenu_lang_list");
+          this.items = this.list.find(".header_mobileMenu_lang_item");
           this.items.fadeOut();
-          this, this._events();
+          this, this.events();
         }
       },
       _appendBg: function() {
         var _this = this;
-        this.parent.box.find(".header__bg").remove();
+        this.parent.box.find(".header_bg").remove();
         this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header__bg.bg_burger");
+        var bg = this.parent.box.find(".header_bg.bg_burger");
         bg.css("display", "block");
         bg.animate(
           {
@@ -297,7 +297,7 @@ var templs = {
       },
       _removeBg: function(callback = function() {}) {
         var _this = this;
-        var bg = this.parent.box.find(".header__bg.bg_burger");
+        var bg = this.parent.box.find(".header_bg.bg_burger");
         bg.animate(
           {
             opacity: 0
@@ -312,7 +312,7 @@ var templs = {
           }
         );
       },
-      _events: function() {
+      events: function() {
         var _this = this;
         this.but.click(function(e) {
           e.preventDefault();
@@ -337,8 +337,8 @@ var templs = {
         var _this = this;
         var num = 0;
         var fadeInEl = setInterval(() => {
-          if (num < $(".header__mobileMenu__item").length) {
-            $(".header__mobileMenu__item").eq(num).addClass("faded");
+          if (num < $(".header_mobileMenu_item").length) {
+            $(".header_mobileMenu_item").eq(num).addClass("faded");
             num++;
           } else {
             clearInterval(fadeInEl);
@@ -347,10 +347,10 @@ var templs = {
       },
       _elementsFadeOut: function(callback = function() {}) {
         var _this = this;
-        var num = $(".header__mobileMenu__item").length - 1;
+        var num = $(".header_mobileMenu_item").length - 1;
         var fadeOutEl = setInterval(() => {
           if (num >= 0) {
-            $(".header__mobileMenu__item").eq(num).removeClass("faded");
+            $(".header_mobileMenu_item").eq(num).removeClass("faded");
             num--;
           } else {
             callback();
@@ -362,7 +362,7 @@ var templs = {
         this.menu.addClass("open");
         this.parent.box.addClass("burgerOpen");
         var _this = this;
-        $(".header__mobileMenu__item");
+        $(".header_mobileMenu_item");
         this._elementsFadeIn();
         _this.menu.animate(
           {
@@ -390,10 +390,10 @@ var templs = {
         );
       },
       init: function() {
-        this.but = $(".header__mobile__burger");
-        this.menu = $(".header__mobileMenu");
+        this.but = $(".header_mobile_burger");
+        this.menu = $(".header_mobileMenu");
         this.language.init();
-        this._events();
+        this.events();
       }
     },
     init: function() {
@@ -411,7 +411,7 @@ var templs = {
   footer: {
     box: null,
     menus: null,
-    _events: function() {
+    events: function() {
       var _this = this;
       this.menus.click(function() {
         if ($(window).width() <= 1024) {
@@ -425,7 +425,7 @@ var templs = {
     },
     open: function(targetC) {
       targetC.addClass("active");
-      var tempH = targetC.find(".footer__menu").height() + targetC.height();
+      var tempH = targetC.find(".footer_menu").height() + targetC.height();
       targetC.height(tempH);
     },
     close: function(targetC) {
@@ -434,9 +434,9 @@ var templs = {
     },
     init: function() {
       this.box = $(".footer");
-      this.menus = $(".footer__menu__wrapper");
+      this.menus = $(".footer_menu_wrapper");
 
-      this._events();
+      this.events();
     }
   },
   init: function() {
@@ -448,16 +448,16 @@ var pages = {
   main: {
     slider: {
       boxClass: "fpSlider",
-      labelsClass: "fpSlider__labels",
+      labelsClass: "fpSlider_labels",
       bgs: null,
       texts: null,
       videoMuted: false,
       videos: $(this.box).find("video"),
       _mouteInit: function() {
         var _this = this;
-        $(".fpSlider__moute").click(function() {
+        $(".fpSlider_moute").click(function() {
           $(this).toggleClass("active");
-          _this.videoMuted = $(".fpSlider__moute").hasClass("active");
+          _this.videoMuted = $(".fpSlider_moute").hasClass("active");
           _this.volumeVideo(_this.videoMuted);
           if (_this.videoMuted) {
             $(this).text("Выкл. звук");
@@ -543,18 +543,18 @@ var pages = {
     intrvl: [],
     bgSet: function() {
       this.items.each(function() {
-          var container = this.querySelector(".projects__item__loadBg");
-          var img = this.querySelector(".projects__item__img")
-          $.ajax({
-            url: 'colorCalc.php',
-            type: "POST",
-            data: {
-              src: $(img).attr('data-src'),
-            },
-            success: function(rgb){
-              $(container).css('background',rgb);
-            },
-          });
+        var container = this.querySelector(".projects_item_loadBg");
+        var img = this.querySelector(".projects_item_img");
+        $.ajax({
+          url: "colorCalc.php",
+          type: "POST",
+          data: {
+            src: $(img).attr("data-src")
+          },
+          success: function(rgb) {
+            $(container).css("background", rgb);
+          }
+        });
       });
     },
     showImg: function() {
@@ -567,15 +567,14 @@ var pages = {
           $(document).scrollTop() + $(window).height() >
           $(this).offset().top
         ) {
-          if(!_this.intrvl[y]){
-          _this.intrvl[y] = setTimeout(function() {
+          if (!_this.intrvl[y]) {
+            _this.intrvl[y] = setTimeout(function() {
+              if ($this.hasClass("is-hidden")) {
+                _this.imageLoad($this);
+              }
+            }, _this.index * _this.basicDelay);
+          }
 
-            if ($this.hasClass("is-hidden")) {
-              _this.imageLoad($this);
-            }
-
-          }, _this.index * _this.basicDelay) }
-          
           if ($this.hasClass("is-hidden")) _this.index++;
         }
         y++;
@@ -585,8 +584,8 @@ var pages = {
       $this.removeClass("is-hidden");
       $this.addClass("is-proccess");
       $this.append("<span class='loadMonitor show'></span>");
-      $this.find(".projects__item__img").load(
-        $this.find(".projects__item__img").attr("data-src"),
+      $this.find(".projects_item_img").load(
+        $this.find(".projects_item_img").attr("data-src"),
         //callback
         function() {
           $(this).attr("src", $(this).attr("data-src"));
@@ -599,7 +598,7 @@ var pages = {
         }
       );
     },
-    _events: function() {
+    events: function() {
       _this = this;
       var loaded = false;
       $(document).on("scroll", function() {
@@ -608,14 +607,195 @@ var pages = {
       _this.showImg();
     },
     init: function() {
-      this.items = $(".projects__item");
+      this.items = $(".projects_item");
       this.bgSet();
-      this._events();
+      this.events();
+    }
+  },
+  projectsDetail: {
+    fpProject: {
+      loaderBg: null,
+      fpImg: null,
+      bgSet: function() {
+        var _this = this;
+        $.ajax({
+          url: "colorCalc.php",
+          type: "POST",
+          data: {
+            src: this.fpImg.attr("data-src")
+          },
+          success: function(rgb) {
+            _this.loaderBg.css("background", rgb);
+          }
+        });
+      },
+      showImg: function() {
+        if (this.fpImg.parent().hasClass("is-hidden")) {
+          this.imageLoad();
+        }
+      },
+      imageLoad: function() {
+        this.fpImg.parent().removeClass("is-hidden");
+        this.fpImg.parent().addClass("is-proccess");
+        this.fpImg.parent().append("<span class='loadMonitor show'></span>");
+        this.fpImg.load(
+          this.fpImg.attr("data-src"),
+          //callback
+          function() {
+            $(this).attr("src", $(this).attr("data-src"));
+            $(this).parent().addClass("is-loaded");
+            $(this).parent().find(".loadMonitor").removeClass("show");
+            var $this = $(this);
+            setTimeout(function() {
+              $this.parent().removeClass("is-proccess");
+              $this.parent().find(".loadMonitor").remove();
+            }, 500);
+          }
+        );
+      },
+      init: function() {
+        this.loaderBg = $(".fpProject_loader");
+        this.fpImg = $(".fpProject_content img");
+        this.bgSet();
+        this.showImg();
+      }
+    },
+    fpPhoto: {
+      elems: null,
+      events: function() {
+        var _this = this;
+        $(document).on("scroll", function() {
+          _this.elems.each(function() {
+            if (!$(this).hasClass("open")) {
+              if (
+                $(document).scrollTop() + 20 >
+                $(this).offset().top - $(window).height()
+              ) {
+                _this.show($(this));
+              }
+            }
+          });
+        });
+      },
+      show: function(item) {
+        item.closest(".fpPhoto_box").addClass("open");
+      },
+      init: function() {
+        this.elems = $(".fpPhoto img");
+        this.events();
+      }
+    },
+    scrollAnim: {
+      items: null,
+      fadeUp: function(item) {
+        item.addClass("animed");
+      },
+      checkPos: function(){
+        var _this = this;
+        this.items.each(function() {
+          if (
+            $(document).scrollTop() >
+            $(this).offset().top - $(window).height()
+          ) {
+            _this.anim($(this));
+          }
+        });
+      },
+      events: function() {
+        var _this = this;
+        $(document).on("scroll", function() {
+          _this.checkPos();
+        });
+      },
+      anim: function(item) {
+        if (!item.hasClass("animed")) {
+          this.fadeUp(item);
+        }
+      },
+      init: function() {
+        this.items = $(".scrollanim,.scrollanimChild >*");
+        this.events();
+        this.checkPos();
+      }
+    },
+    yaMapCreate: {
+      create: function() {
+        ymaps.ready(function() {
+          var myMap = new ymaps.Map(
+              "map",
+              {
+                center: [55.751574, 37.573856],
+                zoom: 9
+              },
+              {
+                searchControlProvider: "yandex#search"
+              }
+            ),
+            // Создаём макет содержимого.
+            MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
+              '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
+            ),
+            myPlacemark = new ymaps.Placemark(
+              myMap.getCenter(),
+              {
+                hintContent: "Собственный значок метки",
+                balloonContent: "Это красивая метка"
+              },
+              {
+                // Опции.
+                // Необходимо указать данный тип макета.
+                iconLayout: "default#image",
+                // Своё изображение иконки метки.
+                iconImageHref: "images/myIcon.gif",
+                // Размеры метки.
+                iconImageSize: [30, 42],
+                // Смещение левого верхнего угла иконки относительно
+                // её "ножки" (точки привязки).
+                iconImageOffset: [-5, -38]
+              }
+            ),
+            myPlacemarkWithContent = new ymaps.Placemark(
+              [55.661574, 37.573856],
+              {
+                hintContent: "Собственный значок метки с контентом",
+                balloonContent: "А эта — новогодняя",
+                iconContent: "12"
+              },
+              {
+                // Опции.
+                // Необходимо указать данный тип макета.
+                iconLayout: "default#imageWithContent",
+                // Своё изображение иконки метки.
+                iconImageHref: "images/ball.png",
+                // Размеры метки.
+                iconImageSize: [48, 48],
+                // Смещение левого верхнего угла иконки относительно
+                // её "ножки" (точки привязки).
+                iconImageOffset: [-24, -24],
+                // Смещение слоя с содержимым относительно слоя с картинкой.
+                iconContentOffset: [15, 15],
+                // Макет содержимого.
+                iconContentLayout: MyIconContentLayout
+              }
+            );
+
+          myMap.geoObjects.add(myPlacemark).add(myPlacemarkWithContent);
+        });
+      },
+      init: function() {
+        this.create();
+      }
+    },
+    init: function() {
+      if ($(".fpProject")) this.fpProject.init();
+      if ($(".fpPhoto")) this.fpPhoto.init();
+      if ($(".scrollanim,.scrollanimChild")) this.scrollAnim.init();
+      if ($("#map")) this.yaMapCreate.init();
     }
   },
   init: function() {
     this.main.init();
-    if($('.projects'))
-    this.projects.init();
+    if ($(".projects")) this.projects.init();
+    this.projectsDetail.init();
   }
 };
