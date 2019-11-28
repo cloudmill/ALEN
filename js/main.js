@@ -690,7 +690,7 @@ var pages = {
       fadeUp: function(item) {
         item.addClass("animed");
       },
-      checkPos: function(){
+      checkPos: function() {
         var _this = this;
         this.items.each(function() {
           if (
@@ -718,68 +718,140 @@ var pages = {
         this.checkPos();
       }
     },
-    yaMapCreate: {
+    adaptiveslider: {
+      item: null,
+      width: 600,
       create: function() {
+        if ($(window).width() <= this.width) {
+          this.item.slick({
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            speed: 1000,
+            infinite: false,
+            dots: true,
+            arrows: false
+          });
+        }
+      },
+      events: function() {
+        var _this = this;
+        $(window).on("resize", function() {
+          _this.create();
+        });
+        _this.create();
+      },
+      init: function() {
+        this.item = $(".sItems_list");
+        this.events();
+      }
+    },
+    infSlider: {
+      box: null,
+      buts: null,
+      bar: null,
+      animate : false,
+      create: function() {
+        this.box.slick({
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          speed: 600,
+          infinite: false,
+          dots: false,
+          arrows: false
+        });
+        var i=0;
+        this.buts.each(function(){
+          $(this).attr('slide-id',i),
+          i++;
+        })
+      },
+      moveBar: function(ofsetLeft, width) {
+        this.bar.css('left',ofsetLeft)
+        this.bar.css('width',width)
+      },
+      events: function() {
+        var _this = this;
+        this.buts.click(function() {
+          if (!$(this).hasClass("active") && !_this.animate) {
+            _this.buts.removeClass("active")
+            $('.infSlider_select').removeClass('active')
+            $(this).addClass("active")
+            _this.animate = true;
+            _this.box.slick("slickGoTo",$(this).attr('slide-id'));
+            _this.moveBar($(this).offset().left - $(this).parent().offset().left,$(this).width());
+          }else if($(window).width()<=768){
+            $('.infSlider_select').addClass('active')
+          }
+        });
+        $(window).on('resize',function(){
+          var item = $(".infSlider_menu_item.active")
+          _this.moveBar(item.offset().left - item.parent().offset().left,item.width());
+        })
+        this.box.on('afterChange',function(){
+          _this.animate = false;
+        })
+        this.moveBar(0,_this.buts.eq(0).width())
+      },
+      init: function() {
+        this.box = $(".infSlider_list");
+        this.buts = $(".infSlider_menu_item");
+        this.bar = $('.infSlider_bar');
+        this.create();
+        this.events();
+      }
+    },
+    btnBack: {
+      but: null,
+      events: function(){
+        this.but.click(function(e){
+          e.preventDefault();
+          history.back();
+        })
+      },
+      init: function(){
+        this.but = $('#back_page');
+        this.events();
+      }
+    },
+    yaMapCreate: {
+      center: [55.751574, 37.573856],
+      createPlaceMark: function(coords, Hcontent, balContent) {
+        return new ymaps.Placemark(
+          coords,
+          {
+            hintContent: Hcontent,
+            balloonContent: balContent
+          },
+          {
+            iconLayout: "default#image",
+            iconImageHref: "images/loc.png",
+            iconImageSize: [60, 60],
+            iconImageOffset: [-17, -20]
+          }
+        );
+      },
+      create: function() {
+        var _this = this;
         ymaps.ready(function() {
           var myMap = new ymaps.Map(
               "map",
               {
-                center: [55.751574, 37.573856],
-                zoom: 9
+                center: _this.center,
+                zoom: 16,
+                type: "yandex#satellite",
+                controls: []
               },
               {
                 searchControlProvider: "yandex#search"
               }
             ),
-            // Создаём макет содержимого.
-            MyIconContentLayout = ymaps.templateLayoutFactory.createClass(
-              '<div style="color: #FFFFFF; font-weight: bold;">$[properties.iconContent]</div>'
-            ),
-            myPlacemark = new ymaps.Placemark(
-              myMap.getCenter(),
-              {
-                hintContent: "Собственный значок метки",
-                balloonContent: "Это красивая метка"
-              },
-              {
-                // Опции.
-                // Необходимо указать данный тип макета.
-                iconLayout: "default#image",
-                // Своё изображение иконки метки.
-                iconImageHref: "images/myIcon.gif",
-                // Размеры метки.
-                iconImageSize: [30, 42],
-                // Смещение левого верхнего угла иконки относительно
-                // её "ножки" (точки привязки).
-                iconImageOffset: [-5, -38]
-              }
-            ),
-            myPlacemarkWithContent = new ymaps.Placemark(
-              [55.661574, 37.573856],
-              {
-                hintContent: "Собственный значок метки с контентом",
-                balloonContent: "А эта — новогодняя",
-                iconContent: "12"
-              },
-              {
-                // Опции.
-                // Необходимо указать данный тип макета.
-                iconLayout: "default#imageWithContent",
-                // Своё изображение иконки метки.
-                iconImageHref: "images/ball.png",
-                // Размеры метки.
-                iconImageSize: [48, 48],
-                // Смещение левого верхнего угла иконки относительно
-                // её "ножки" (точки привязки).
-                iconImageOffset: [-24, -24],
-                // Смещение слоя с содержимым относительно слоя с картинкой.
-                iconContentOffset: [15, 15],
-                // Макет содержимого.
-                iconContentLayout: MyIconContentLayout
-              }
+            myPlacemark = _this.createPlaceMark(
+              [55.751574, 37.573856],
+              "Собственный значок метки",
+              "Это красивая метка"
             );
-
-          myMap.geoObjects.add(myPlacemark).add(myPlacemarkWithContent);
+          myMap.behaviors.disable("scrollZoom");
+          myMap.geoObjects.add(myPlacemark);
         });
       },
       init: function() {
@@ -787,10 +859,13 @@ var pages = {
       }
     },
     init: function() {
-      if ($(".fpProject")) this.fpProject.init();
-      if ($(".fpPhoto")) this.fpPhoto.init();
-      if ($(".scrollanim,.scrollanimChild")) this.scrollAnim.init();
-      if ($("#map")) this.yaMapCreate.init();
+      if ($(".fpProject").length>0) this.fpProject.init();
+      if ($(".fpPhoto").length>0) this.fpPhoto.init();
+      if ($(".scrollanim,.scrollanimChild").length>0) this.scrollAnim.init();
+      if ($("#map").length>0) this.yaMapCreate.init();
+      if ($(".sItems").length>0) this.adaptiveslider.init();
+      if ($(".infSlider").length>0) this.infSlider.init();
+      if ($("#back_page").length>0) this.btnBack.init();
     }
   },
   init: function() {
