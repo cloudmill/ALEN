@@ -172,6 +172,9 @@ body.scrollDis {
 .header.scrolled .header_menu_item {
   color: #000000;
 }
+.header.scrolled:not(.burgerOpen) .header_search_input {
+  color: #000000;
+}
 .header.scrolled:before {
   opacity: 0;
 }
@@ -631,6 +634,9 @@ body.scrollDis {
 .page {
   min-height: 100vh;
 }
+.page.noMin {
+  min-height: auto;
+}
 .page .fpSlider_wrapper {
   width: 100vw;
   height: 100vh;
@@ -843,6 +849,12 @@ body.scrollDis {
   z-index: 2;
   background: none;
   cursor: pointer;
+  opacity: 0.7;
+  transition: 0.3s ease-in-out;
+}
+.page .fpSlider .swiper-button-prev:hover,
+.page .fpSlider .swiper-button-next:hover {
+  opacity: 1;
 }
 .page .fpSlider .swiper-button-prev::before,
 .page .fpSlider .swiper-button-next::before {
@@ -1554,6 +1566,9 @@ body.scrollDis {
   margin-top: 60px;
   margin-bottom: 10px;
 }
+.page .text h4.notop {
+  margin-top: 0;
+}
 .page .text ul {
   padding: 0;
   margin: 0;
@@ -1628,6 +1643,28 @@ body.scrollDis {
   left: 18px;
   top: 50%;
   transform: translate(0, -50%);
+}
+.page .text * > b {
+  font-weight: 500;
+}
+.page .text .row {
+  display: flex;
+  margin: 30px 0;
+}
+.page .text .col {
+  padding-right: 70px;
+}
+.page .text .col:nth-last-child(1) {
+  padding-right: 0;
+}
+.page .text .col:nth-child(1) {
+  flex-basis: 200px;
+}
+.page .text .col:nth-child(2) {
+  flex-basis: 300px;
+}
+.page .text .col:nth-child(3) {
+  flex-basis: 320px;
 }
 .page .map {
   position: relative;
@@ -1945,7 +1982,7 @@ body.scrollDis {
   display: flex;
   justify-content: space-between;
   padding: 72px 0;
-  border-bottom: 1px solid #DEDEDE;
+  border-bottom: 1px solid #dedede;
 }
 .page .rowBox_row .inner {
   display: flex;
@@ -2002,6 +2039,181 @@ body.scrollDis {
 }
 .page .rowBox b {
   font-weight: bold !important;
+}
+.page .blockNR {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 20px;
+}
+.page .blockNR_item {
+  padding-right: 80px;
+  flex-basis: 34%;
+}
+.page .blockNR_num {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 64px;
+  line-height: 68px;
+  color: #292929;
+  margin-bottom: 12px;
+}
+.page .blockNR_text {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 17px;
+  line-height: 27px;
+  color: #292929;
+}
+.page .prizes {
+  margin-top: 20px;
+}
+.page .prizes_item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+.page .prizes_img {
+  margin-right: 38px;
+  width: 200px;
+  background: #ffffff;
+  border: 1px solid #292929;
+  box-sizing: border-box;
+}
+.page .prizes_img img {
+  min-width: 100%;
+  height: auto;
+}
+.page .prizes_title {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 23px;
+  line-height: 68px;
+  display: flex;
+  align-items: center;
+  color: #292929;
+}
+.page .prizes_head {
+  margin-bottom: 12px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 19px;
+  line-height: 34px;
+  color: #292929;
+}
+.page .prizes_head.mob {
+  display: none;
+}
+.page .prizes_text {
+  max-width: 640px;
+}
+.page .prizes_text p {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 19px;
+  line-height: 34px;
+  color: #292929;
+}
+.page .prizes_text p a {
+  color: #0058dd;
+}
+.page .sertf {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 80px;
+}
+.page .sertf_item {
+  flex-basis: calc((100% - 40px)/3);
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
+.page .sertf_item:nth-child(3n) {
+  margin-right: 0;
+}
+.page .sertf_img {
+  border: 1px solid #292929;
+  padding-top: 147%;
+  position: relative;
+}
+.page .sertf_img img {
+  max-width: 100%;
+  max-height: 100%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.page .sertf_text {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 17px;
+  line-height: 28px;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #bfbdb7;
+  padding: 30px;
+}
+.page .vacancy_item {
+  min-height: 100px;
+  padding: 0 20px;
+  border-top: 1px solid #dadada;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+  cursor: pointer;
+}
+.page .vacancy_item:last-child {
+  border-bottom: 1px solid #dadada;
+}
+.page .vacancy_item.open {
+  background: #f4f4f4;
+}
+.page .vacancy_item.open .vacancy_title:before {
+  transform: translate(0, -50%) rotate(180deg);
+}
+.page .vacancy_item .nobot {
+  margin-bottom: 10px;
+}
+.page .vacancy_item ul {
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+.page .vacancy_item p a {
+  color: inherit;
+}
+.page .vacancy_row {
+  display: flex;
+}
+.page .vacancy_col {
+  padding-right: 70px;
+}
+.page .vacancy_col:last-child {
+  padding: 0;
+}
+.page .vacancy_title {
+  padding: 40px 0;
+  position: relative;
+}
+.page .vacancy_title:before {
+  position: absolute;
+  content: '';
+  width: 18px;
+  height: 11px;
+  display: block;
+  right: 20px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url(../images/srt_dropDown.svg);
+  transition: 0.3s ease-in-out;
+  top: 50%;
+  transform: translate(0, -50%);
 }
 .footer {
   padding: 0 40px;
@@ -2180,6 +2392,13 @@ body.scrollDis {
 .default-btn.btn-gray:hover {
   background: #dddddd;
 }
+.default-btn.btn-white {
+  color: #292929;
+  background: #ffffff;
+}
+.default-btn.btn-white:hover {
+  background: #ebebeb;
+}
 .preloaders .preloader {
   opacity: 0;
   will-change: opacity;
@@ -2306,6 +2525,9 @@ body.scrollDis {
   }
   .page .blockNum_n {
     font-size: 45px;
+  }
+  .page .rowBox_col {
+    flex-basis: calc(50% - 25px);
   }
 }
 @media (max-width: 1024px) {
@@ -2655,6 +2877,50 @@ body.scrollDis {
   .page .authorBox_state {
     padding-left: 0;
   }
+  .page .rowBox h1 {
+    font-size: 30px;
+    line-height: 55px;
+  }
+  .page .rowBox h2 {
+    font-size: 25px;
+    line-height: 55px;
+  }
+  .page .rowBox h3 {
+    font-size: 20;
+    line-height: 35px;
+  }
+  .page .rowBox i {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .page .rowBox p {
+    font-size: 16px;
+    line-height: 28px;
+  }
+  .page .prizes_title {
+    font-size: 23px;
+    line-height: 52px;
+  }
+  .page .prizes_head {
+    font-size: 14px;
+    line-height: 23px;
+  }
+  .page .prizes_text p {
+    font-size: 14px;
+    line-height: 23px;
+    margin-bottom: 8px;
+  }
+  .page .blockNR_item {
+    padding-right: 30px;
+  }
+  .page .sertf {
+    margin-bottom: 30px;
+  }
+  .page .sertf_text {
+    font-size: 14px;
+    line-height: 23px;
+    padding: 15px;
+  }
   .inner_big {
     width: 100%;
     margin: auto;
@@ -2680,6 +2946,64 @@ body.scrollDis {
   .page .projects_item_content_sub {
     font-size: 12px;
     line-height: 14px;
+  }
+  .page .rowBox {
+    margin-bottom: 40px;
+  }
+  .page .rowBox_title {
+    margin-top: 0;
+    margin-bottom: 10px;
+  }
+  .page .rowBox_row {
+    flex-direction: column;
+    padding: 15px 0;
+    transition: 0.3s ease-in-out;
+    height: 50px;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+  }
+  .page .rowBox_row:before {
+    position: absolute;
+    content: '';
+    width: 11px;
+    height: 6px;
+    display: block;
+    right: 20px;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-image: url(../images/srt_dropDown.svg);
+    transition: 0.3s ease-in-out;
+    top: 23px;
+  }
+  .page .rowBox_row.open {
+    padding: 35px 0;
+  }
+  .page .rowBox_row.open:before {
+    transform: rotate(180deg);
+  }
+  .page .rowBox_row .inner {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+  }
+  .page .rowBox_col {
+    flex-basis: 100%;
+  }
+  .page .rowBox h1 {
+    font-size: 19px;
+    line-height: 23px;
+  }
+  .page .rowBox h2 {
+    font-size: 16px;
+    line-height: 19px;
+  }
+  .page .rowBox h3 {
+    font-size: 14px;
+    line-height: 18px;
   }
   .inner .box {
     margin: 0;
@@ -2832,6 +3156,52 @@ body.scrollDis {
   .page .fpNotFound_list {
     max-width: none;
   }
+  .page .blockNR {
+    flex-direction: column;
+    padding-top: 0;
+  }
+  .page .blockNR_item {
+    margin-bottom: 20px;
+  }
+  .page .blockNR_num {
+    font-size: 36px;
+    line-height: 50px;
+    margin-bottom: 0;
+  }
+  .page .blockNR_text {
+    font-size: 14px;
+    line-height: 23px;
+  }
+  .page .sertf_item {
+    flex-basis: calc((100% - 20px) / 2);
+    margin-right: 20px;
+  }
+  .page .sertf_item:nth-child(3n) {
+    margin-right: 20px;
+  }
+  .page .sertf_item:nth-child(2n) {
+    margin-right: 0;
+  }
+  .page .text .row {
+    margin-top: 10px;
+    display: block;
+    margin-bottom: 25px;
+  }
+  .page .vacancy_item {
+    min-height: 54px;
+  }
+  .page .vacancy_title {
+    padding: 17px 0;
+    padding-right: 20px;
+  }
+  .page .vacancy_title:before {
+    width: 11px;
+    height: 6px;
+    right: 0;
+  }
+  .page .vacancy_row {
+    display: block;
+  }
 }
 @media (max-width: 600px) {
   .page .fpSlider .swiper-button-next,
@@ -2962,6 +3332,68 @@ body.scrollDis {
   .page .authorBox_state {
     font-size: 14px;
     line-height: 23px;
+  }
+  .page .prizes {
+    border-top: 1px solid #e5e5e5;
+  }
+  .page .prizes_item {
+    margin-bottom: 0;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .page .prizes_item_wrapper {
+    padding: 15px 0;
+    overflow: hidden;
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border-bottom: 1px solid #e5e5e5;
+  }
+  .page .prizes_item_wrapper:before {
+    position: absolute;
+    content: '';
+    width: 11px;
+    height: 6px;
+    display: block;
+    right: 0;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+    background-image: url(../images/srt_dropDown.svg);
+    transition: 0.3s ease-in-out;
+    top: 23px;
+  }
+  .page .prizes_item_wrapper.open:before {
+    transform: rotate(180deg);
+  }
+  .page .prizes_head {
+    display: none;
+    margin-bottom: 0;
+  }
+  .page .prizes_head.mob {
+    display: block;
+    padding-right: 20px;
+  }
+  .page .prizes_img {
+    position: absolute;
+    top: 100%;
+    margin-top: 17px;
+  }
+  .page .prizes_img.pos {
+    position: relative;
+    top: 0;
+  }
+  .page .prizes_text {
+    position: absolute;
+    top: 100%;
+  }
+  .page .prizes_text.pos {
+    position: relative;
+    top: 0;
+  }
+  .page .sertf_item {
+    margin-right: 0 !important;
+    flex-basis: 100%;
   }
   .inner_out {
     width: calc(100% + 40px);
