@@ -561,21 +561,40 @@ var pages = {
       this.index = 0;
       _this = this;
       var y = 0;
+      var stack = 0;
       this.items.each(function() {
         var $this = $(this);
         if (
           $(document).scrollTop() + $(window).height() >
           $(this).offset().top
         ) {
-          if (!_this.intrvl[y]) {
-            _this.intrvl[y] = setTimeout(function() {
-              if ($this.hasClass("is-hidden")) {
-                _this.imageLoad($this);
-              }
-            }, _this.index * _this.basicDelay);
+          if ($(window).width() > 768) {
+            if (!_this.intrvl[y]) {
+              stack++;
+              _this.intrvl[y] = setTimeout(function() {
+                if ($this.hasClass("is-hidden")) {
+                  _this.imageLoad($this);
+                }
+              }, _this.index * _this.basicDelay);
+            }
+            if ($this.hasClass("is-hidden") && stack == 2) {
+              stack = 0;
+              _this.index++;
+            }
+          } else {
+            if (!_this.intrvl[y]) {
+              stack++;
+              _this.intrvl[y] = setTimeout(function() {
+                if ($this.hasClass("is-hidden")) {
+                  _this.imageLoad($this);
+                }
+              }, _this.index * _this.basicDelay);
+            }
+            if ($this.hasClass("is-hidden") && stack == 1) {
+              stack = 0;
+              _this.index++;
+            }
           }
-
-          if ($this.hasClass("is-hidden")) _this.index++;
         }
         y++;
       });
@@ -827,14 +846,27 @@ var pages = {
     },
     yaMapCreate: {
       center: [55.751574, 37.573856],
-      createPlaceMark: function(coords, Hcontent, balContent) {
+      createPlaceMark: function(coords, src,sity,name,link) {
         return new ymaps.Placemark(
           coords,
           {
-            hintContent: Hcontent,
-            balloonContent: balContent
+            balloonContentHeader:
+              '<div class="yaMap_head">'+
+                '<img src="'+src+'" class="" height="174" width="400"/>'+
+              '</div>',
+            // Зададим содержимое основной части балуна.
+            balloonContentBody:
+              '<div class="yaMap_content">'+
+                '<p>'+sity+'</p>'+
+                '<h3>'+name+'</h3>'+
+                '<a href="'+link+'" class="default-btn btn-gray">Перейти к проекту<a>'+
+              '</div>',
+              
+            balloonContentFooter: '',
+            hintContent: name,
           },
           {
+            hideIconOnBalloonOpen: false,
             iconLayout: "default#image",
             iconImageHref: "images/loc.png",
             iconImageSize: [60, 60],
@@ -859,11 +891,14 @@ var pages = {
             ),
             myPlacemark = _this.createPlaceMark(
               [55.751574, 37.573856],
-              "Собственный значок метки",
-              "Это красивая метка"
+              "images/projects/proj_1.jpg",
+              "Санкт-Петербург",
+              "Мультиформатный жилой комплекс «Golden City»",
+              "#"
             );
           myMap.behaviors.disable("scrollZoom");
           myMap.geoObjects.add(myPlacemark);
+          myMap.BalloonOptions.margin= [0,0,0,0]
         });
       },
       init: function() {
@@ -920,7 +955,10 @@ var pages = {
     },
     dropDownVacancy: function(item) {
       if (item.hasClass("open")) {
-        item.height(item.find('.vacancy_title').height()+item.find('.vacancy_title').css('padding-top').replace('px','')*2);
+        item.height(
+          item.find(".vacancy_title").height() +
+            item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+        );
         item.removeClass("open");
       } else {
         item.addClass("open");
@@ -928,7 +966,10 @@ var pages = {
       }
     },
     setVacancy: function(item) {
-      item.height(item.find('.vacancy_title').height()+item.find('.vacancy_title').css('padding-top').replace('px','')*2);
+      item.height(
+        item.find(".vacancy_title").height() +
+          item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+      );
     },
     dropDownPrize: function(item) {
       if ($(window).width() <= 600) {
@@ -957,10 +998,10 @@ var pages = {
       $(".vacancy_item").click(function() {
         _this.dropDownVacancy($(this));
       });
-      if($(".vacancy_item").length>0)
-      $(".vacancy_item").each(function(){
-        _this.setVacancy($(this));
-      })
+      if ($(".vacancy_item").length > 0)
+        $(".vacancy_item").each(function() {
+          _this.setVacancy($(this));
+        });
     },
     init: function() {
       this.events();

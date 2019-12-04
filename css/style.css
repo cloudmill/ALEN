@@ -212,6 +212,9 @@ body.scrollDis {
 .header.burgerOpen .header_mobile_burger span:after {
   transform: rotate(-45deg) translate(0, -50%);
 }
+.header.burgerOpen .header_mobile_call {
+  opacity: 0;
+}
 .header.burgerOpen .header_mobileButs {
   filter: invert(0);
 }
@@ -274,16 +277,13 @@ body.scrollDis {
   font-weight: normal;
   font-size: 14px;
   line-height: 17px;
-  color: rgba(255, 255, 255, 0.7);
+  color: #ffffff;
   margin-right: 40px;
   transition: all 0.3s ease-in-out;
-}
-.header_menu_item.active {
-  color: #ffffff;
-  font-weight: 500;
+  opacity: 0.7;
 }
 .header_menu_item:hover {
-  color: #ffffff;
+  opacity: 1;
 }
 .header_search_wrapper {
   position: absolute;
@@ -382,8 +382,12 @@ body.scrollDis {
   display: block;
   width: 17px;
   height: 17px;
+  opacity: 0.7;
   background-image: url(../images/search.svg);
   transition: 0.3s ease-in-out;
+}
+.header_search_but:hover {
+  opacity: 1;
 }
 .header_bg {
   width: 100%;
@@ -420,6 +424,8 @@ body.scrollDis {
 }
 .header_mobile_call {
   margin-right: 30px;
+  width: 20px;
+  height: 20px;
 }
 .header_mobile_burger {
   width: 26px;
@@ -563,6 +569,9 @@ body.scrollDis {
   align-items: center;
   cursor: pointer;
 }
+.header_mobileMenu_lang_title:hover:before {
+  opacity: 1;
+}
 .header_mobileMenu_lang_title::before {
   content: '';
   display: block;
@@ -572,6 +581,8 @@ body.scrollDis {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
+  transition: opacity 0.3s ease-in-out;
+  opacity: 0.7;
   background-image: url(../images/language.svg);
 }
 .header_mobileMenu_lang_wrapper {
@@ -840,8 +851,8 @@ body.scrollDis {
   width: 17px;
   height: 31px;
   top: 50%;
-  transform: translate(-50%, -50%);
-  left: 30px;
+  transform: translate(-50%, 0);
+  left: 50px;
   position: absolute;
   padding: 0;
   color: transparent;
@@ -871,22 +882,27 @@ body.scrollDis {
 .page .fpSlider .swiper-button-next {
   left: auto;
   right: 30px;
-  transform: rotate(180deg);
+  transform: translate(-50%, 0) rotate(180deg);
 }
 .page .textAbout {
-  padding: 110px 0;
   margin-bottom: 70px;
+}
+.page .textAbout .container {
+  padding: 110px 0;
   background-image: url(../images/bg_about.svg);
   background-repeat: no-repeat;
   background-size: contain;
-  background-position: center;
+  background-position: 180px center;
 }
 .page .textAbout_row {
   display: flex;
   justify-content: space-between;
 }
 .page .textAbout_col {
-  flex-basis: calc(50% - 50px);
+  flex-basis: 50%;
+}
+.page .textAbout_col:first-child {
+  flex-basis: calc(50% - 100px);
 }
 .page .textAbout h2 {
   font-style: normal;
@@ -914,11 +930,12 @@ body.scrollDis {
 }
 .page .textAbout ul {
   list-style: none;
+  padding-left: 30px;
 }
 .page .textAbout ul li {
   font-style: normal;
   align-items: baseline;
-  display: flex;
+  position: relative;
   font-weight: 300;
   font-size: 20px;
   line-height: 150%;
@@ -926,7 +943,6 @@ body.scrollDis {
   margin-bottom: 40px;
 }
 .page .textAbout ul li:before {
-  margin-right: 20px;
   content: '';
   display: inline-block;
   border-radius: 50%;
@@ -934,6 +950,9 @@ body.scrollDis {
   width: 10px;
   height: 10px;
   background: #292929;
+  position: absolute;
+  left: -30px;
+  top: 9px;
 }
 .page .projects_list {
   display: flex;
@@ -956,25 +975,19 @@ body.scrollDis {
 .page .projects_item:hover .projects_item_img {
   transform: translate3d(-50%, -50%, 0) scale(1.05);
 }
+.page .projects_item:nth-child(2n).is-hidden {
+  transform: translate(5%, 25%);
+}
+.page .projects_item:nth-child(2n-1).is-hidden {
+  transform: translate(-5%, 25%);
+}
 .page .projects_item.is-hidden {
   opacity: 0;
-  transform: translate(0, 35%);
 }
 .page .projects_item.is-hidden:before {
   opacity: 0;
   transition: opacity 1s ease;
   z-index: 2;
-}
-.page .projects_item.is-loaded:before {
-  content: '';
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  z-index: 1;
-  height: 100%;
-  opacity: 0.7;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 30%, transparent 80%);
 }
 .page .projects_item.is-loaded .projects_item_img {
   opacity: 1;
@@ -1074,8 +1087,8 @@ body.scrollDis {
   color: #292929;
 }
 .page .fpProject {
-  height: 73vh;
-  margin-bottom: 100px;
+  height: 67.5vh;
+  margin-bottom: 90px;
   position: relative;
 }
 .page .fpProject_text {
@@ -1216,6 +1229,7 @@ body.scrollDis {
 .page .fpPhoto {
   text-align: center;
   position: relative;
+  margin-bottom: 30px;
 }
 .page .fpPhoto_box.open .mask {
   left: 100%;
@@ -1266,7 +1280,7 @@ body.scrollDis {
   background: rgba(0, 0, 0, 0.22);
 }
 .page .fpNotFound_content {
-  top: 147px;
+  top: 200px;
   color: #fff;
   left: 0;
   text-align: center;
@@ -1413,6 +1427,7 @@ body.scrollDis {
 }
 .page .bItems {
   text-align: center;
+  margin-bottom: 90px;
 }
 .page .bItems_headTitle {
   font-family: Rubik;
@@ -1505,13 +1520,30 @@ body.scrollDis {
   color: #ffffff;
 }
 .page .bItems .default-btn {
-  margin-bottom: 90px;
+  padding: 0 45px;
+  text-transform: capitalize;
 }
 .page .text {
   margin-bottom: 90px;
 }
 .page .text.mb-small {
-  margin-bottom: 65px;
+  margin-bottom: 50px;
+}
+.page .text.lab h1 {
+  margin-top: -20px;
+  margin-bottom: 45px;
+}
+.page .text.lab h4 {
+  margin-top: 45px;
+}
+.page .text.human {
+  padding-left: 90px;
+}
+.page .text.human h1 {
+  margin-top: -20px;
+}
+.page .text.servc h1 {
+  margin-top: -15px;
 }
 .page .text p {
   font-family: Rubik;
@@ -1530,9 +1562,13 @@ body.scrollDis {
   font-style: normal;
   font-weight: normal;
   font-size: 40px;
-  line-height: 68px;
+  line-height: 56px;
   color: #292929;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
+}
+.page .text h1.big {
+  font-size: 49px;
+  line-height: 65px;
 }
 .page .text h2 {
   font-family: Rubik;
@@ -1584,7 +1620,7 @@ body.scrollDis {
   line-height: 32px;
   color: #292929;
   position: relative;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
 }
 .page .text ul li a {
   color: #0058dd;
@@ -1616,6 +1652,10 @@ body.scrollDis {
 .page .text .social_type:nth-child(2n-1) {
   margin-right: 50px;
 }
+.page .text .social_type:nth-last-child(1),
+.page .text .social_type:nth-last-child(2) {
+  margin-bottom: 0;
+}
 .page .text .social_item {
   background: #ffffff;
   border: 1px solid #e5e5e5;
@@ -1636,6 +1676,10 @@ body.scrollDis {
   white-space: nowrap;
   position: relative;
   padding-left: 50px;
+  transition: background 0.3s ease-in-out;
+}
+.page .text .social_item:hover {
+  background: #ebebeb;
 }
 .page .text .social_item .icon {
   margin-right: 15px;
@@ -1722,6 +1766,9 @@ body.scrollDis {
   width: 100%;
   height: 100%;
 }
+.page .map_bg #map ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps {
+  overflow: visible !important;
+}
 .page .infSlider_menu {
   display: flex;
   padding-bottom: 25px;
@@ -1800,6 +1847,11 @@ body.scrollDis {
   font-size: 17px;
   line-height: 32px;
   color: #292929;
+}
+.page .infSlider_option_value span {
+  font-size: 60%;
+  position: relative;
+  top: -8px;
 }
 .page .docBox {
   margin-bottom: 90px;
@@ -1881,6 +1933,9 @@ body.scrollDis {
   background: #292929;
   min-height: 100vh;
 }
+.page .fpSearch .projects_list {
+  background: none;
+}
 .page .fpSearch_text {
   font-family: Rubik;
   font-style: normal;
@@ -1913,6 +1968,12 @@ body.scrollDis {
   font-size: 64px;
   line-height: 68px;
   color: #292929;
+}
+.page .blockNum_n span {
+  font-size: 40%;
+  position: relative;
+  font-weight: 500;
+  top: -30px;
 }
 .page .blockNum_text {
   font-family: Rubik;
@@ -1981,18 +2042,28 @@ body.scrollDis {
 .page .rowBox_row {
   display: flex;
   justify-content: space-between;
-  padding: 72px 0;
+  padding: 90px 0;
   border-bottom: 1px solid #dedede;
+}
+.page .rowBox_row:first-child {
+  margin-top: -110px;
+}
+.page .rowBox_row:last-child {
+  border: 0;
 }
 .page .rowBox_row .inner {
   display: flex;
   justify-content: space-between;
 }
 .page .rowBox_col {
-  flex-basis: calc(50% - 80px);
+  flex-basis: calc(50% - 60px);
 }
-.page .rowBox__title {
-  margin-bottom: 30px;
+.page .rowBox_col:last-child {
+  flex-basis: calc(50% - 150px);
+}
+.page .rowBox_title {
+  line-height: 68px;
+  margin-bottom: 34px;
 }
 .page .rowBox h1 {
   font-family: Rubik;
@@ -2001,6 +2072,7 @@ body.scrollDis {
   font-size: 40px;
   line-height: 68px;
   color: #292929;
+  margin-bottom: 18px;
 }
 .page .rowBox h2 {
   font-family: Rubik;
@@ -2009,6 +2081,8 @@ body.scrollDis {
   font-size: 32px;
   line-height: 68px;
   color: #292929;
+  margin-top: 0;
+  margin-bottom: 10px;
 }
 .page .rowBox h3 {
   font-family: Rubik;
@@ -2017,28 +2091,43 @@ body.scrollDis {
   font-size: 23px;
   line-height: 40px;
   color: #292929;
+  margin-bottom: 0px;
+  margin-top: 0;
+}
+.page .rowBox h3:first-child {
+  line-height: 68px;
   margin-bottom: 10px;
 }
 .page .rowBox i {
+  display: block;
   font-family: Rubik;
   font-style: italic;
   font-weight: 300;
   font-size: 17px;
   line-height: 32px;
   color: #292929;
-  margin-bottom: 25px;
+  margin-bottom: 18px;
+  margin-top: 0;
+}
+.page .rowBox i:last-child {
+  margin-bottom: 0;
 }
 .page .rowBox p {
   font-family: Rubik;
   font-style: normal;
+  display: block;
   font-weight: 300;
   font-size: 17px;
   line-height: 32px;
   color: #292929;
-  margin-bottom: 20px;
+  margin-bottom: 14px;
+  margin-top: 0;
+}
+.page .rowBox p:last-child {
+  margin-bottom: 0;
 }
 .page .rowBox b {
-  font-weight: bold !important;
+  font-weight: 500 !important;
 }
 .page .blockNR {
   display: flex;
@@ -2124,7 +2213,7 @@ body.scrollDis {
 .page .sertf {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 80px;
+  margin-bottom: 90px;
 }
 .page .sertf_item {
   flex-basis: calc((100% - 40px)/3);
@@ -2215,17 +2304,59 @@ body.scrollDis {
   top: 50%;
   transform: translate(0, -50%);
 }
+.page .yaMap_head {
+  position: relative;
+  width: 400px;
+  height: 174px;
+}
+.page .yaMap_head img {
+  position: absolute;
+  width: calc(100% + 42px);
+  height: 184px;
+  left: -12px;
+  top: -10px;
+}
+.page .yaMap_content p {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 12px;
+  line-height: 24px;
+  color: #292929;
+}
+.page .yaMap_content h3 {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 15px;
+  line-height: 24px;
+  color: #292929;
+  margin-top: 5px;
+  margin-bottom: 20px;
+}
+.page .yaMap_content .default-btn {
+  margin-bottom: 10px;
+}
 .footer {
-  padding: 0 40px;
-  padding-top: 100px;
+  padding: 100px 40px;
+  padding-bottom: 80px;
   display: flex;
   border-top: 1px solid #e5e5e5;
 }
 .footer_col {
   flex-basis: 25%;
 }
-.footer_col:nth-child(n + 2) {
+.footer_col:nth-child(2) {
   padding-left: 70px;
+}
+.footer_col:nth-child(3) {
+  padding-left: 90px;
+}
+.footer_col:nth-child(4) {
+  padding-left: 130px;
+}
+.footer_menu_wrapper + .footer_menu_wrapper .footer_title {
+  margin-top: 56px;
 }
 .footer_title {
   text-decoration: none;
@@ -2240,7 +2371,7 @@ body.scrollDis {
   display: block;
 }
 .footer_title + .footer_title {
-  margin-bottom: 56px;
+  margin-bottom: 54px;
 }
 .footer_link {
   text-decoration: none;
@@ -2249,7 +2380,7 @@ body.scrollDis {
   font-size: 14px;
   line-height: 143%;
   color: #292929;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   display: block;
   transition: 0.3s ease-in-out;
 }
@@ -2265,7 +2396,7 @@ body.scrollDis {
   font-size: 17px;
   line-height: 118%;
   color: #292929;
-  margin-bottom: 39px;
+  margin-bottom: 34px;
 }
 .footer_phone {
   font-style: normal;
@@ -2274,7 +2405,7 @@ body.scrollDis {
   display: block;
   line-height: 118%;
   color: #292929;
-  margin-bottom: 77px;
+  margin-bottom: 72px;
 }
 .footer_inf {
   font-style: normal;
@@ -2336,6 +2467,10 @@ body.scrollDis {
   display: flex;
   align-items: center;
   color: #292929;
+}
+.noWrap {
+  white-space: nowrap;
+  display: inline;
 }
 .inner {
   max-width: 1272px;
@@ -2467,6 +2602,11 @@ body.scrollDis {
   height: 27px;
   background-image: url(../images/icon_twitter.svg);
 }
+.icon-phone {
+  width: 20px;
+  height: 20px;
+  background-image: url(../images/phone.svg);
+}
 @media (max-width: 1500px) {
   .page .container {
     width: 100%;
@@ -2491,6 +2631,18 @@ body.scrollDis {
   }
   .page .blockNum_n {
     font-size: 55px;
+  }
+  .page .blockNum_n span {
+    top: -25px;
+  }
+  .footer_col:nth-child(2) {
+    padding-left: 10px;
+  }
+  .footer_col:nth-child(3) {
+    padding-left: 10px;
+  }
+  .footer_col:nth-child(4) {
+    padding-left: 50px;
   }
 }
 @media (max-width: 1300px) {
@@ -2613,6 +2765,9 @@ body.scrollDis {
     padding: 0 20px;
     border-top: 0;
   }
+  .footer_menu_wrapper + .footer_menu_wrapper .footer_title {
+    margin-top: 0px;
+  }
   .footer_title {
     border-top: 1px solid #e5e5e5;
     padding: 18px 0;
@@ -2734,6 +2889,9 @@ body.scrollDis {
     font-size: 25px;
     line-height: 28px;
   }
+  .page .fpPhoto {
+    margin-bottom: 10px;
+  }
   .page .fpPhoto_down {
     margin-bottom: 30px;
   }
@@ -2773,6 +2931,9 @@ body.scrollDis {
     width: 100%;
     max-width: 100%;
     margin-right: 0;
+    margin-bottom: 15px;
+  }
+  .page .text .social_type:nth-last-child(2) {
     margin-bottom: 15px;
   }
   .page .text .social_type:nth-child(2n -1) {
@@ -2897,6 +3058,9 @@ body.scrollDis {
     font-size: 16px;
     line-height: 28px;
   }
+  .page .rowBox_row:first-child {
+    margin-top: -50px;
+  }
   .page .prizes_title {
     font-size: 23px;
     line-height: 52px;
@@ -2930,7 +3094,7 @@ body.scrollDis {
   }
 }
 @media (max-width: 950px) {
-  .page .textAbout {
+  .page .textAbout .container {
     padding: 60px 0;
   }
   .page .textAbout_row {
@@ -2949,6 +3113,7 @@ body.scrollDis {
   }
   .page .rowBox {
     margin-bottom: 40px;
+    border-bottom: 1px solid #dedede;
   }
   .page .rowBox_title {
     margin-top: 0;
@@ -2963,6 +3128,10 @@ body.scrollDis {
     position: relative;
     transition: all 0.3s ease-in-out;
     cursor: pointer;
+    border: 0;
+  }
+  .page .rowBox_row:first-child {
+    margin-top: 0;
   }
   .page .rowBox_row:before {
     position: absolute;
@@ -2977,6 +3146,16 @@ body.scrollDis {
     background-image: url(../images/srt_dropDown.svg);
     transition: 0.3s ease-in-out;
     top: 23px;
+  }
+  .page .rowBox_row:after {
+    content: '';
+    display: block;
+    width: calc(100% - 40px);
+    height: 1px;
+    position: absolute;
+    background: #dedede;
+    left: 20px;
+    top: 0;
   }
   .page .rowBox_row.open {
     padding: 35px 0;
@@ -3000,6 +3179,7 @@ body.scrollDis {
   .page .rowBox h2 {
     font-size: 16px;
     line-height: 19px;
+    margin-bottom: 15px;
   }
   .page .rowBox h3 {
     font-size: 14px;
@@ -3013,6 +3193,12 @@ body.scrollDis {
   .page .projects_item {
     width: 100%;
     max-height: none;
+  }
+  .page .projects_item:nth-child(2n).is-hidden {
+    transform: translate(0, 25%);
+  }
+  .page .projects_item:nth-child(2n-1).is-hidden {
+    transform: translate(0, 25%);
   }
   .page .page_bar {
     flex-wrap: wrap;
@@ -3041,6 +3227,9 @@ body.scrollDis {
     font-size: 19px;
     line-height: 23px;
   }
+  .page .bItems {
+    margin-bottom: 40px;
+  }
   .page .bItems_text {
     height: 74px;
   }
@@ -3059,9 +3248,6 @@ body.scrollDis {
   }
   .page .bItems_title {
     font-size: 16px;
-  }
-  .page .bItems .default-btn {
-    margin-bottom: 40px;
   }
   .page .infSlider_select {
     height: 40px;
@@ -3153,6 +3339,9 @@ body.scrollDis {
     width: calc(100% - 40px);
     left: 20px;
   }
+  .page .fpNotFound_content br {
+    display: none;
+  }
   .page .fpNotFound_list {
     max-width: none;
   }
@@ -3240,12 +3429,33 @@ body.scrollDis {
     flex-direction: column;
   }
   .page .text.mb-small {
-    margin-bottom: 30px;
+    margin-bottom: 20px;
+  }
+  .page .text.lab h1 {
+    margin-bottom: 20px;
+    margin-top: 0;
+  }
+  .page .text.lab h4 {
+    margin-top: 30px;
+  }
+  .page .text.human {
+    padding-left: 0;
+  }
+  .page .text.human h1 {
+    margin-top: 0;
+  }
+  .page .text.servc h1 {
+    margin-top: 0;
   }
   .page .text h1 {
     font-size: 19px;
     line-height: 34px;
     margin-bottom: 20px;
+  }
+  .page .text h1.big {
+    font-size: 19px;
+    line-height: 25px;
+    margin-top: 0;
   }
   .page .text h2 {
     font-size: 16px;
@@ -3313,6 +3523,9 @@ body.scrollDis {
   .page .blockNum_n {
     font-size: 36px;
     line-height: 43px;
+  }
+  .page .blockNum_n span {
+    top: -18px;
   }
   .page .blockNum_text {
     font-size: 14px;
