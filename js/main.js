@@ -847,12 +847,14 @@ var pages = {
     yaMapCreate: {
       center: [55.751574, 37.573856],
       createPlaceMark: function(coords, src,sity,name,link) {
+        var width = 400;
+        if($(window).width()<=600) width = 320;
         return new ymaps.Placemark(
           coords,
           {
             balloonContentHeader:
               '<div class="yaMap_head">'+
-                '<img src="'+src+'" class="" height="174" width="400"/>'+
+                '<img src="'+src+'" class="" height="174" width="'+width+'"/>'+
               '</div>',
             // Зададим содержимое основной части балуна.
             balloonContentBody:
@@ -898,11 +900,40 @@ var pages = {
             );
           myMap.behaviors.disable("scrollZoom");
           myMap.geoObjects.add(myPlacemark);
-          myMap.BalloonOptions.margin= [0,0,0,0]
+        });
+      },
+      create_full: function() {
+        var _this = this;
+        ymaps.ready(function() {
+          var myMap = new ymaps.Map(
+              "map",
+              {
+                center: _this.center,
+                zoom: 6,
+                controls: []
+              },
+              {
+                searchControlProvider: "yandex#search"
+              }
+            ),
+            myPlacemark = _this.createPlaceMark(
+              [55.751574, 37.573856],
+              "images/projects/proj_1.jpg",
+              "Санкт-Петербург",
+              "Мультиформатный жилой комплекс «Golden City»",
+              "#"
+            );
+          myMap.behaviors.disable("scrollZoom");
+          myMap.geoObjects.add(myPlacemark);
         });
       },
       init: function() {
-        this.create();
+        if($("#map").hasClass('full')){
+          this.create_full();
+        }else{
+          this.create();
+        }
+        
       }
     },
     init: function() {
@@ -1007,11 +1038,69 @@ var pages = {
       this.events();
     }
   },
+  contacts:{
+    validate: function(){
+      $('#contacts_form').parsley();
+    },
+    init: function(){
+      if($('#contacts_form')){
+        this.validate()
+      }
+    },
+  },
+  newDetail: {
+    events: function(){
+      $('.boxHide_but').click(function(e){
+        e.preventDefault();
+        $(this).parent().toggleClass('active')
+      })
+    },
+    sliderInit: function(){
+      $('.new_list.slider').slick({
+        slidesToShow: 2,
+        slidesToScroll: 1,
+        speed: 1200,
+        cssEase: "ease-in-out",
+        infinite: false,
+        dots: true,
+        arrows: false,
+        responsive: [
+          {
+            breakpoint: 768,
+            settings: {
+              slidesToShow: 1
+            }
+          },
+          {
+            breakpoint: 2000,
+            settings: {
+              slidesToShow: 2
+            }
+          }
+        ]
+      });
+    },
+    validate: function(){
+      $('#comment_form').parsley();
+    },
+    init: function(){
+      this.events();
+      if($('.new_list.slider')){
+        //this.sliderInit();
+      }
+      if($('#comment_form')){
+        this.validate();
+      }
+      
+    }
+  },
   init: function() {
     this.main.init();
     if ($(".projects")) this.projects.init();
     this.projectsDetail.init();
     this.servicesDetail.init();
     this.company.init();
+    this.contacts.init();
+    this.newDetail.init();
   }
 };
