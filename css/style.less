@@ -73,10 +73,8 @@ body {
   }
 }
 .wrapper {
-  width: 100%;
   overflow: hidden;
   min-height: 100vh;
-
   * {
     font-family: Rubik;
     outline: none;
@@ -106,7 +104,7 @@ body {
   position: fixed;
   z-index: 10;
   height: 100px;
-  width: 100vw;
+  width: 100%;
   left: 0;
   top: 0;
   display: flex;
@@ -951,8 +949,8 @@ body {
           width: 17px;
           height: 31px;
           top: 50%;
-          transform: translate(-50%, 0);
-          left: 50px;
+          transform: translate(0, -50%);
+          left: 40px;
           position: absolute;
           padding: 0;
           color: transparent;
@@ -979,8 +977,8 @@ body {
         }
         &-next {
           left: auto;
-          right: 30px;
-          transform: translate(-50%, 0) rotate(180deg);
+          right: 40px;
+          transform: translate(0, -50%) rotate(180deg);
         }
       }
     }
