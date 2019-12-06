@@ -396,6 +396,21 @@ var templs = {
         this.events();
       }
     },
+    dropDown: {
+      events: function(){
+        $(document).on('click','.header_menuSub',function(){
+          if($(this).hasClass('active')){
+            $(this).attr('style','')
+          }else{
+            $(this).height($(this).find('.header_menuSub_box').height()+15);
+          }
+          $(this).toggleClass('active')
+        })
+      },
+      init: function() {
+        this.events();
+      }
+    },
     init: function() {
       this.srcrollFix.parent = this;
       this.search.parent = this;
@@ -406,6 +421,7 @@ var templs = {
       this.search.init();
       this.scrolling.init();
       this.burger.init();
+      if ($(".header_menuSub")) this.dropDown.init();
     }
   },
   footer: {
@@ -785,7 +801,7 @@ var pages = {
       },
       moveBar: function(ofsetLeft, width) {
         this.bar.css("left", ofsetLeft);
-        this.bar.css("width", width);
+        this.bar.css("width", width + 40);
       },
       events: function() {
         var _this = this;
@@ -846,31 +862,41 @@ var pages = {
     },
     yaMapCreate: {
       center: [55.751574, 37.573856],
-      createPlaceMark: function(coords, src,sity,name,link) {
+      createPlaceMark: function(coords, src, sity, name, link) {
         var width = 400;
-        if($(window).width()<=600) width = 320;
+        if ($(window).width() <= 600) width = 320;
         return new ymaps.Placemark(
           coords,
           {
             balloonContentHeader:
-              '<div class="yaMap_head">'+
-                '<img src="'+src+'" class="" height="174" width="'+width+'"/>'+
-              '</div>',
+              '<div class="yaMap_head">' +
+              '<img src="' +
+              src +
+              '" class="" height="174" width="' +
+              width +
+              '"/>' +
+              "</div>",
             // Зададим содержимое основной части балуна.
             balloonContentBody:
-              '<div class="yaMap_content">'+
-                '<p>'+sity+'</p>'+
-                '<h3>'+name+'</h3>'+
-                '<a href="'+link+'" class="default-btn btn-gray">Перейти к проекту<a>'+
-              '</div>',
-              
-            balloonContentFooter: '',
-            hintContent: name,
+              '<div class="yaMap_content">' +
+              "<p>" +
+              sity +
+              "</p>" +
+              "<h3>" +
+              name +
+              "</h3>" +
+              '<a href="' +
+              link +
+              '" class="default-btn btn-gray">Перейти к проекту<a>' +
+              "</div>",
+
+            balloonContentFooter: "",
+            hintContent: name
           },
           {
             hideIconOnBalloonOpen: false,
             iconLayout: "default#image",
-            iconImageHref: "images/loc.png",
+            iconImageHref: "images/loc.svg",
             iconImageSize: [60, 60],
             iconImageOffset: [-17, -20]
           }
@@ -928,12 +954,11 @@ var pages = {
         });
       },
       init: function() {
-        if($("#map").hasClass('full')){
+        if ($("#map").hasClass("full")) {
           this.create_full();
-        }else{
+        } else {
           this.create();
         }
-        
       }
     },
     init: function() {
@@ -1038,25 +1063,25 @@ var pages = {
       this.events();
     }
   },
-  contacts:{
-    validate: function(){
-      $('#contacts_form').parsley();
+  contacts: {
+    validate: function() {
+      $("#contacts_form").parsley();
     },
-    init: function(){
-      if($('#contacts_form')){
-        this.validate()
+    init: function() {
+      if ($("#contacts_form")) {
+        this.validate();
       }
-    },
+    }
   },
   newDetail: {
-    events: function(){
-      $('.boxHide_but').click(function(e){
+    events: function() {
+      $(".boxHide_but").click(function(e) {
         e.preventDefault();
-        $(this).parent().toggleClass('active')
-      })
+        $(this).parent().toggleClass("active");
+      });
     },
-    sliderInit: function(){
-      $('.new_list.slider').slick({
+    sliderInit: function() {
+      $(".new_list.slider").slick({
         slidesToShow: 2,
         slidesToScroll: 1,
         speed: 1200,
@@ -1080,18 +1105,17 @@ var pages = {
         ]
       });
     },
-    validate: function(){
-      $('#comment_form').parsley();
+    validate: function() {
+      $("#comment_form").parsley();
     },
-    init: function(){
+    init: function() {
       this.events();
-      if($('.new_list.slider')){
+      if ($(".new_list.slider")) {
         //this.sliderInit();
       }
-      if($('#comment_form')){
+      if ($("#comment_form")) {
         this.validate();
       }
-      
     }
   },
   init: function() {
