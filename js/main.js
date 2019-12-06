@@ -898,7 +898,7 @@ var pages = {
             iconLayout: "default#image",
             iconImageHref: "images/loc.svg",
             iconImageSize: [60, 60],
-            iconImageOffset: [-17, -20]
+            iconImageOffset: [-30, -30]
           }
         );
       },
