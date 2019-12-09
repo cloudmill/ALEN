@@ -154,6 +154,7 @@ var templs = {
       dMove: 20,
       oldScroll: 0,
       events: function() {
+        this.eventsInited = true;
         var _this = this;
         $(document).scroll(function() {
           _this._doing($(this).scrollTop());
@@ -189,7 +190,7 @@ var templs = {
       },
       init: function() {
         this.header = $(".header");
-        this.events();
+        if (!this.eventsInited) this.events();
         this.oldScroll = $(document).scrollTop();
         this._doing($(document).scrollTop(), true);
       }
@@ -346,9 +347,7 @@ var templs = {
         var num = 0;
         var fadeInEl = setInterval(() => {
           if (num < $(".header_mobileMenu_item").length) {
-            $(".header_mobileMenu_item")
-              .eq(num)
-              .addClass("faded");
+            $(".header_mobileMenu_item").eq(num).addClass("faded");
             num++;
           } else {
             clearInterval(fadeInEl);
@@ -360,9 +359,7 @@ var templs = {
         var num = $(".header_mobileMenu_item").length - 1;
         var fadeOutEl = setInterval(() => {
           if (num >= 0) {
-            $(".header_mobileMenu_item")
-              .eq(num)
-              .removeClass("faded");
+            $(".header_mobileMenu_item").eq(num).removeClass("faded");
             num--;
           } else {
             callback();
@@ -411,20 +408,30 @@ var templs = {
     dropDown: {
       events: function() {
         $(".header_menuSub").click(function() {
-          if ($(this).hasClass("active")) {
-            $(this).attr("style", "");
-          } else {
-            $(this).height(
-              $(this)
-                .find(".header_menuSub_box")
-                .height() + 15
-            );
+          if ($(window).width() <= 1024) {
+            if ($(this).hasClass("active")) {
+              $(this).attr("style", "");
+            } else {
+              $(this).height($(this).find(".header_menuSub_box").height() + 15);
+            }
           }
           $(this).toggleClass("active");
         });
       },
       init: function() {
         this.events();
+      }
+    },
+    menu: {
+      events: function() {
+        this.eventsInited = true;
+        $(".header_menu_item").click(function() {
+          $(".header_menu_item").removeClass("active");
+          $(this).addClass("active");
+        });
+      },
+      init: function() {
+        if (!this.eventsInited) this.events();
       }
     },
     init: function() {
@@ -437,6 +444,7 @@ var templs = {
       this.search.init();
       this.scrolling.init();
       this.burger.init();
+      this.menu.init();
       if ($(".header_menuSub")) this.dropDown.init();
     }
   },
@@ -445,6 +453,7 @@ var templs = {
     menus: null,
     events: function() {
       var _this = this;
+      this.eventsInited = true;
       this.menus.click(function() {
         if ($(window).width() <= 1024) {
           if ($(this).hasClass("active")) {
@@ -468,12 +477,175 @@ var templs = {
       this.box = $(".footer");
       this.menus = $(".footer_menu_wrapper");
 
+      if (!this.eventsInited) this.events();
+    }
+  },
+  popup: {
+    basicTimeAnimate: 500,
+    open: function(id) {
+      $(".popup").addClass("active");
+      $(".popup_item").removeClass("active");
+      $(".popup_item" + id).addClass("active");
+      $(".popup").animate(
+        {
+          opacity: 1
+        },
+        this.basicTimeAnimate
+      );
+      $(".popup_item" + id).animate(
+        {
+          opacity: 1
+        },
+        this.basicTimeAnimate
+      );
+      $('body').addClass('scrollDis')
+    },
+    close: function() {
+      $(".popup,.popup_item").animate(
+        {
+          opacity: 0
+        },
+        this.basicTimeAnimate,
+        function() {
+          $(".popup,.popup_item").removeClass("active");
+        }
+      );
+      $('body').removeClass('scrollDis')
+    },
+    events: function() {
+      var _this = this;
+      $(".js-popup").click(function(e) {
+        e.preventDefault();
+        _this.open($(this).attr("href"));
+      });
+      $(".popup_close").click(function() {
+        _this.close();
+      });
+    },
+    forms: {
+      submits: function() {
+        var _this = this;
+        $('.popup_item#careers form').submit(function(e){
+          e.preventDefault();
+          $(this).find('input,textarea').val('')
+          $(this).find('.form_fileList .list .item').remove()
+          _this.popups.open('#careers-succes');
+        })
+      },
+      init: function() {
+        this.submits();
+      }
+    },
+    init: function() {
+      this.events();
+      this.forms.popups = this;
+      this.forms.init();
+    }
+  },
+  form: {
+    files: [],
+    uploadFiles: function(event, inputFile) {
+      var _this = this;
+      event.stopPropagation();
+      event.preventDefault();
+      var data = new FormData();
+      this.files.forEach(function(item, key) {
+        console.log(item, key);
+        data.append(key, item.file);
+        item.box
+          .find(".text")
+          .html("Подождите идет загрузка…")
+          .parent()
+          .removeClass("error");
+      });
+      $.ajax({
+        url: "upload.php",
+        type: "POST",
+        data: data,
+        cache: false,
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(data, textStatus, jqXHR) {
+          _this.files.forEach(function(item, key) {
+            if (data[key].error) {
+              item.box.remove();
+            } else {
+              $.ajax({
+                type: "POST",
+                url: "files.php",
+                data: {
+                  data: data[key]
+                },
+                success: function(a) {
+                  if (a) {
+                    var file = a.split("#")[0];
+                    var size = a.split("#")[1];
+                    // inputFile
+                    //   .parent()
+                    //   .find("label")
+                    //   .html("Файл загружен <span>" + size + "</span>");
+
+                    item.box.find(".text").html(file);
+                    item.box.removeClass("loading");
+                    item.box.addClass("load");
+                  } else {
+                    item.box.remove();
+                  }
+                }
+              });
+            }
+          });
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+          _this.files.forEach(function(item, key) {
+            item.box.find(".text").html("Ошибка загрузки");
+            item.box.removeClass("loading");
+            item.box.addClass("error");
+          });
+
+          console.log("ERRORS: " + textStatus);
+        }
+      });
+    },
+    prepareUpload: function(event, inputFile) {
+      var _this = this;
+      this.files = [];
+      $.each(event.target.files, function(key, value) {
+        inputFile
+          .parent()
+          .find(".form_fileList .list")
+          .append(
+            '<li class="item loading"><span class="text"></span> <span class="del"></span></li>'
+          );
+        _this.files.push({
+          id: key,
+          file: value,
+          box: inputFile.parent().find(".form_fileList .list li:last-child")
+        });
+      });
+      this.uploadFiles(event);
+    },
+    events: function() {
+      var _this = this;
+      $("input[type=file]").change(function(event) {
+        var inputFile = $(this);
+        _this.prepareUpload(event, inputFile);
+      });
+      $('.form_fileList .list .item .del').click(function(){
+        var num = $(this).parent().index();
+        $(".form_box [type=file]")[0].files
+      })
+    },
+    init: function() {
       this.events();
     }
   },
   init: function() {
     this.header.init();
     this.footer.init();
+    this.popup.init();
+    this.form.init();
   }
 };
 var pages = {
@@ -652,17 +824,18 @@ var pages = {
     events: function() {
       _this = this;
       var loaded = false;
+      this.eventsInited = true;
       $(document).on("scroll", function() {
         _this.showImg();
       });
-      _this.showImg();
     },
     init: function() {
       this.items = $(document).find(".projects_item");
       this.intrvl = [];
       this.index = 0;
       this.bgSet();
-      this.events();
+      if (!this.eventsInited) this.events();
+      this.showImg();
     }
   },
   projectsDetail: {
@@ -696,20 +869,12 @@ var pages = {
           //callback
           function() {
             $(this).attr("src", $(this).attr("data-src"));
-            $(this)
-              .parent()
-              .addClass("is-loaded");
-            $(this)
-              .parent()
-              .find(".loadMonitor")
-              .removeClass("show");
+            $(this).parent().addClass("is-loaded");
+            $(this).parent().find(".loadMonitor").removeClass("show");
             var $this = $(this);
             setTimeout(function() {
               $this.parent().removeClass("is-proccess");
-              $this
-                .parent()
-                .find(".loadMonitor")
-                .remove();
+              $this.parent().find(".loadMonitor").remove();
             }, 500);
           }
         );
@@ -839,10 +1004,7 @@ var pages = {
             _this.animate = true;
             _this.box.slick("slickGoTo", $(this).attr("slide-id"));
             _this.moveBar(
-              $(this).offset().left -
-                $(this)
-                  .parent()
-                  .offset().left,
+              $(this).offset().left - $(this).parent().offset().left,
               $(this).width()
             );
           } else if ($(window).width() <= 768) {
@@ -953,6 +1115,9 @@ var pages = {
               "Мультиформатный жилой комплекс «Golden City»",
               "#"
             );
+          myMap.events.add("click", function() {
+            myMap.balloon.close();
+          });
           myMap.behaviors.disable("scrollZoom");
           myMap.geoObjects.add(myPlacemark);
         });
@@ -978,6 +1143,9 @@ var pages = {
               "Мультиформатный жилой комплекс «Golden City»",
               "#"
             );
+          myMap.events.add("click", function() {
+            myMap.balloon.close();
+          });
           myMap.behaviors.disable("scrollZoom");
           myMap.geoObjects.add(myPlacemark);
         });
@@ -1042,11 +1210,7 @@ var pages = {
       if (item.hasClass("open")) {
         item.height(
           item.find(".vacancy_title").height() +
-            item
-              .find(".vacancy_title")
-              .css("padding-top")
-              .replace("px", "") *
-              2
+            item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
         );
         item.removeClass("open");
       } else {
@@ -1057,11 +1221,7 @@ var pages = {
     setVacancy: function(item) {
       item.height(
         item.find(".vacancy_title").height() +
-          item
-            .find(".vacancy_title")
-            .css("padding-top")
-            .replace("px", "") *
-            2
+          item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
       );
     },
     dropDownPrize: function(item) {
@@ -1114,9 +1274,7 @@ var pages = {
     events: function() {
       $(".boxHide_but").click(function(e) {
         e.preventDefault();
-        $(this)
-          .parent()
-          .toggleClass("active");
+        $(this).parent().toggleClass("active");
       });
     },
     sliderInit: function() {
@@ -1171,7 +1329,6 @@ var XHRequests = {
   store: [],
   currentPage_id: 0,
   offsetPage: 0,
-  XHR: new XMLHttpRequest(),
   newRequest: function(href, succes, failed) {
     var _this = this;
     this.XHR.open("GET", href, true);
@@ -1281,22 +1438,70 @@ var XHRequests = {
       }
     }
   },
-
   reloadPageDoing: function(html) {
-    $("body").removeClass("scrollDis");
-
     $(".wrapper .page").html($(html).find(".wrapper .page > *"));
-
-    $(".wrapper .header .header_menuSub").remove();
-    if ($(html).find(".wrapper .header .header_menuSub > *").length > 0) {
-      $(".wrapper .header").append(
-        $(html).find(".wrapper .header .header_menuSub")
-      );
+    if ($(html).find(".wrapper.only-fp").length > 0) {
+      $(".wrapper").addClass("only-fp");
+    } else {
+      $(".wrapper").removeClass("only-fp");
     }
+    /////////
+    $("head").find('*:not(link[rel="stylesheet"])').remove();
+    $("head").append($(html).find('head >*:not(link[rel="stylesheet"])'));
+    /////////
+    if (
+      $(html).find(".header").hasClass("scrolled") &&
+      $(html).find(".header").hasClass("scrolled-ever")
+    ) {
+      $(".header").addClass("scrolled-ever").addClass("scrolled");
+    } else {
+      $(".header").removeClass("scrolled-ever").removeClass("scrolled");
+    }
+    /////////
+    if ($(html).find(".header_search_wrapper").hasClass("open")) {
+      $(".header_search_wrapper").addClass("open");
+    } else {
+      $(".header_search_wrapper").removeClass("open");
+    }
+    /////////
+    if ($(html).find(".header").hasClass("searchOpen")) {
+      $(".header").addClass("searchOpen");
+    } else {
+      $(".header").removeClass("searchOpen");
+    }
+    /////////
+    if ($(html).find(".header").hasClass("searchPage")) {
+      $(".header").addClass("searchPage");
+    } else {
+      $(".header").removeClass("searchPage");
+    }
+    /////////
+    if ($(html).find(".footer").length == 0) {
+      $(".wrapper .footer").remove();
+    } else if ($(".wrapper .footer").length == 0) {
+      $(".wrapper").append($(html).find(".footer"));
+    }
+    /////////
+    if ($(".wrapper .header_menuSub").length == 0) {
+      $(".wrapper .header").append("<div class='header_menuSub hide'></div>");
+    }
+    $(".wrapper .header_menuSub >*").remove();
+    if ($(html).find(".wrapper .header_menuSub >*").length > 0) {
+      $(".wrapper .header_menuSub").removeClass("hide");
+      $(".wrapper .header_menuSub").append(
+        $(html).find(".wrapper .header_menuSub >*")
+      );
+    } else {
+      $(".wrapper .header_menuSub").addClass("hide");
+    }
+    /////////
     templs.init();
     pages.init();
+
+    $("body").removeClass("scrollDis");
   },
   init: function() {
+    this.XHR = new XMLHttpRequest();
     this.pullState();
     this.events();
   }
