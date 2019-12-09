@@ -16,11 +16,11 @@
         <a href="index.html" class="header_logo"></a>
         <div class="header_search_wrapper">
           <a href="" class="header_search_but"></a>
-          <form action='search.html'  class="header_search_input_wrapper">
-                        <input name="s" type="text" class="header_search_input" />
-                        <label for="s">Поиск</label>
-                        <a href="" class="header_search_input_close"></a>
-                    </form>
+          <form action='search.html' class="header_search_input_wrapper">
+            <input name="s" type="text" class="header_search_input" />
+            <label for="s">Поиск</label>
+            <a href="" class="header_search_input_close"></a>
+          </form>
         </div>
         <div class="header_menu">
           <a href="projects.html" class="header_menu_item">Проекты</a>
@@ -264,6 +264,96 @@
             © Архитектурное бюро «А.Лен». <br> Все права защищены.
           </div>
         </div>
+      </div>
+      <div class="popup">
+        <div class="popup_item center" id="brochure">
+          <div class="popup_box">
+            <div class="popup_title">
+              Запросить брошюру о программе «Идеальные квартиры «А.Лен»
+            </div>
+            <div class="popup_form">
+              <form class="form" data-parsley-validate>
+                <div class="form_box">
+                  <label for="name2" class="form_label">Имя<span>*</span></label>
+                  <input type="text" class="form_input" name="name" id="name2" required="" data-parsley-required-message="Поле пустое">
+                </div>
+                <div class="form_box">
+                  <label for="mail2" class="form_label">E-mail<span>*</span></label>
+                  <input type="text" class="form_input" name="mail" id="mail2" required="" data-parsley-trigger="change" data-parsley-type="email"
+                    data-parsley-required-message="Поле пустое" data-parsley-type-message="введите почту в правильном формате">
+                </div>
+                <div class="form_box">
+                  <label for="comment2" class="form_label">Вопрос или комментарий</label>
+                  <textarea type="text" class="form_input" name="comment" id="comment2"></textarea>
+                </div>
+                <div class="form_box">
+                  <div class="form_checkbox">
+                    <input required="" name="pp" id="pp2" type="checkbox" data-parsley-trigger="change">
+                    <label for="pp2">Даю согласие на обработку персональных данных в соответствии с <a href="pp.html">политикой конфиденциальности</a></label>
+                  </div>
+                </div>
+                <button type="submit" class="default-btn btn-gray">Отправить</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="popup_item" id="careers">
+          <div class="popup_box">
+            <div class="popup_title">
+              Отправить резюме
+            </div>
+            <div class="popup_form">
+              <form class="form" data-parsley-validate>
+                <div class="form_box">
+                  <label for="name3" class="form_label">Имя<span>*</span></label>
+                  <input type="text" class="form_input" name="name" id="name3" required="" data-parsley-required-message="Поле пустое">
+                </div>
+                <div class="form_box">
+                  <label for="lastname3" class="form_label">Фамилия<span>*</span></label>
+                  <input type="text" class="form_input" name="lastname" id="lastname3" required="" data-parsley-required-message="Поле пустое">
+                </div>
+                <div class="form_box">
+                  <label for="mail3" class="form_label">E-mail<span>*</span></label>
+                  <input type="text" class="form_input" name="mail" id="mail3" required="" data-parsley-trigger="change" data-parsley-type="email"
+                    data-parsley-required-message="Поле пустое" data-parsley-type-message="введите почту в правильном формате">
+                </div>
+                <div class="form_box">
+                  <label for="phone3" class="form_label">Телефон<span>*</span></label>
+                  <input type="text" class="form_input" name="phone" id="phone3" required="" data-parsley-required-message="Поле пустое">
+                </div>
+                <div class="form_box">
+                  <label for="comment3" class="form_label">Сопроводительное письмо</label>
+                  <textarea type="text" class="form_input" name="comment" id="comment3" data-parsley-required-message="Поле пустое"></textarea>
+                </div>
+                <div class="form_box file">
+                  <label for="file3" class="form_label">Прикрепить резюме</label>
+                  <input type="file" name="file" id="file3" multiple="multiple">
+                  <div class="form_fileList">
+                    <label for="file3" class="form_input form_fileLoad">Выберите файл</label>
+                    <ul class="list">
+                    </ul>
+                  </div>
+                </div>
+                <div class="form_box">
+                  <div class="form_checkbox">
+                    <input required="" name="pp" id="pp3" type="checkbox" data-parsley-trigger="change">
+                    <label for="pp3">Даю согласие на обработку персональных данных в соответствии с <a href="pp.html">политикой конфиденциальности</a></label>
+                  </div>
+                </div>
+                <button type="submit" class="default-btn btn-gray">Отправить</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="popup_item center" id="careers-succes">
+          <div class="popup_box inf">
+            <div class="popup_title">
+              Запросить брошюру о программе «Идеальные квартиры «А.Лен»
+            </div>
+            <a href='#careers' class="default-btn btn-gray js-popup">Отправить еще одно резюме</a>
+          </div>
+        </div>
+        <div class="popup_close"></div>
       </div>
     </div>
   </body>
