@@ -839,6 +839,13 @@ body {
           height: 100%;
           z-index: 2;
         }
+        video,
+        img {
+          min-width: 100%;
+          min-height: 100%;
+          height: auto;
+          width: 100%;
+        }
       }
       &_img {
         min-height: 100%;
@@ -889,7 +896,7 @@ body {
         }
       }
     }
-    &_moute {
+    &_mute {
       font-style: normal;
       font-weight: normal;
       font-size: 14px;
@@ -919,7 +926,7 @@ body {
         height: 14px;
         order: -1;
         .bg_def;
-        background-image: url(../images/moute.svg);
+        background-image: url(../images/mute.svg);
       }
       &.active {
         &:before {
@@ -3044,7 +3051,7 @@ body {
     font-size: 10px;
     line-height: 145%;
     color: #292929;
-    margin-bottom: 77px;
+    margin-bottom: 30px;
     span {
       font-weight: bold;
     }
@@ -3058,7 +3065,7 @@ body {
   }
   &_social {
     display: flex;
-    margin-bottom: 77px;
+    margin-bottom: 50px;
     &_item {
       border: 1px solid #e5e5e5;
       width: 50px;
@@ -3076,6 +3083,48 @@ body {
       &:hover {
         background: #ebebeb;
       }
+    }
+  }
+  &_lang {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 17px;
+    color: #292929;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    margin-top: 50px;
+    transition: all @animease;
+    &::before {
+      content: '';
+      display: block;
+      margin-right: 8px;
+      width: 17px;
+      height: 17px;
+      .bg_def;
+      transition: opacity @animease;
+      filter: invert(1);
+      background-image: url(../images/language.svg);
+    }
+    &:hover {
+      opacity: 1;
+    }
+  }
+  &_pp {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 14px;
+    line-height: 20px;
+    color: #292929;
+    display: block;
+    opacity: 0.7;
+    margin: 30px 0;
+    transition: all @animease;
+    &:hover {
+      opacity: 1;
     }
   }
 }
@@ -3952,6 +4001,12 @@ body {
     }
     &_social {
       margin-bottom: 33px;
+    }
+    &_lang {
+      margin-top: 30px;
+    }
+    &_pp {
+      margin: 20px 0;
     }
     &_col {
       flex-basis: 100%;

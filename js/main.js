@@ -498,7 +498,7 @@ var templs = {
         },
         this.basicTimeAnimate
       );
-      $('body').addClass('scrollDis')
+      $("body").addClass("scrollDis");
     },
     close: function() {
       $(".popup,.popup_item").animate(
@@ -510,7 +510,7 @@ var templs = {
           $(".popup,.popup_item").removeClass("active");
         }
       );
-      $('body').removeClass('scrollDis')
+      $("body").removeClass("scrollDis");
     },
     events: function() {
       var _this = this;
@@ -525,12 +525,12 @@ var templs = {
     forms: {
       submits: function() {
         var _this = this;
-        $('.popup_item#careers form').submit(function(e){
+        $(".popup_item#careers form").submit(function(e) {
           e.preventDefault();
-          $(this).find('input,textarea').val('')
-          $(this).find('.form_fileList .list .item').remove()
-          _this.popups.open('#careers-succes');
-        })
+          $(this).find("input,textarea").val("");
+          $(this).find(".form_fileList .list .item").remove();
+          _this.popups.open("#careers-succes");
+        });
       },
       init: function() {
         this.submits();
@@ -632,10 +632,10 @@ var templs = {
         var inputFile = $(this);
         _this.prepareUpload(event, inputFile);
       });
-      $('.form_fileList .list .item .del').click(function(){
+      $(".form_fileList .list .item .del").click(function() {
         var num = $(this).parent().index();
-        $(".form_box [type=file]")[0].files
-      })
+        $(".form_box [type=file]")[0].files;
+      });
     },
     init: function() {
       this.events();
@@ -656,38 +656,54 @@ var pages = {
       bgs: null,
       texts: null,
       videoMuted: false,
-      videos: $(this.box).find("video"),
-      _mouteInit: function() {
+      videos: null,
+      _muteInit: function() {
         var _this = this;
-        $(".fpSlider_moute").click(function() {
+        $(".fpSlider_mute").click(function() {
           $(this).toggleClass("active");
-          _this.videoMuted = $(".fpSlider_moute").hasClass("active");
-          _this.volumeVideo(_this.videoMuted);
+          _this.videoMuted = $(".fpSlider_mute").hasClass("active");
+          var o = 0;
+          _this.videos.each(function() {
+            this.mute = true;
+            tindex = index == 0 ? index : _this.bgs.activeIndex;
+            if (o == tindex) {
+              this.mute = _this.videoMuted;
+            }
+            o++;
+          });
           if (_this.videoMuted) {
-            $(this).text("Выкл. звук");
-            _this.videos.each(function() {
-              _this.moute = true;
-            });
+            $(this).text($(this).attr("data-word-on"));
           } else {
-            $(this).text("Вкл. звук");
+            $(this).text($(this).attr("data-word-off"));
           }
         });
       },
-      volumeVideo: function(moute) {
+      setVideos: function() {
+        this.videos = $("." + this.boxClass).find("video");
+      },
+      volumeVideo: function(index) {
+        var _this = this;
         if (this.videos.length > 0) {
-          if (!moute) {
-            this.videos.each(function() {
-              this.moute = true;
-            });
-            if (this.videos.eq(this.activeIndex - 1).length > 0) {
-              this.videos.eq(this.activeIndex - 1)[0].moute = false;
-              console.log(this.videos.eq(this.activeIndex - 1)[0].moute);
+          let i = 0;
+          this.videos.each(function() {
+            this.mute = true;
+            this.oncanplay = null;
+            //this.onload = null;
+            this.pause();
+            tindex = index == 0 ? index : _this.bgs.activeIndex;
+            if (i == tindex) {
+              var ui = i;
+              this.mute = _this.videoMuted;
+              this.load();
+              this.oncanplay = function() {
+                this.play();
+              };
             }
-          }
+            i++;
+          });
         }
       },
       sliderCreate: function() {
-        var _this = this;
         if ($("." + this.boxClass).length > 0) {
           this.bgs = new Swiper("." + this.boxClass, {
             loop: true,
@@ -696,14 +712,11 @@ var pages = {
               disableOnInteraction: false
             },
             speed: 1000,
-            on: {
-              init: function(e) {
-                _this.volumeVideo(_this.videoMuted);
-              },
-              slideChange: function() {
-                _this.volumeVideo(_this.videoMuted);
-              }
-            },
+            /* lazy: {
+              loadPrevNext: true,
+              loadOnTransitionStart: true
+            }, */
+            init: false,
             navigation: {
               nextEl: ".swiper-button-next",
               prevEl: ".swiper-button-prev"
@@ -727,12 +740,26 @@ var pages = {
           });
           this.bgs.controller.control = this.texts;
           this.texts.controller.control = this.bgs;
+          var _this = this;
+
+          this.bgs.on("init", function() {
+            _this.volumeVideo(0);
+          });
+          this.bgs.on("slideChange", function() {
+            _this.volumeVideo();
+          });
+          slideVideoDo = function() {
+            _this.volumeVideo();
+          };
+
+          this.bgs.init();
         }
       },
       init: function() {
-        this.videos = $(this.box).find("video");
+        this.videos = $("." + this.boxClass).find("video");
         this.sliderCreate();
-        this._mouteInit();
+        this.setVideos();
+        this._muteInit();
       }
     },
     init: function() {
