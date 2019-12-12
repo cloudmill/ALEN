@@ -425,6 +425,9 @@ var templs = {
     menu: {
       events: function() {
         this.eventsInited = true;
+        $(".header_logo").click(function() {
+          $(".header_menu_item").removeClass("active");
+        });
         $(".header_menu_item").click(function() {
           $(".header_menu_item").removeClass("active");
           $(this).addClass("active");
