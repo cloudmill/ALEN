@@ -1406,7 +1406,10 @@ var XHRequests = {
     var _this = this;
     this.XHR.open("GET", href, true);
     this.XHR.responseType = "document";
-    this.XHR.send();
+
+    this.XHR.onerror = function() {
+      failed();
+    };
     this.XHR.onload = function(data) {
       setTimeout(function() {
         var xhr = data.currentTarget;
@@ -1420,11 +1423,9 @@ var XHRequests = {
         }
       }, 500);
     };
-    this.XHR.onerror = function() {
-      failed();
-    };
+    this.XHR.send();
   },
-  newPage: function(href, target) {
+  newPage: function(href, target, e) {
     succes = function() {
       if (this.offsetPage < 0) {
         this.store.splice(
@@ -1449,8 +1450,8 @@ var XHRequests = {
       );
     }.bind(this);
     failed = function() {
-      target.attr("data-fail-xhr", true);
-      target.click();
+      target.attr("data-fail-xhr", "fail");
+      target[0].click();
     }.bind(this);
     this.newRequest(href, succes, failed);
   },
@@ -1480,9 +1481,9 @@ var XHRequests = {
         href.indexOf("callto:") != 0 &&
         href != ""
       ) {
-        if ($(this).attr("data-fail-xhr") != true) {
+        if ($(this).attr("data-fail-xhr") == undefined) {
           e.preventDefault();
-          _this.newPage(href, $(this));
+          _this.newPage(href, $(this), e);
         }
       }
     });
