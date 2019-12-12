@@ -1611,5 +1611,6 @@ var XHRequests = {
     this.XHR = new XMLHttpRequest();
     this.pullState();
     this.events();
+    this.hidePreloader();
   }
 };

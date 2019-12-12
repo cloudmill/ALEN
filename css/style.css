@@ -119,6 +119,9 @@ body.scrollDis {
   opacity: 0.9;
   background: #ffffff;
 }
+.wrapper .bgLoadPage.show {
+  opacity: 1;
+}
 .wrapper .bgLoadPage.black:before {
   background: #000000;
   opacity: 0.7;

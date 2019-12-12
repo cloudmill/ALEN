@@ -1,0 +1,220 @@
+.wrapper {
+  width: 1240px;
+  padding: 100px 0;
+  margin: 0 auto;
+  font: 16px/28px 'Geometria';
+  color: #444444;
+}
+.wrapper .comment {
+  margin: 100px 0;
+}
+.wrapper .comment_title {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 35px;
+  line-height: 40px;
+  color: #444444;
+  position: relative;
+  margin-bottom: 18px;
+}
+.wrapper .comment_title span {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #444444;
+  position: relative;
+  top: -15px;
+}
+.wrapper .comment_title:before {
+  content: '';
+  display: block;
+  width: 35px;
+  height: 5px;
+  background: #9dd00d;
+  position: absolute;
+  border-radius: 2.5px;
+  left: -100px;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+.wrapper .comment_body {
+  margin-bottom: 38px;
+}
+.wrapper .comment_inf {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #444444;
+}
+.wrapper .comment_item {
+  margin-top: 60px;
+}
+.wrapper .comment_item .item_head {
+  display: flex;
+}
+.wrapper .comment_item .item_img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 30px;
+}
+.wrapper .comment_item .item_img.empty {
+  background-image: url(../images/avatar.svg);
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.wrapper .comment_item .item_img.admin {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+}
+.wrapper .comment_item .item_img.admin img {
+  width: 25px;
+  height: 17px;
+}
+.wrapper .comment_item .item_name {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 32px;
+  color: #444444;
+}
+.wrapper .comment_item .item_date {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 32px;
+  color: #848484;
+}
+.wrapper .comment_item .item_text {
+  padding: 22px 30px;
+  margin-top: 22px;
+}
+.wrapper .comment_item .item_text p {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 28px;
+  color: #444444;
+  margin: 0;
+}
+.wrapper .comment_item .item_answer {
+  padding-top: 30px;
+  margin-top: 30px;
+  border-top: 1px solid #d5d5d5;
+}
+.wrapper .comment_item .item_answer_text {
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 28px;
+  color: #444444;
+}
+.wrapper .comment_form .form_row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.wrapper .comment_form .form_col {
+  flex-basis: calc(50% - 10px);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  height: 100%;
+}
+.wrapper .comment_form .form_input {
+  display: block;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e5e5e5;
+  box-sizing: border-box;
+  border-radius: 10px;
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 32px;
+  color: #444444;
+  padding: 15px 30px;
+}
+.wrapper .comment_form .form_checkbox {
+  margin-top: 30px;
+  padding-left: 49px;
+  position: relative;
+}
+.wrapper .comment_form .form_checkbox input[type='checkbox'] {
+  display: none;
+}
+.wrapper .comment_form .form_checkbox input[type='checkbox']:checked + label:before {
+  background-color: #9dd00d;
+}
+.wrapper .comment_form .form_checkbox input[type='checkbox']:checked + label:after {
+  opacity: 1;
+}
+.wrapper .comment_form .form_label {
+  font-family: Geometria;
+  font-size: 13px;
+  line-height: 16px;
+  color: #444444;
+}
+.wrapper .comment_form .form_label:before {
+  background: #e3e3e3;
+  box-shadow: 0px 4px 10px rgba(157, 208, 13, 0.6);
+  width: 31px;
+  height: 31px;
+  left: 0;
+  top: 0;
+  position: absolute;
+  content: '';
+  display: block;
+  border-radius: 50%;
+  transition: all 0.3s ease-in-out;
+}
+.wrapper .comment_form .form_label:after {
+  content: '';
+  position: absolute;
+  top: 10px;
+  left: 7px;
+  display: block;
+  width: 15px;
+  height: 11px;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url(../images/check_com.svg);
+  transition: all 0.3s ease-in-out;
+}
+.wrapper .comment_form .form_but {
+  background: #9dd00d;
+  display: block;
+  width: 100%;
+  border-radius: 30px;
+  font-family: Geometria;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 60px;
+  text-align: center;
+  color: #ffffff;
+  margin-top: 34px;
+  border: 0;
+}
+.wrapper .comment_form .form_but:focus,
+.wrapper .comment_form .form_but:active {
+  box-shadow: none;
+  border: 0;
+}
+.wrapper .comment_form textarea {
+  height: 100%;
+  flex-basis: 100%;
+  resize: none;
+}
