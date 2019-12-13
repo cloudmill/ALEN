@@ -126,7 +126,7 @@ body {
         background: rgba(255, 255, 255, 1);
       }
     }
-    &.show{
+    &.show {
       opacity: 1;
     }
     &.black {
@@ -2064,6 +2064,7 @@ body {
         height: 100%;
         position: relative;
         overflow: hidden;
+        z-index: 1;
         & > ymaps {
           max-height: 100%;
           max-width: 100%;
@@ -2072,8 +2073,8 @@ body {
       &_content {
         max-width: 520px;
         position: absolute;
-        z-index: 4;
-        height: 680px;
+        z-index: 5;
+        height: 540px;
         left: 40px;
         top: 60px;
         padding: 40px;
@@ -3263,6 +3264,138 @@ body {
       max-width: 500px;
     }
   }
+  &_full {
+    width: 100%;
+    height: 100%;
+    .fotorama {
+      position: relative;
+      height: 100%;
+      &__wrap {
+        height: 100%;
+      }
+      &__stage {
+        min-height: 100%;
+        max-width: ~"calc(100% - 215px)";
+        margin-left: 180px;
+        @media (max-width: 1024px) {
+          max-width: ~"calc(100% - 80px)";
+          margin-left: 80px;
+        }
+        @media (max-width: 768px) {
+          max-width: 100%;
+          margin-left: 0;
+        }
+        &__shaft {
+          max-width: 100%;
+          height: 100%;
+          min-height: 100%;
+        }
+        &__frame {
+          max-width: 100%;
+          height: 100%;
+          img {
+            left: auto !important;
+            top: auto !important;
+            right: 50%;
+            bottom: 50%;
+            transform: translate(50%, 50%) !important;
+            @media (max-width: 768px) {
+              min-height: 150px !important;
+              width: auto !important;
+            }
+          }
+        }
+      }
+      &__nav {
+        text-align: left;
+        .fotorama__nav__shaft {
+          display: flex;
+          flex-direction: column;
+          .fotorama__thumb-border {
+            display: none;
+          }
+          .fotorama__nav__frame {
+            padding: 0;
+            &::before {
+              content: '';
+              transition: all @animease;
+              position: absolute;
+              top: 0;
+              opacity: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: 2;
+              background-color: #000;
+            }
+            &.fotorama__active {
+              &::before {
+                opacity: 0.4;
+                &::before {
+                  opacity: 0.4;
+                }
+              }
+            }
+            &:hover {
+              &::before {
+                opacity: 0.2;
+              }
+            }
+          }
+        }
+      }
+      &__nav-wrap {
+        position: absolute;
+        left: 0;
+        top: 0;
+        transform-origin: left top;
+        width: 145px;
+        height: 100vh;
+        overflow: scroll;
+        background: #f4f4f4;
+        @media (max-width: 1024px) {
+          width: 80px;
+        }
+        @media (max-width: 768px) {
+          display: none;
+        }
+      }
+    }
+    .mobile_nav {
+      display: none;
+      padding: 30px;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      justify-content: space-between;
+      @media (max-width: 768px) {
+        display: flex;
+        width: 100%;
+      }
+      .str {
+        width: 20px;
+        height: 30px;
+        .bg_def;
+        cursor: pointer;
+        background-size: 6px 13px;
+        background-position: center;
+        background-image: url(../images/str_left_white.svg);
+        filter: invert(1);
+        &.right {
+          transform: rotate(-180deg);
+        }
+      }
+      .count {
+        font-family: Rubik;
+        font-style: normal;
+        font-weight: 300;
+        font-size: 10px;
+        line-height: 25px;
+        text-align: center;
+        color: #292929;
+      }
+    }
+  }
   &_form {
     max-width: 520px;
     .form {
@@ -3553,18 +3686,20 @@ body {
   &_checkbox {
     padding-left: 45px;
     margin-bottom: 20px;
+    &.parsley-error {
+      input {
+        & + label {
+          &:before {
+            background-color: #fae8e8 !important;
+          }
+        }
+      }
+    }
     input {
       display: none;
       &:checked + label {
         &::after {
           opacity: 1;
-        }
-      }
-      &.parsley-error {
-        & + label {
-          &:before {
-            color: #e2b1b1;
-          }
         }
       }
       & + label {

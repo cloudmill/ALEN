@@ -7,6 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <link rel="stylesheet" href="libs/slick/slick.css" />
     <link rel="stylesheet" href="libs/swiper/swiper.min.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <title>Идеальные квартиры «А.Лен»</title>
   </head>
@@ -126,8 +127,15 @@
             <img src="images/labs/lab_img_2.jpg" alt="">
             <div class="mask"></div>
           </div>
-          <a href="" class="default-btn btn-gray">
+          <a href="#photorama" class="default-btn btn-gray js-popup">
             Фото и видео
+            <div class="data-imgs">
+              <input type="hidden" name="src" value="images/new/pc-detail.jpg">
+              <input type="hidden" name="src" value="images/new/pc-detail.jpg">
+              <input type="hidden" name="src" value="images/new/pc-detail.jpg">
+              <input type="hidden" name="src" value="images/new/pc-detail.jpg">
+              <input type="hidden" name="src" value="images/new/pc-detail.jpg">
+            </div>
           </a>
         </div>
         <div class="inner">
@@ -374,6 +382,18 @@
             <a href='#careers' class="default-btn btn-gray js-popup">Отправить еще одно резюме</a>
           </div>
         </div>
+        <div class="popup_item" id="photorama">
+          <div class="popup_full">
+            <div class="fotorama-box"  >
+              
+            </div>
+            <div class="mobile_nav">
+              <div class="str left"></div>
+              <div class="count">1 / 9</div>
+              <div class="str right"></div>
+            </div>
+          </div>
+        </div>
         <div class="popup_close"></div>
       </div>
     <div class="bgLoadPage black show">
@@ -385,6 +405,7 @@
   <script src="libs/slick/slick.min.js"></script>
   <script src="libs/swiper/swiper.js"></script>
   <script src="libs/parsley/parsley.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
   <script src="js/main.js"></script>
 
 </html>

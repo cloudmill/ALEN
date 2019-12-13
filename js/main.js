@@ -671,11 +671,56 @@ var templs = {
       this.events();
     }
   },
+  gallery: {
+    setImgs: function() {
+      $('[href="#photorama"]').find(".data-imgs input").each(function() {
+        var item = '<a href="' + this.value + '"></a>';
+        $(".popup_item#photorama .fotorama-box").append(item);
+      });
+    },
+    events: function() {
+      var tsize = 145;
+      if ($(window).width() <= 1024) {
+        tsize = 80;
+      }
+      var fotorama = $(".fotorama-box").fotorama({
+        width: $(window).width(),
+        maxwidth: "100%",
+        allowfullscreen: false,
+        nav: "thumbs",
+        transition: "crossfade",
+        trackpad: true,
+        thumbwidth: tsize,
+        thumbheight: tsize,
+        arrows: false,
+        click: false
+      });
+      $(".fotorama-box").on("fotorama:show", function(a, slider) {
+        $(".mobile_nav")
+          .find(".count")
+          .text(slider.activeIndex + 1 + " / " + slider.size);
+      });
+      $(".mobile_nav .left").click(function() {
+        var slider = $(".fotorama-box").data("fotorama");
+        if (slider.activeIndex > 0) slider.show(slider.activeIndex - 1);
+      });
+      $(".mobile_nav .right").click(function() {
+        var slider = $(".fotorama-box").data("fotorama");
+        if (slider.activeIndex < slider.size)
+          slider.show(slider.activeIndex + 1);
+      });
+    },
+    init: function() {
+      this.setImgs();
+      this.events();
+    }
+  },
   init: function() {
     this.header.init();
     this.footer.init();
     this.popup.init();
     this.form.init();
+    this.gallery.init();
   }
 };
 var pages = {
