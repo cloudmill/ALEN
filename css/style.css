@@ -820,6 +820,10 @@ body.scrollDis {
   bottom: 40px;
   z-index: 10;
   width: 100%;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 .page .fpSlider_wrapper .swiper-pagination-bullet {
   background: rgba(255, 255, 255, 0.39);
@@ -899,7 +903,7 @@ body.scrollDis {
   position: absolute;
   bottom: 40px;
   left: 40px;
-  width: 50vw;
+  width: 60vw;
   overflow: visible;
 }
 .page .fpSlider_labels_item_text {
@@ -922,6 +926,8 @@ body.scrollDis {
 }
 .page .fpSlider_labels .swiper-wrapper {
   transition-timing-function: ease-in-out;
+  display: flex;
+  align-items: flex-end;
 }
 .page .fpSlider_labels .swiper-slide {
   transition: opacity 0.5s cubic-bezier(0.64, 0.01, 0.43, 0.99);
@@ -4724,6 +4730,7 @@ body.scrollDis {
   }
   .page .fpSlider_wrapper .swiper-pagination {
     bottom: 20px;
+    height: auto;
   }
   .page .page_bar {
     margin-top: 60px;

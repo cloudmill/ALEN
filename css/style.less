@@ -858,6 +858,10 @@ body {
           bottom: 40px;
           z-index: 10;
           width: 100%;
+          height: 35px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           &-bullet {
             background: rgba(255, 255, 255, 0.39);
             border-radius: 0;
@@ -878,6 +882,7 @@ body {
               background: white;
               width: 100%;
               box-shadow: 0 0 0 3px white;
+
             }
             &-active {
               &:before {
@@ -941,7 +946,7 @@ body {
       position: absolute;
       bottom: 40px;
       left: 40px;
-      width: 50vw;
+      width: 60vw;
       overflow: visible;
       &_item {
         &_text {
@@ -966,6 +971,8 @@ body {
       .swiper {
         &-wrapper {
           transition-timing-function: ease-in-out;
+          display: flex;
+          align-items: flex-end;
         }
         &-slide {
           transition: opacity 0.5s cubic-bezier(.64, .01, .43, .99);
@@ -4318,6 +4325,7 @@ body {
       &_wrapper {
         .swiper-pagination {
           bottom: 20px;
+          height: auto;
         }
       }
     }
