@@ -815,6 +815,11 @@ body.scrollDis {
   position: relative;
   z-index: 1;
   margin-bottom: 70px;
+  cursor: pointer;
+}
+.page .fpSlider_wrapper * {
+  cursor: pointer;
+  user-select: none;
 }
 .page .fpSlider_wrapper .swiper-pagination {
   bottom: 40px;

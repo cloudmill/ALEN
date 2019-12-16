@@ -853,6 +853,11 @@ body {
       position: relative;
       z-index: 1;
       margin-bottom: 70px;
+      cursor: pointer;
+      & * {
+        cursor: pointer;
+        user-select: none;
+      }
       .swiper {
         &-pagination {
           bottom: 40px;
@@ -882,7 +887,6 @@ body {
               background: white;
               width: 100%;
               box-shadow: 0 0 0 3px white;
-
             }
             &-active {
               &:before {
