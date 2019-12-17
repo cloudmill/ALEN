@@ -860,7 +860,7 @@ body {
       }
       .swiper {
         &-pagination {
-          bottom: 40px;
+          bottom: 35px;
           z-index: 10;
           width: 100%;
           height: 35px;
@@ -952,6 +952,10 @@ body {
       left: 40px;
       width: 60vw;
       overflow: visible;
+      opacity: 0;
+      &.swiper-container-initialized{
+        opacity: 1;
+      }
       &_item {
         &_text {
           max-width: 613px;
@@ -1033,9 +1037,12 @@ body {
       position: absolute;
       z-index: 11;
       right: 40px;
-      bottom: 40px;
+      bottom: 35px;
       display: flex;
       align-items: center;
+      audio{
+        display: none;
+      }
       &_but {
         background: rgba(255, 255, 255, 0.2);
         border-radius: 23.5px;
@@ -1465,6 +1472,7 @@ body {
     text-align: center;
     position: relative;
     margin-bottom: 30px;
+    overflow: hidden;
     &_box {
       &.open {
         .mask {
@@ -2224,9 +2232,9 @@ body {
       display: flex;
       justify-content: space-between;
       flex-basis: ~"calc(50% - 10px)";
-      align-items: center;
+      align-items: baseline;
       &_name {
-        flex-basis: 50%;
+        flex-basis:100%;
         font-family: Rubik;
         font-style: normal;
         font-weight: 300;
@@ -2234,6 +2242,15 @@ body {
         line-height: 15px;
         color: #292929;
         padding-right: 10px;
+        @media(min-width:951px){
+          &.big {
+            font-size: 17px;
+            line-height: 32px;
+          }
+        }
+        a{
+          color: #0058DD;
+        }
       }
       &_value {
         flex-basis: 50%;
@@ -3281,13 +3298,22 @@ body {
     .fotorama {
       position: relative;
       height: 100%;
+      .fotorama__video-close{
+        display: none;
+      }
       &__wrap {
         height: 100%;
       }
+      &__video{
+        top: 40px;
+        height: ~"calc(100% - 80px)";
+      }
       &__stage {
-        min-height: 100%;
+        height: ~'calc(100% - 90px)' !important;
+        transform: translate(0,45px) !important;
         max-width: ~"calc(100% - 215px)";
         margin-left: 180px;
+        
         @media (max-width: 1024px) {
           max-width: ~"calc(100% - 80px)";
           margin-left: 80px;
@@ -3300,6 +3326,13 @@ body {
           max-width: 100%;
           height: 100%;
           min-height: 100%;
+          .fotorama__stage__frame--video{
+            .fotorama__img{
+              width: auto !important;
+              height: 100% !important;
+              transition-duration: 0;
+            }
+          }
         }
         &__frame {
           max-width: 100%;
@@ -3327,6 +3360,10 @@ body {
           }
           .fotorama__nav__frame {
             padding: 0;
+            border-bottom: 1px solid #ffffff;
+            img{
+              transition: transform 9s linear;
+            }
             &::before {
               content: '';
               transition: all @animease;
@@ -3348,6 +3385,9 @@ body {
               }
             }
             &:hover {
+              img{
+                transform: scale(1.2);
+              }
               &::before {
                 opacity: 0.2;
               }
@@ -3362,7 +3402,7 @@ body {
         transform-origin: left top;
         width: 145px;
         height: 100vh;
-        overflow: scroll;
+        overflow: auto;
         background: #f4f4f4;
         @media (max-width: 1024px) {
           width: 80px;
@@ -3429,8 +3469,8 @@ body {
     width: 36px;
     height: 36px;
     background: rgba(243, 243, 243, 0.93);
-    right: 40px;
-    top: 40px;
+    right: 18px;
+    top: 26px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -4883,6 +4923,7 @@ body {
         bottom: auto;
         top: 37px;
       }
+      &_
       &_bar {
         transition: none;
       }
