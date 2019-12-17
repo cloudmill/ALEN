@@ -786,8 +786,7 @@ var templs = {
   },
   body: {
     scroll: function() {
-      $(".wrapper").perfectScrollbar();
-      $(".fotorama__nav-wrap").perfectScrollbar();
+      $(".wrapper").perfectScrollbar({ suppressScrollX: true });
     },
     events: function() {
       document.addEventListener("keydown", function(e) {
@@ -956,18 +955,17 @@ var pages = {
             audio.volume += 0.01;
             if (audio.volume >= 0.9) {
               clearInterval(intrvl);
-              audio.volume = 1
+              audio.volume = 1;
               _this.inProcess = false;
             }
           }, 10);
         };
-        if(!this.loaded){
+        if (!this.loaded) {
           audio.load();
-          audio.oncanplay = play
-        }else{
-          play()
+          audio.oncanplay = play;
+        } else {
+          play();
         }
-        
       },
       lazyStop: function() {
         var _this = this;
@@ -994,8 +992,7 @@ var pages = {
         $(".fpSlider").find("video").remove();
       }
       this.slider.init();
-      if($('audio').length>0)
-      this.sound.init();
+      if ($("audio").length > 0) this.sound.init();
     }
   },
   projects: {
