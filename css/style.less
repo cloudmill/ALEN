@@ -1010,6 +1010,7 @@ body {
         display: block;
         margin-right: 8px;
         width: 20px;
+        margin-bottom: 1px;
         height: 20px;
         .bg_def;
         background-image: url(../images/volume.svg);
@@ -1020,6 +1021,7 @@ body {
         margin-right: 8px;
         width: 20px;
         height: 14px;
+        margin-bottom: 2px;
         order: -1;
         .bg_def;
         background-image: url(../images/mute.svg);
@@ -3276,7 +3278,7 @@ body {
     height: 100%;
     display: none;
     opacity: 0;
-    overflow: scroll;
+    overflow: auto;
     &.active {
       display: flex;
     }
@@ -3309,7 +3311,6 @@ body {
         height: ~"calc(100% - 80px)";
       }
       &__stage {
-        height: ~'calc(100% - 90px)' !important;
         transform: translate(0,45px) !important;
         max-width: ~"calc(100% - 215px)";
         margin-left: 180px;
