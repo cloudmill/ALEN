@@ -922,7 +922,7 @@ body.scrollDis {
 }
 .page .fpSlider_labels {
   position: absolute;
-  bottom: 40px;
+  bottom: 37px;
   left: 40px;
   width: 60vw;
   overflow: visible;
@@ -947,7 +947,7 @@ body.scrollDis {
   font-size: 20px;
   line-height: 120%;
   color: #ffffff;
-  margin-bottom: 6px;
+  margin-bottom: 18px;
 }
 .page .fpSlider_labels .swiper-wrapper {
   transition-timing-function: ease-in-out;
@@ -2021,6 +2021,9 @@ body.scrollDis {
   margin-bottom: 90px;
   z-index: 1;
 }
+.page .map_full.noBot {
+  margin-bottom: 0;
+}
 .page .map_full #map {
   height: 100%;
   position: relative;
@@ -2569,7 +2572,7 @@ body.scrollDis {
   font-family: Rubik;
   font-style: normal;
   font-weight: normal;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 34px;
   color: #292929;
 }
@@ -2583,7 +2586,7 @@ body.scrollDis {
   font-family: Rubik;
   font-style: normal;
   font-weight: 300;
-  font-size: 19px;
+  font-size: 17px;
   line-height: 34px;
   color: #292929;
 }
