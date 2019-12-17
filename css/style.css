@@ -3537,10 +3537,12 @@ body.scrollDis {
   height: 100%;
   min-height: 100%;
 }
-.popup_full .fotorama__stage__shaft .fotorama__stage__frame--video .fotorama__img {
-  width: auto !important;
-  height: 100% !important;
-  transition-duration: 0;
+.popup_full .fotorama__stage__shaft .fotorama__stage__frame--video {
+  /* .fotorama__img{
+              width: auto !important;
+              height: 100% !important;
+              transition-duration: 0;
+            } */
 }
 .popup_full .fotorama__stage__frame {
   max-width: 100%;
