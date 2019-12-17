@@ -70,6 +70,23 @@ body {
   padding: 0;
   &.scrollDis {
     overflow: hidden;
+    @media(min-width: 950px){
+      .header,.page{
+        padding-right: 17px;
+      }
+      &:before{
+        content: '';
+        display: block;
+        background-color: #f1f1f1;
+        position: fixed;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        width: 17px;
+        height: 100%;
+      }
+    }
+    
   }
 }
 .wrapper {
@@ -157,7 +174,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  transition: all @anim_t;
+  transition: opacity @anim_t,top @anim_t,background @anim_t,border-bottom @anim_t;
   background: transparent;
   &::before {
     content: '';
