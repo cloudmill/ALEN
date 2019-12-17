@@ -446,7 +446,6 @@ body.scrollDis {
   left: 50%;
   top: 40px;
   transform: translate(-50%, 0);
-  margin-left: 8px;
   display: flex;
   transition: all 1s;
 }
@@ -3547,6 +3546,7 @@ body.scrollDis {
   .popup_full .fotorama__stage {
     max-width: 100%;
     margin-left: 0;
+    transform: translate(0, 38px) !important;
   }
 }
 .popup_full .fotorama__stage__shaft {

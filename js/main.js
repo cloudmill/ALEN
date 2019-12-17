@@ -714,12 +714,12 @@ var templs = {
       var fotorama = $(".fotorama-box").fotorama({
         width: $(window).width(),
         maxwidth: "100%",
-        height: $(window).height()-90,
+        height: $(window).height() - ($(window).width() > 768 ? 90 : 110),
         allowfullscreen: false,
         nav: "thumbs",
         transition: "crossfade",
         trackpad: true,
-        fit:'contain',
+        fit: "contain",
         thumbwidth: tsize,
         thumbheight: tsize,
         arrows: false,
@@ -756,32 +756,39 @@ var templs = {
             }
           }
         }
-        if ($(document).find("body").hasClass("scrollDis")) {
+        if (
+          $(document)
+            .find("body")
+            .hasClass("scrollDis")
+        ) {
           //e.preventDefault();
         }
       }
       if (document.addEventListener) {
         if ("onwheel" in document) {
-          document.addEventListener("wheel", onWheel,{ passive: false });
+          document.addEventListener("wheel", onWheel, { passive: false });
         } else if ("onmousewheel" in document) {
-          document.addEventListener("mousewheel", onWheel,{ passive: false });
+          document.addEventListener("mousewheel", onWheel, { passive: false });
         } else {
-          document.addEventListener("MozMousePixelScroll", onWheel,{ passive: false });
+          document.addEventListener("MozMousePixelScroll", onWheel, {
+            passive: false
+          });
         }
       } else {
         document.attachEvent("onmousewheel", onWheel);
       }
 
-      $(document).on("fotorama:show",".fotorama-box", function(a, slider) {
-        $(document).find(".mobile_nav")
+      $(document).on("fotorama:show", ".fotorama-box", function(a, slider) {
+        $(document)
+          .find(".mobile_nav")
           .find(".count")
           .text(slider.activeIndex + 1 + " / " + slider.size);
       });
-      $(document).on('click','.mobile_nav .left',function() {
+      $(document).on("click", ".mobile_nav .left", function() {
         var slider = $(".fotorama-box").data("fotorama");
         if (slider.activeIndex > 0) slider.show(slider.activeIndex - 1);
       });
-      $(document).on('click','.mobile_nav .right',function() {
+      $(document).on("click", ".mobile_nav .right", function() {
         var slider = $(".fotorama-box").data("fotorama");
         if (slider.activeIndex < slider.size)
           slider.show(slider.activeIndex + 1);
