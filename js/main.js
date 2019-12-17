@@ -927,6 +927,7 @@ var pages = {
     sound: {
       audioMuted: false,
       inProcess: false,
+      loaded: false,
       _muteInit: function() {
         var _this = this;
         $(".fpSlider_mute").click(function() {
@@ -935,40 +936,53 @@ var pages = {
             _this.audioMuted = $(".fpSlider_mute").hasClass("active");
             if (_this.audioMuted) {
               $(this).text($(this).attr("data-word-on"));
-              _this.lazySart();
+              _this.lazyStop();
             } else {
               $(this).text($(this).attr("data-word-off"));
-              _this.lazyStop();
+              _this.lazySart();
             }
           }
         });
       },
       lazySart: function() {
+        var _this = this;
         this.inProcess = true;
         var audio = $("audio").eq(0)[0];
         audio.volume = 0;
-        audio.play();
-        var intrvl = setInterval(function() {
-          audio.volume += 0.1;
-          console.log(audio.volume)
-          if (audio.volume >= 0.9) {
-            clearInterval(intrvl);
-            _this.inProcess = false;
-          }
-        }, 100);
+        var play = function() {
+          audio.play();
+          _this.loaded = true;
+          var intrvl = setInterval(function() {
+            audio.volume += 0.01;
+            if (audio.volume >= 0.9) {
+              clearInterval(intrvl);
+              audio.volume = 1
+              _this.inProcess = false;
+            }
+          }, 10);
+        };
+        if(!this.loaded){
+          audio.load();
+          audio.oncanplay = play
+        }else{
+          play()
+        }
+        
       },
       lazyStop: function() {
+        var _this = this;
         this.inProcess = true;
         var audio = $("audio").eq(0)[0];
 
         var intrvl = setInterval(function() {
-          audio.volume -= 0.1;
+          audio.volume -= 0.01;
           if (audio.volume <= 0.1) {
             clearInterval(intrvl);
             audio.pause();
+            audio.volume = 0;
             _this.inProcess = false;
           }
-        }, 100);
+        }, 10);
       },
       init: function() {
         this._muteInit();
@@ -980,6 +994,7 @@ var pages = {
         $(".fpSlider").find("video").remove();
       }
       this.slider.init();
+      if($('audio').length>0)
       this.sound.init();
     }
   },
