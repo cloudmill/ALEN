@@ -772,23 +772,23 @@ var templs = {
         document.attachEvent("onmousewheel", onWheel);
       }
 
-      $(".fotorama-box").on("fotorama:show", function(a, slider) {
-        $(".mobile_nav")
+      $(document).on("fotorama:show",".fotorama-box", function(a, slider) {
+        $(document).find(".mobile_nav")
           .find(".count")
           .text(slider.activeIndex + 1 + " / " + slider.size);
       });
-      $(".mobile_nav .left").click(function() {
+      $(document).on('click','.mobile_nav .left',function() {
         var slider = $(".fotorama-box").data("fotorama");
         if (slider.activeIndex > 0) slider.show(slider.activeIndex - 1);
       });
-      $(".mobile_nav .right").click(function() {
+      $(document).on('click','.mobile_nav .right',function() {
         var slider = $(".fotorama-box").data("fotorama");
         if (slider.activeIndex < slider.size)
           slider.show(slider.activeIndex + 1);
       });
       $('a[href="#photorama"]').click(function() {
         $(".popup_item#photorama .popup_full").html(
-          '<div class="fotorama-box" ></div>'
+          '<div class="fotorama-box" ></div><div class="mobile_nav"><div class="str left"></div><div class="count">1 / 9</div> <div class="str right"></div></div>'
         );
         $(this)
           .find(".data-imgs input")
