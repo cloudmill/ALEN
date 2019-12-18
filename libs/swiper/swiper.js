@@ -4355,7 +4355,7 @@
             Math.abs(y) < .001 && (y = 0),
             Math.abs(b) < .001 && (b = 0),
             Math.abs(w) < .001 && (w = 0);
-          var E = "translate3d(" + T + "px," + x + "px," + y + "px)  rotateX(" + w + "deg) rotateY(" + b + "deg)";
+          var E = "translate3d(" + T + "px," + x + "px," + 0 + "px)  rotateX(" + 0+ "deg) rotateY(" + 0 + "deg)";
           if (f.transform(E),
             f[0].style.zIndex = 1 - Math.abs(Math.round(g)),
             n.slideShadows) {
@@ -4368,7 +4368,7 @@
               C.length && (C[0].style.opacity = g > 0 ? g : 0),
               S.length && (S[0].style.opacity = -g > 0 ? -g : 0)
               if(g>0){
-                C.length && (f.css('opacity', 1-g))
+                C.length && (f.css('opacity', 1-g*3))
               }else S.length && (f.css('opacity', 1 - (-g > 0 ? -g : 0)))
           }
         }

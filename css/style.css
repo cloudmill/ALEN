@@ -316,10 +316,12 @@ body.scrollDis {
 .header.searchPage .header_search_but {
   filter: invert(0);
 }
-.header.searchPage .header_search_wrapper {
-  left: auto;
-  transform: none;
-  right: 690px;
+@media (max-width: 1880px) {
+  .header.searchPage .header_search_wrapper {
+    left: auto;
+    transform: none;
+    right: 690px;
+  }
 }
 .header.searchPage .header_search_wrapper.open .header_search_input_close {
   display: none;
@@ -849,14 +851,26 @@ body.scrollDis {
   justify-content: center;
 }
 .page .fpSlider_wrapper .swiper-pagination-bullet {
-  background: rgba(255, 255, 255, 0.39);
   border-radius: 0;
   height: 3px;
   width: 30px;
   margin: 0 6px;
+  padding: 6px 0;
   opacity: 1;
   overflow: hidden;
   position: relative;
+  background-color: transparent;
+}
+.page .fpSlider_wrapper .swiper-pagination-bullet:after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 50%;
+  height: 3px;
+  left: 0;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.39);
+  transform: translate(0, -50%);
 }
 .page .fpSlider_wrapper .swiper-pagination-bullet:before {
   content: '';
@@ -864,11 +878,11 @@ body.scrollDis {
   opacity: 0;
   position: absolute;
   left: 0;
-  top: 0;
-  height: 100%;
+  top: 50%;
+  height: 3px;
   background: white;
   width: 100%;
-  box-shadow: 0 0 0 3px white;
+  transform: translate(0, -50%);
 }
 .page .fpSlider_wrapper .swiper-pagination-bullet-active:before {
   opacity: 1;
@@ -881,6 +895,9 @@ body.scrollDis {
   100% {
     left: 0;
   }
+}
+.page .fpSlider_wrapper .swiper-wrapper {
+  transition-timing-function: cubic-bezier(0.64, 0.01, 0.43, 0.99);
 }
 .page .fpSlider_item {
   position: relative;
@@ -952,7 +969,7 @@ body.scrollDis {
   margin-bottom: 18px;
 }
 .page .fpSlider_labels .swiper-wrapper {
-  transition-timing-function: ease-in-out;
+  transition-timing-function: ease-out;
   display: flex;
   align-items: flex-end;
 }
@@ -2022,6 +2039,9 @@ body.scrollDis {
   overflow: hidden;
   margin-bottom: 90px;
   z-index: 1;
+}
+.page .map_data {
+  display: none;
 }
 .page .map_full {
   height: 660px;

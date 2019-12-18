@@ -382,9 +382,11 @@ body {
           filter: invert(0);
         }
         &_wrapper {
-          left: auto;
-          transform: none;
-          right: 690px;
+          @media(max-width: 1880px){
+            left: auto;
+            transform: none;
+            right: 690px;
+          }
           &.open {
             .header_search_input_close {
               display: none;
@@ -886,25 +888,37 @@ body {
           align-items: center;
           justify-content: center;
           &-bullet {
-            background: rgba(255, 255, 255, 0.39);
             border-radius: 0;
             height: 3px;
             width: 30px;
             margin: 0 6px;
+            padding: 6px 0;
             opacity: 1;
             overflow: hidden;
             position: relative;
+            background-color: transparent;
+            &:after{
+              content: '';
+              display: block;
+              position: absolute;
+              top: 50%;
+              height: 3px;
+              left: 0;
+              width: 100%;
+              background: rgba(255, 255, 255, 0.39);
+              transform: translate(0,-50%);
+            }
             &:before {
               content: '';
               display: block;
               opacity: 0;
               position: absolute;
               left: 0;
-              top: 0;
-              height: 100%;
+              top: 50%;
+              height: 3px;
               background: white;
               width: 100%;
-              box-shadow: 0 0 0 3px white;
+              transform: translate(0,-50%);
             }
             &-active {
               &:before {
@@ -921,6 +935,9 @@ body {
               }
             }
           }
+        }
+        &-wrapper{
+          transition-timing-function: cubic-bezier(0.64, 0.01, 0.43, 0.99);
         }
       }
     }
@@ -996,7 +1013,7 @@ body {
       }
       .swiper {
         &-wrapper {
-          transition-timing-function: ease-in-out;
+          transition-timing-function: ease-out;
           display: flex;
           align-items: flex-end;
         }
@@ -2098,6 +2115,9 @@ body {
     overflow: hidden;
     margin-bottom: 90px;
     z-index: 1;
+    &_data{
+      display: none;
+    }
     &_full {
       height: 660px;
       position: relative;
