@@ -706,7 +706,7 @@ var templs = {
         nav: "thumbs",
         transition: "crossfade",
         trackpad: false,
-        swipe: $(window).width()<768,
+        swipe: $(window).width() < 768,
         fit: "contain",
         thumbwidth: tsize,
         thumbheight: tsize,
@@ -767,6 +767,10 @@ var templs = {
           .find(".mobile_nav")
           .find(".count")
           .text(slider.activeIndex + 1 + " / " + slider.size);
+        $(".fotorama__loaded--img").removeClass("zoomed");
+        grabbed = false;
+        zommed = false;
+        down = false;
       });
       $(document).on("click", ".mobile_nav .left", function() {
         var slider = $(".fotorama-box").data("fotorama");
@@ -798,15 +802,21 @@ var templs = {
       var down = false;
       var smove = 0;
       var pos = { x: 0, y: 0 };
-      $(document).on("click", ".fotorama__loaded--img:not(.fotorama__stage__frame--video)", function(e) {
-        if (!grabbed && $(this).hasClass("zoomed")) {
-          $(this).removeClass("zoomed");
-          zommed = false;
-        } else {
-          zommed = true;
-          $(this).addClass("zoomed");
+      $(
+        document
+      ).on(
+        "click",
+        ".fotorama__loaded--img:not(.fotorama__stage__frame--video)",
+        function(e) {
+          if (!grabbed && $(this).hasClass("zoomed")) {
+            $(this).removeClass("zoomed");
+            zommed = false;
+          } else {
+            zommed = true;
+            $(this).addClass("zoomed");
+          }
         }
-      });
+      );
       $(document).on("mousedown", ".fotorama__loaded--img", function(e) {
         pos.x = e.pageX;
         pos.y = e.pageY;
