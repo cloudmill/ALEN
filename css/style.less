@@ -536,6 +536,9 @@ body {
         &:before {
           opacity: 1;
         }
+        .header_search_input{
+          padding-left: 14px;
+        }
         .header_search {
           &_input {
             width: 470px;
@@ -558,7 +561,6 @@ body {
       padding-left: 0;
       background-color: transparent;
       transition: width @animSearch;
-      padding-left: 14px;
       &_wrapper {
         position: relative;
         display: block;
@@ -1294,6 +1296,10 @@ body {
         top: 50%;
         transform: translate3d(-50%, -50%, 0) scale(1.01);
         transition: transform 1.5s ease-out, opacity 1.5s;
+        @media(min-width:1920px){
+          width: 100%;
+          height: auto;
+        }
       }
       &_content {
         display: flex;

@@ -822,9 +822,13 @@ var templs = {
       //$('.wrapper').css('height','100vh')
     },
     events: function() {
-      document.addEventListener("keydown", function(e) {
+      var cutTop = $(document).scrollTop();
+      $(document).on("scroll", function(e) {
         if ($("body").hasClass("scrollDis")) {
-          e.preventDefault();
+            e.preventDefault();
+          $(document).scrollTop(cutTop);
+        } else {
+          cutTop = $(document).scrollTop();
         }
       });
     },

@@ -470,6 +470,9 @@ body.scrollDis {
   opacity: 1;
 }
 .header_search_wrapper.open .header_search_input {
+  padding-left: 14px;
+}
+.header_search_wrapper.open .header_search_input {
   width: 470px;
 }
 .header_search_wrapper.open .header_search_input_close {
@@ -487,7 +490,6 @@ body.scrollDis {
   padding-left: 0;
   background-color: transparent;
   transition: width 1s;
-  padding-left: 14px;
 }
 .header_search_input_wrapper {
   position: relative;
@@ -1251,6 +1253,12 @@ body.scrollDis {
   top: 50%;
   transform: translate3d(-50%, -50%, 0) scale(1.01);
   transition: transform 1.5s ease-out, opacity 1.5s;
+}
+@media (min-width: 1920px) {
+  .page .projects_item_img {
+    width: 100%;
+    height: auto;
+  }
 }
 .page .projects_item_content {
   display: flex;
