@@ -705,7 +705,8 @@ var templs = {
         allowfullscreen: false,
         nav: "thumbs",
         transition: "crossfade",
-        trackpad: true,
+        trackpad: false,
+        swipe: $(window).width()<768,
         fit: "contain",
         thumbwidth: tsize,
         thumbheight: tsize,
@@ -719,7 +720,10 @@ var templs = {
       var tDelta = 0;
       var moved = false;
       function onWheel(e) {
-        if ($(".fotorama__stage:hover").length > 0) {
+        if (
+          $("#photorama:hover").length > 0 &&
+          !($(".fotorama__loaded--img:hover").length > 0)
+        ) {
           var slider = $(".fotorama-box").data("fotorama");
           e = e || window.event;
           var delta = e.deltaY || e.detail || e.wheelDelta;
@@ -742,9 +746,6 @@ var templs = {
               }, 300);
             }
           }
-        }
-        if ($(document).find("body").hasClass("scrollDis")) {
-          //e.preventDefault();
         }
       }
       if (document.addEventListener) {
@@ -789,6 +790,55 @@ var templs = {
           $(".popup_item#photorama .fotorama-box").append(item);
         });
         _this.fotoramaInit();
+      });
+
+      ///////zoooooooommmmmmm
+      var grabbed = false;
+      var zommed = false;
+      var down = false;
+      var smove = 0;
+      var pos = { x: 0, y: 0 };
+      $(document).on("click", ".fotorama__loaded--img:not(.fotorama__stage__frame--video)", function(e) {
+        if (!grabbed && $(this).hasClass("zoomed")) {
+          $(this).removeClass("zoomed");
+          zommed = false;
+        } else {
+          zommed = true;
+          $(this).addClass("zoomed");
+        }
+      });
+      $(document).on("mousedown", ".fotorama__loaded--img", function(e) {
+        pos.x = e.pageX;
+        pos.y = e.pageY;
+        down = true;
+      });
+      $(document).on("mousemove", ".fotorama__loaded--img", function(e) {
+        if (down && zommed) {
+          if (smove > 5) {
+            grabbed = true;
+          } else {
+            smove += Math.abs(e.pageX - pos.x) + Math.abs(e.pageY - pos.y);
+          }
+          if (grabbed) {
+            $(this).scrollTop($(this).scrollTop() + pos.y - e.pageY);
+            $(this).scrollLeft($(this).scrollLeft() + pos.x - e.pageX);
+          }
+          pos.x = e.pageX;
+          pos.y = e.pageY;
+        }
+      });
+      $(document).on("mouseleave", ".fotorama__loaded--img", function(у) {
+        setTimeout(function() {
+          grabbed = false;
+        }, 100);
+        down = false;
+      });
+      $(document).on("mouseup", ".fotorama__loaded--img", function(у) {
+        setTimeout(function() {
+          grabbed = false;
+        }, 100);
+        down = false;
+        smove = 0;
       });
     },
     init: function() {

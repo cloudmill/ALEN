@@ -842,7 +842,7 @@ body.scrollDis {
   user-select: none;
 }
 .page .fpSlider_wrapper .swiper-pagination {
-  bottom: 35px;
+  bottom: 28px;
   z-index: 10;
   width: 100%;
   height: 35px;
@@ -956,17 +956,17 @@ body.scrollDis {
 .page .fpSlider_labels_item_text_name {
   font-style: normal;
   font-weight: normal;
-  font-size: 33px;
+  font-size: 25px;
   line-height: 133%;
   color: #ffffff;
 }
 .page .fpSlider_labels_item_text_title {
   font-style: normal;
   font-weight: normal;
-  font-size: 20px;
-  line-height: 120%;
+  font-size: 17px;
+  line-height: 100%;
   color: #ffffff;
-  margin-bottom: 18px;
+  margin-bottom: 22px;
 }
 .page .fpSlider_labels .swiper-wrapper {
   transition-timing-function: ease-out;
@@ -1029,7 +1029,7 @@ body.scrollDis {
   position: absolute;
   z-index: 11;
   right: 40px;
-  bottom: 35px;
+  bottom: 28px;
   display: flex;
   align-items: center;
 }
@@ -3595,6 +3595,27 @@ body.scrollDis {
 .popup_full .fotorama__stage__frame {
   max-width: 100%;
   height: 100%;
+}
+.popup_full .fotorama__stage__frame.fotorama__loaded--img:not(.fotorama__stage__frame--video) {
+  cursor: zoom-in;
+}
+.popup_full .fotorama__stage__frame.fotorama__loaded--img:not(.fotorama__stage__frame--video).zoomed {
+  cursor: grab;
+  overflow: scroll !important;
+}
+.popup_full .fotorama__stage__frame.fotorama__loaded--img:not(.fotorama__stage__frame--video).zoomed:active {
+  cursor: grabbing;
+}
+.popup_full .fotorama__stage__frame.fotorama__loaded--img:not(.fotorama__stage__frame--video).zoomed img {
+  width: auto !important;
+  height: auto !important;
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  transform: none !important;
+  display: block !important;
 }
 .popup_full .fotorama__stage__frame img {
   left: auto !important;

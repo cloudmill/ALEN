@@ -880,7 +880,7 @@ body {
       }
       .swiper {
         &-pagination {
-          bottom: 35px;
+          bottom: 28px;
           z-index: 10;
           width: 100%;
           height: 35px;
@@ -997,17 +997,17 @@ body {
           &_name {
             font-style: normal;
             font-weight: normal;
-            font-size: 33px;
+            font-size: 25px;
             line-height: 133%;
             color: #ffffff;
           }
           &_title {
             font-style: normal;
             font-weight: normal;
-            font-size: 20px;
-            line-height: 120%;
+            font-size: 17px;
+            line-height: 100%;
             color: #ffffff;
-            margin-bottom: 18px;
+            margin-bottom: 22px;
           }
         }
       }
@@ -1074,7 +1074,7 @@ body {
       position: absolute;
       z-index: 11;
       right: 40px;
-      bottom: 35px;
+      bottom: 28px;
       display: flex;
       align-items: center;
       audio{
@@ -3384,6 +3384,27 @@ body {
         &__frame {
           max-width: 100%;
           height: 100%;
+          &.fotorama__loaded--img:not(.fotorama__stage__frame--video){
+            cursor: zoom-in;
+            &.zoomed{
+              cursor: grab;
+              &:active{
+                cursor: grabbing;
+              }
+              overflow: scroll !important;
+              img{
+                width: auto !important;
+                height: auto !important;
+                position: relative !important;
+                left: 0 !important;
+                right: 0 !important;
+                top: 0 !important;
+                bottom: 0 !important;
+                transform: none !important;
+                display: block !important;
+              }
+            }
+          }
           img {
             left: auto !important;
             top: auto !important;
