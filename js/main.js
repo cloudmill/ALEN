@@ -351,7 +351,7 @@ var templs = {
       _elementsFadeIn: function() {
         var _this = this;
         var num = 0;
-        var fadeInEl = setInterval(() => {
+        var fadeInEl = setTimeout(function() {
           if (num < $(".header_mobileMenu_item").length) {
             $(".header_mobileMenu_item").eq(num).addClass("faded");
             num++;
@@ -363,7 +363,7 @@ var templs = {
       _elementsFadeOut: function(callback) {
         var _this = this;
         var num = $(".header_mobileMenu_item").length - 1;
-        var fadeOutEl = setInterval(() => {
+        var fadeOutEl = setInterval(function() {
           if (num >= 0) {
             $(".header_mobileMenu_item").eq(num).removeClass("faded");
             num--;
