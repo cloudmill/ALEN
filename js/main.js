@@ -1675,7 +1675,7 @@ var XHRequests = {
   newRequest: function(href, succes, failed) {
     this.showPreloader();
     this.preloader = true;
-    this.XHR.responseType = "document";
+    
 
     if (window.XMLHttpRequest) {
       // firefox etc
@@ -1685,6 +1685,7 @@ var XHRequests = {
       this.XHR = new ActiveXObject("Microsoft.XMLHTTP");
     }
     var _this = this;
+    this.XHR.responseType = "document";
     this.XHR.onload = function() {
       handleResponse(_this.XHR);
     };
