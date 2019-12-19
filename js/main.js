@@ -1685,7 +1685,7 @@ var XHRequests = {
       this.XHR = new ActiveXObject("Microsoft.XMLHTTP");
     }
     var _this = this;
-    this.XHR.responseType = "document";
+    //this.XHR.responseType = "document";
     this.XHR.onload = function() {
       handleResponse(_this.XHR);
     };
