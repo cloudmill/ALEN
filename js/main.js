@@ -350,22 +350,24 @@ var templs = {
       },
       _elementsFadeIn: function() {
         var _this = this;
-        var num = 0;
-        var fadeInEl = setTimeout(function() {
-          if (num < $(".header_mobileMenu_item").length) {
-            $(".header_mobileMenu_item").eq(num).addClass("faded");
-            num++;
+        var num2 = 0;
+        var elems = $(document).find(".header_mobileMenu_item")
+        var fadeInEl = setInterval(function() {
+          if (num2 < elems.length) {
+            elems.eq(num2).addClass("faded");
+            num2++;
           } else {
             clearInterval(fadeInEl);
           }
         }, _this.basicDelay);
       },
       _elementsFadeOut: function(callback) {
+        var elems = $(document).find(".header_mobileMenu_item")
         var _this = this;
-        var num = $(".header_mobileMenu_item").length - 1;
+        var num = elems.length - 1;
         var fadeOutEl = setInterval(function() {
           if (num >= 0) {
-            $(".header_mobileMenu_item").eq(num).removeClass("faded");
+            elems.eq(num).removeClass("faded");
             num--;
           } else {
             if (callback) callback();
