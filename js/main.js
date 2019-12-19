@@ -480,14 +480,14 @@ var templs = {
     },
     checkAnim: function() {
       var _this = this;
-      let i = 0;
-      if (
-        $(window).height() + $(document).scrollTop() >
-        $(".footer").offset().top + 100
-      ) {
-        _this.anim();
+      if ($(".footer").length > 0) {
+        if (
+          $(window).height() + $(document).scrollTop() >
+          $(".footer").offset().top + 100
+        ) {
+          _this.anim();
+        }
       }
-      i++;
     },
     events: function() {
       var _this = this;
@@ -1675,25 +1675,36 @@ var XHRequests = {
   newRequest: function(href, succes, failed) {
     this.showPreloader();
     this.preloader = true;
-    var _this = this;
-    this.XHR.open("GET", href, true);
     this.XHR.responseType = "document";
 
-    this.XHR.onerror = function() {
-      failed();
+    if (window.XMLHttpRequest) {
+      // firefox etc
+      this.XHR = new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      // ie
+      this.XHR = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    var _this = this;
+    this.XHR.onload = function() {
+      handleResponse(_this.XHR);
     };
-    this.XHR.onload = function(data) {
+    this.XHR.open("POST", href, true);
+
+    function handleResponse(request) {
       setTimeout(function() {
-        var xhr = data.currentTarget;
-        if (xhr.status == 200) {
+        if (request.status == 200) {
           succes();
-          var html = data.srcElement.response;
+          var html = request.response;
           _this.reloadPageDoing(html);
           _this.hidePreloader();
         } else {
           failed();
         }
       }, 500);
+    }
+
+    this.XHR.onerror = function() {
+      failed();
     };
     this.XHR.send();
   },
