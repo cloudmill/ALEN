@@ -723,7 +723,7 @@ var templs = {
       function onWheel(e) {
         if (
           $("#photorama:hover").length > 0 &&
-          !($(".fotorama__loaded--img:hover").length > 0)
+          !($(".fotorama__loaded--img.zoomed:hover").length > 0)
         ) {
           var slider = $(".fotorama-box").data("fotorama");
           e = e || window.event;
@@ -944,7 +944,7 @@ var pages = {
               delay: 9500,
               disableOnInteraction: false
             },
-            speed: 1200,
+            speed: 1300,
             /* lazy: {
               loadPrevNext: true,
               loadOnTransitionStart: true

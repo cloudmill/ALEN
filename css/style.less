@@ -861,8 +861,11 @@ body {
         user-select: none;
       }
       .swiper {
+        &-wrapper{
+          transition-timing-function: cubic-bezier(0.64, 0.01, 0.43, 0.99);
+        }
         &-pagination {
-          bottom: 28px;
+          bottom: 25px;
           z-index: 10;
           width: 100%;
           height: 35px;
@@ -918,9 +921,7 @@ body {
             }
           }
         }
-        &-wrapper{
-          transition-timing-function: cubic-bezier(0.64, 0.01, 0.43, 0.99);
-        }
+        
       }
     }
     &_item {
@@ -965,7 +966,7 @@ body {
     }
     &_labels {
       position: absolute;
-      bottom: 37px;
+      bottom: 34px;
       left: 40px;
       width: 60vw;
       overflow: visible;
@@ -980,7 +981,7 @@ body {
             font-style: normal;
             font-weight: normal;
             font-size: 25px;
-            line-height: 133%;
+            line-height: 140%;
             color: #ffffff;
           }
           &_title {
@@ -989,7 +990,8 @@ body {
             font-size: 17px;
             line-height: 100%;
             color: #ffffff;
-            margin-bottom: 22px;
+            margin-bottom:8px;
+            
           }
         }
       }
@@ -1056,7 +1058,7 @@ body {
       position: absolute;
       z-index: 11;
       right: 40px;
-      bottom: 28px;
+      bottom: 25px;
       display: flex;
       align-items: center;
       audio{
@@ -1291,6 +1293,7 @@ body {
         height: 100%;
         min-width: 100%;
         position: absolute;
+        min-height: 100%;
         left: 50%;
         top: 50%;
         transform: translate3d(-50%, -50%, 0) scale(1.01);
@@ -3200,7 +3203,7 @@ body {
     display: block;
     line-height: 118%;
     color: #292929;
-    margin-bottom: 72px;
+    margin-bottom: 30px;
   }
   &_inf {
     font-style: normal;
@@ -3222,7 +3225,7 @@ body {
   }
   &_social {
     display: flex;
-    margin-bottom: 50px;
+    margin-bottom:35px;
     &_item {
       border: 1px solid #e5e5e5;
       width: 50px;
@@ -3250,14 +3253,13 @@ body {
     line-height: 17px;
     color: #292929;
     opacity: 0.7;
-    display: flex;
+    display: inline-flex !important;
     align-items: center;
-    margin-top: 50px;
     transition: all @animease;
     &::before {
       content: '';
       display: block;
-      margin-right: 8px;
+      margin-right: 10px;
       width: 17px;
       height: 17px;
       .bg_def;
@@ -3366,6 +3368,9 @@ body {
         &__frame {
           max-width: 100%;
           height: 100%;
+          box-sizing: content-box;
+          padding-right: 30px;
+          padding-bottom: 30px;
           &.fotorama__loaded--img:not(.fotorama__stage__frame--video){
             cursor: zoom-in;
             &.zoomed{
