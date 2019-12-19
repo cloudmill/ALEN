@@ -368,7 +368,7 @@ var templs = {
             $(".header_mobileMenu_item").eq(num).removeClass("faded");
             num--;
           } else {
-            if (callBack) callback();
+            if (callback) callback();
             clearInterval(fadeOutEl);
           }
         }, _this.basicDelay);
