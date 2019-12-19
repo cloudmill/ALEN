@@ -3246,32 +3246,7 @@ body {
       }
     }
   }
-  &_lang {
-    font-family: Rubik;
-    font-style: normal;
-    font-weight: normal;
-    font-size: 14px;
-    line-height: 17px;
-    color: #292929;
-    opacity: 0.7;
-    display: inline-flex !important;
-    align-items: center;
-    transition: all @animease;
-    &::before {
-      content: "";
-      display: block;
-      margin-right: 10px;
-      width: 17px;
-      height: 17px;
-      .bg_def;
-      transition: opacity @animease;
-      filter: invert(1);
-      background-image: url(../images/language.svg);
-    }
-    &:hover {
-      opacity: 1;
-    }
-  }
+  
   &_pp {
     font-family: Rubik;
     font-style: normal;
@@ -3285,6 +3260,35 @@ body {
     transition: all @animease;
     &:hover {
       opacity: 1;
+    }
+  }
+  .footer{
+    &_lang {
+      font-family: Rubik;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 14px;
+      line-height: 35px;
+      color: #292929;
+      opacity: 1;
+      display: inline-flex !important;
+      align-items: center;
+      transition: all @animease;
+      padding: 0 15px;
+      &::before {
+        content: "";
+        display: block;
+        margin-right: 8px;
+        width: 17px;
+        height: 17px;
+        .bg_def;
+        transition: opacity @animease;
+        filter: invert(1);
+        background-image: url(../images/language.svg);
+      }
+      &:hover {
+        opacity: 1;
+      }
     }
   }
 }
