@@ -165,7 +165,8 @@ var templs = {
           _this._doing($(this).scrollTop());
         });
       },
-      _doing: function(scrollTop, firstInit = false) {
+      _doing: function(scrollTop, firstInit) {
+        if (!firstInit) firstInit = false;
         if (
           this.dMove < Math.abs(scrollTop - this.oldScroll) ||
           scrollTop == 0 ||
@@ -260,7 +261,7 @@ var templs = {
           });
           this.state = "closed";
         },
-        hideElements: function(callBack = function() {}) {
+        hideElements: function(callBack) {
           var _this = this;
           for (var i = 0; i < _this.items.length; i++) {
             _this.items
@@ -270,7 +271,7 @@ var templs = {
           }
           setTimeout(function() {
             setTimeout(function() {
-              callBack();
+              if (callBack) callBack();
             }, _this.basicTimeAnimate * 2);
             _this.animate = false;
           }, _this.basicDelay * (this.items.length - 1));
@@ -302,7 +303,7 @@ var templs = {
           }
         );
       },
-      _removeBg: function(callback = function() {}) {
+      _removeBg: function(callback) {
         var _this = this;
         var bg = this.parent.box.find(".header_bg.bg_burger");
         bg.animate(
@@ -315,7 +316,7 @@ var templs = {
             bg.remove();
             _this.animate = false;
             _this.state = "closed";
-            callback();
+            if (callback) callback();
           }
         );
       },
@@ -359,7 +360,7 @@ var templs = {
           }
         }, _this.basicDelay);
       },
-      _elementsFadeOut: function(callback = function() {}) {
+      _elementsFadeOut: function(callback) {
         var _this = this;
         var num = $(".header_mobileMenu_item").length - 1;
         var fadeOutEl = setInterval(() => {
@@ -367,7 +368,7 @@ var templs = {
             $(".header_mobileMenu_item").eq(num).removeClass("faded");
             num--;
           } else {
-            callback();
+            if (callBack) callback();
             clearInterval(fadeOutEl);
           }
         }, _this.basicDelay);
