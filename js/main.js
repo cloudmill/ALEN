@@ -769,6 +769,7 @@ var templs = {
           .find(".count")
           .text(slider.activeIndex + 1 + " / " + slider.size);
         $(".fotorama__loaded--img").removeClass("zoomed");
+        $(".fotorama__stage").removeClass("zoomed");
         grabbed = false;
         zommed = false;
         down = false;
@@ -811,10 +812,12 @@ var templs = {
         function(e) {
           if (!grabbed && $(this).hasClass("zoomed")) {
             $(this).removeClass("zoomed");
+            $(".fotorama__stage").removeClass("zoomed");
             zommed = false;
           } else {
             zommed = true;
             $(this).addClass("zoomed");
+            $(".fotorama__stage").addClass("zoomed");
           }
         }
       );
