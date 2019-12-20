@@ -350,22 +350,24 @@ var templs = {
       },
       _elementsFadeIn: function() {
         var _this = this;
-        var num = 0;
-        var fadeInEl = setTimeout(function() {
-          if (num < $(".header_mobileMenu_item").length) {
-            $(".header_mobileMenu_item").eq(num).addClass("faded");
-            num++;
+        var num2 = 0;
+        var elems = $(document).find(".header_mobileMenu_item")
+        var fadeInEl = setInterval(function() {
+          if (num2 < elems.length) {
+            elems.eq(num2).addClass("faded");
+            num2++;
           } else {
             clearInterval(fadeInEl);
           }
         }, _this.basicDelay);
       },
       _elementsFadeOut: function(callback) {
+        var elems = $(document).find(".header_mobileMenu_item")
         var _this = this;
-        var num = $(".header_mobileMenu_item").length - 1;
+        var num = elems.length - 1;
         var fadeOutEl = setInterval(function() {
           if (num >= 0) {
-            $(".header_mobileMenu_item").eq(num).removeClass("faded");
+            elems.eq(num).removeClass("faded");
             num--;
           } else {
             if (callback) callback();
@@ -769,6 +771,7 @@ var templs = {
           .find(".count")
           .text(slider.activeIndex + 1 + " / " + slider.size);
         $(".fotorama__loaded--img").removeClass("zoomed");
+        $(".fotorama__stage").removeClass("zoomed");
         grabbed = false;
         zommed = false;
         down = false;
@@ -811,10 +814,12 @@ var templs = {
         function(e) {
           if (!grabbed && $(this).hasClass("zoomed")) {
             $(this).removeClass("zoomed");
+            $(".fotorama__stage").removeClass("zoomed");
             zommed = false;
           } else {
             zommed = true;
             $(this).addClass("zoomed");
+            $(".fotorama__stage").addClass("zoomed");
           }
         }
       );
@@ -1689,7 +1694,7 @@ var XHRequests = {
       this.XHR = new ActiveXObject("Microsoft.XMLHTTP");
     }
     var _this = this;
-    this.XHR.responseType = "document";
+    //this.XHR.responseType = "document";
     this.XHR.onload = function() {
       handleResponse(_this.XHR);
     };
