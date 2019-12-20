@@ -1064,6 +1064,10 @@ var pages = {
     init: function() {
       if ($(window).width() <= 650) {
         $(".fpSlider").find("video").remove();
+      }else{
+        $(".fpSlider").find("video").each(function(){
+          $(this).attr('src',$(this).attr('data-src'));
+        })
       }
       this.slider.init();
       if ($("audio").length > 0) this.sound.init();
