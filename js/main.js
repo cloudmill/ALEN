@@ -97,7 +97,7 @@ var templs = {
         this.animate = true;
         this.box.toggleClass("open");
         this._removeBg(function() {
-          $(".header_mobileMenu").animate({ opacity: 1 });
+          $(document).find(".header_mobileMenu").animate({ opacity: 1 });
           _this.parent.box.toggleClass("searchOpen");
         });
       },
@@ -146,11 +146,11 @@ var templs = {
         });
       },
       init: function() {
-        this.box = $(".header_search_wrapper");
-        this.parent.box = $(".header");
-        this.closeBut = $(".header_search_input_close");
-        this.searchBut = $(".header_search_but");
-        this.mobileSearchBut = $(".header_mobileMenu_search");
+        this.box = $(document).find(".header_search_wrapper");
+        this.parent.box = $(document).find(".header");
+        this.closeBut = $(document).find(".header_search_input_close");
+        this.searchBut = $(document).find(".header_search_but");
+        this.mobileSearchBut = $(document).find(".header_mobileMenu_search");
         this.events();
       }
     },
@@ -1702,7 +1702,7 @@ var XHRequests = {
 
     function handleResponse(request) {
       setTimeout(function() {
-        if (request.status == 200) {
+        if (request.status == 200 && request.status == 404) {
           succes();
           var html = request.response;
           _this.reloadPageDoing(html);
