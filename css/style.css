@@ -154,7 +154,7 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   transition: opacity 0.3s, top 0.3s, background 0.3s, border-bottom 0.3s;
   background: transparent;
 }
@@ -360,6 +360,7 @@ body {
   display: flex;
   align-items: center;
   transition: all 1s;
+  margin-left: auto;
 }
 .header_menu_item {
   font-style: normal;
@@ -2372,6 +2373,7 @@ body {
 }
 .page .authorBox_row {
   display: flex;
+  width: 100%;
   align-items: flex-start;
 }
 .page .authorBox_text {

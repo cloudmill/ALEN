@@ -155,7 +155,7 @@ body {
   top: 0;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   transition: opacity @anim_t, top @anim_t, background @anim_t,
     border-bottom @anim_t;
   background: transparent;
@@ -429,6 +429,7 @@ body {
     display: flex;
     align-items: center;
     transition: all 1s;
+    margin-left: auto;
     &_item {
       font-style: normal;
       font-weight: normal;
@@ -2454,6 +2455,7 @@ body {
     }
     &_row {
       display: flex;
+      width: 100%;
       align-items: flex-start;
     }
     &_text {
