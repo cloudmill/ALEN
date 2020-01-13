@@ -926,31 +926,24 @@ var pages = {
           let i = 0;
           this.videos.each(function() {
             if (type == "init") {
-              this.pause();
               if (i == 0) {
-                this.load();
-                this.oncanplay = function() {
-                  this.play();
-                };
-              }
+                this.src = $(this).attr("data-src");
+                this.autoplay = true;
+              } 
             }
             if (type == "start") {
-              this.oncanplay = null;
-              this.pause();
               if (i == _this.bgs.activeIndex) {
-                this.load();
-              }
+                this.src = $(this).attr("data-src");
+                this.autoplay = false;
+              } 
             }
             if (type == "end") {
               if (i == _this.bgs.activeIndex) {
-                console.log(this.readyState);
-                if (this.readyState == 4) {
-                  this.play();
-                } else {
-                  this.oncanplay = function() {
-                    this.play();
-                  };
-                }
+                this.autoplay = true;
+                this.play()
+              }else{
+                this.src = "";
+                this.oncanplay = null;
               }
             }
             i++;
@@ -966,10 +959,6 @@ var pages = {
               disableOnInteraction: false
             },
             speed: 1300,
-            /* lazy: {
-              loadPrevNext: true,
-              loadOnTransitionStart: true
-            }, */
             init: false,
             navigation: {
               nextEl: ".swiper-button-next",
@@ -1090,11 +1079,11 @@ var pages = {
           .find("video")
           .remove();
       } else {
-        $(".fpSlider")
-          .find("video")
-          .each(function() {
-            $(this).attr("src", $(this).attr("data-src"));
-          });
+        // $(".fpSlider")
+        //   .find("video")
+        //   .each(function() {
+        //     $(this).attr("src", $(this).attr("data-src"));
+        //   });
       }
       this.slider.init();
       if ($("audio").length > 0) this.sound.init();
@@ -1693,7 +1682,7 @@ var pages = {
             .find(".form")
             .remove();
           $(html).css("margin-bottom", 0);
-          $(this)[0].outerHTML = $(this)[0].outerHTML  + html;
+          $(this)[0].outerHTML = $(this)[0].outerHTML + html;
           _this.validate();
 
           if ($(".comment").find(".simpleCommentBut").length == 0) {
