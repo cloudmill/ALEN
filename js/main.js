@@ -97,7 +97,9 @@ var templs = {
         this.animate = true;
         this.box.toggleClass("open");
         this._removeBg(function() {
-          $(document).find(".header_mobileMenu").animate({ opacity: 1 });
+          $(document)
+            .find(".header_mobileMenu")
+            .animate({ opacity: 1 });
           _this.parent.box.toggleClass("searchOpen");
         });
       },
@@ -351,7 +353,7 @@ var templs = {
       _elementsFadeIn: function() {
         var _this = this;
         var num2 = 0;
-        var elems = $(document).find(".header_mobileMenu_item")
+        var elems = $(document).find(".header_mobileMenu_item");
         var fadeInEl = setInterval(function() {
           if (num2 < elems.length) {
             elems.eq(num2).addClass("faded");
@@ -362,7 +364,7 @@ var templs = {
         }, _this.basicDelay);
       },
       _elementsFadeOut: function(callback) {
-        var elems = $(document).find(".header_mobileMenu_item")
+        var elems = $(document).find(".header_mobileMenu_item");
         var _this = this;
         var num = elems.length - 1;
         var fadeOutEl = setInterval(function() {
@@ -420,7 +422,11 @@ var templs = {
             if ($(this).hasClass("active")) {
               $(this).attr("style", "");
             } else {
-              $(this).height($(this).find(".header_menuSub_box").height() + 15);
+              $(this).height(
+                $(this)
+                  .find(".header_menuSub_box")
+                  .height() + 15
+              );
             }
           }
           $(this).toggleClass("active");
@@ -554,7 +560,9 @@ var templs = {
         }
       );
       $("body").removeClass("scrollDis");
-      $(".fotorama-box").data("fotorama").stopVideo();
+      $(".fotorama-box")
+        .data("fotorama")
+        .stopVideo();
     },
     events: function() {
       var _this = this;
@@ -575,8 +583,12 @@ var templs = {
         var _this = this;
         $(".popup_item#careers form").submit(function(e) {
           e.preventDefault();
-          $(this).find("input,textarea").val("");
-          $(this).find(".form_fileList .list .item").remove();
+          $(this)
+            .find("input,textarea")
+            .val("");
+          $(this)
+            .find(".form_fileList .list .item")
+            .remove();
           _this.popups.open("#careers-succes");
         });
       },
@@ -681,7 +693,9 @@ var templs = {
         _this.prepareUpload(event, inputFile);
       });
       $(".form_fileList .list .item .del").click(function() {
-        var num = $(this).parent().index();
+        var num = $(this)
+          .parent()
+          .index();
         $(".form_box [type=file]")[0].files;
       });
     },
@@ -691,10 +705,12 @@ var templs = {
   },
   gallery: {
     setImgs: function() {
-      $('[href="#photorama"]').find(".data-imgs input").each(function() {
-        var item = '<a href="' + this.value + '"></a>';
-        $(".popup_item#photorama .fotorama-box").append(item);
-      });
+      $('[href="#photorama"]')
+        .find(".data-imgs input")
+        .each(function() {
+          var item = '<a href="' + this.value + '"></a>';
+          $(".popup_item#photorama .fotorama-box").append(item);
+        });
     },
     fotoramaInit: function() {
       var tsize = 145;
@@ -789,14 +805,16 @@ var templs = {
         $(".popup_item#photorama .popup_full").html(
           '<div class="fotorama-box" ></div><div class="mobile_nav"><div class="str left"></div><div class="count">1 / 9</div> <div class="str right"></div></div>'
         );
-        $(this).find(".data-imgs input").each(function() {
-          var poster = "";
-          if ($(this).attr("poster")) {
-            poster = '<img src="' + $(this).attr("poster") + '"/>';
-          }
-          var item = '<a href="' + this.value + '">' + poster + "</a>";
-          $(".popup_item#photorama .fotorama-box").append(item);
-        });
+        $(this)
+          .find(".data-imgs input")
+          .each(function() {
+            var poster = "";
+            if ($(this).attr("poster")) {
+              poster = '<img src="' + $(this).attr("poster") + '"/>';
+            }
+            var item = '<a href="' + this.value + '">' + poster + "</a>";
+            $(".popup_item#photorama .fotorama-box").append(item);
+          });
         _this.fotoramaInit();
       });
 
@@ -806,9 +824,7 @@ var templs = {
       var down = false;
       var smove = 0;
       var pos = { x: 0, y: 0 };
-      $(
-        document
-      ).on(
+      $(document).on(
         "click",
         ".fotorama__loaded--img:not(.fotorama__stage__frame--video)",
         function(e) {
@@ -1063,16 +1079,22 @@ var pages = {
       },
       init: function() {
         this.muteInit();
-        $("audio").eq(0)[0].load();
+        $("audio")
+          .eq(0)[0]
+          .load();
       }
     },
     init: function() {
       if ($(window).width() <= 650) {
-        $(".fpSlider").find("video").remove();
-      }else{
-        $(".fpSlider").find("video").each(function(){
-          $(this).attr('src',$(this).attr('data-src'));
-        })
+        $(".fpSlider")
+          .find("video")
+          .remove();
+      } else {
+        $(".fpSlider")
+          .find("video")
+          .each(function() {
+            $(this).attr("src", $(this).attr("data-src"));
+          });
       }
       this.slider.init();
       if ($("audio").length > 0) this.sound.init();
@@ -1208,12 +1230,20 @@ var pages = {
           //callback
           function() {
             $(this).attr("src", $(this).attr("data-src"));
-            $(this).parent().addClass("is-loaded");
-            $(this).parent().find(".loadMonitor").removeClass("show");
+            $(this)
+              .parent()
+              .addClass("is-loaded");
+            $(this)
+              .parent()
+              .find(".loadMonitor")
+              .removeClass("show");
             var $this = $(this);
             setTimeout(function() {
               $this.parent().removeClass("is-proccess");
-              $this.parent().find(".loadMonitor").remove();
+              $this
+                .parent()
+                .find(".loadMonitor")
+                .remove();
             }, 500);
           }
         );
@@ -1343,7 +1373,10 @@ var pages = {
             _this.animate = true;
             _this.box.slick("slickGoTo", $(this).attr("slide-id"));
             _this.moveBar(
-              $(this).offset().left - $(this).parent().offset().left,
+              $(this).offset().left -
+                $(this)
+                  .parent()
+                  .offset().left,
               $(this).width()
             );
           } else if ($(window).width() <= 768) {
@@ -1441,7 +1474,7 @@ var pages = {
               center: _this.center,
               zoom: 16,
               type: "yandex#satellite",
-              controls: ['zoomControl']
+              controls: ["zoomControl"]
             },
             {
               searchControlProvider: "yandex#search"
@@ -1462,7 +1495,9 @@ var pages = {
             $(".map_data .placeMark").each(function() {
               myMap.geoObjects.add(
                 _this.createPlaceMark(
-                  $(this).attr("data-cords").split(","),
+                  $(this)
+                    .attr("data-cords")
+                    .split(","),
                   "images/projects/proj_1.jpg",
                   $(this).attr("data-sity"),
                   $(this).attr("data-name"),
@@ -1561,7 +1596,11 @@ var pages = {
       if (item.hasClass("open")) {
         item.height(
           item.find(".vacancy_title").height() +
-            item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+            item
+              .find(".vacancy_title")
+              .css("padding-top")
+              .replace("px", "") *
+              2
         );
         item.removeClass("open");
       } else {
@@ -1572,7 +1611,11 @@ var pages = {
     setVacancy: function(item) {
       item.height(
         item.find(".vacancy_title").height() +
-          item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+          item
+            .find(".vacancy_title")
+            .css("padding-top")
+            .replace("px", "") *
+            2
       );
     },
     dropDownPrize: function(item) {
@@ -1623,9 +1666,62 @@ var pages = {
   },
   newDetail: {
     events: function() {
+      var _this = this;
       $(".boxHide_but").click(function(e) {
         e.preventDefault();
-        $(this).parent().toggleClass("active");
+        $(this)
+          .parent()
+          .toggleClass("active");
+      });
+      $(document).on("click", ".comment_item > .default-btn", function(e) {
+        e.preventDefault();
+        if (
+          $(this)
+            .parent()
+            .find(">.form").length == 0
+        ) {
+          $(".comment")
+            .find(".parsley-required")
+            .remove();
+          $(".comment")
+            .find("*")
+            .removeClass("parsley-error");
+          var html = $(".comment")
+            .find(".form")
+            .eq(0)[0].outerHTML;
+          $(".comment")
+            .find(".form")
+            .remove();
+          $(html).css("margin-bottom", 0);
+          $(this)[0].outerHTML = $(this)[0].outerHTML  + html;
+          _this.validate();
+
+          if ($(".comment").find(".simpleCommentBut").length == 0) {
+            $(".comment_title:last-child").html(
+              '<a href="" class="default-btn btn-gray simpleCommentBut">Оставить коментарий</a>'
+            );
+          }
+        }
+      });
+      $(document).on("click", ".simpleCommentBut", function(e) {
+        e.preventDefault();
+        $(".comment_title:last-child").html("Оставить коментарий");
+        $(".comment")
+          .find(".parsley-required")
+          .remove();
+        $(".comment")
+          .find("*")
+          .removeClass("parsley-error");
+        var html = $(".comment")
+          .find(".form")
+          .eq(0)[0].outerHTML;
+        $(".comment")
+          .find(".form")
+          .remove();
+        $(html).attr("style", "");
+        $(".comment_title:last-child").eq(0)[0].outerHTML =
+          $(".comment_title:last-child").eq(0)[0].outerHTML + html;
+        _this.validate();
       });
     },
     sliderInit: function() {
@@ -1684,7 +1780,6 @@ var XHRequests = {
   newRequest: function(href, succes, failed) {
     this.showPreloader();
     this.preloader = true;
-    
 
     if (window.XMLHttpRequest) {
       // firefox etc
@@ -1815,22 +1910,38 @@ var XHRequests = {
     var color = $(".header").hasClass("scrolled") ? "white" : "black";
     loader = loader.replace("color", color);
     $(".wrapper").append(loader);
-    $(".wrapper").find(".bgLoadPage").animate({
-      opacity: 1
-    }, 500, function() {
-      _this.preloader = false;
-    });
+    $(".wrapper")
+      .find(".bgLoadPage")
+      .animate(
+        {
+          opacity: 1
+        },
+        500,
+        function() {
+          _this.preloader = false;
+        }
+      );
   },
   hidePreloader: function() {
     var _this = this;
     func = function() {
-      $(".wrapper").find(".bgLoadPage").addClass("loaded");
+      $(".wrapper")
+        .find(".bgLoadPage")
+        .addClass("loaded");
       setTimeout(function() {
-        $(".wrapper").find(".bgLoadPage").animate({
-          opacity: 0
-        }, 500, function() {
-          $(".wrapper").find(".bgLoadPage").remove();
-        });
+        $(".wrapper")
+          .find(".bgLoadPage")
+          .animate(
+            {
+              opacity: 0
+            },
+            500,
+            function() {
+              $(".wrapper")
+                .find(".bgLoadPage")
+                .remove();
+            }
+          );
       }, 300);
     };
     if (_this.preloader) {
@@ -1850,31 +1961,53 @@ var XHRequests = {
       $(".wrapper").removeClass("only-fp");
     }
     /////////
-    $("head").find('*:not(link[rel="stylesheet"])').remove();
+    $("head")
+      .find('*:not(link[rel="stylesheet"])')
+      .remove();
     $("head").append($(html).find('head >*:not(link[rel="stylesheet"])'));
     /////////
     if (
-      $(html).find(".header").hasClass("scrolled") &&
-      $(html).find(".header").hasClass("scrolled-ever")
+      $(html)
+        .find(".header")
+        .hasClass("scrolled") &&
+      $(html)
+        .find(".header")
+        .hasClass("scrolled-ever")
     ) {
-      $(".header").addClass("scrolled-ever").addClass("scrolled");
+      $(".header")
+        .addClass("scrolled-ever")
+        .addClass("scrolled");
     } else {
-      $(".header").removeClass("scrolled-ever").removeClass("scrolled");
+      $(".header")
+        .removeClass("scrolled-ever")
+        .removeClass("scrolled");
     }
     /////////
-    if ($(html).find(".header_search_wrapper").hasClass("open")) {
+    if (
+      $(html)
+        .find(".header_search_wrapper")
+        .hasClass("open")
+    ) {
       $(".header_search_wrapper").addClass("open");
     } else {
       $(".header_search_wrapper").removeClass("open");
     }
     /////////
-    if ($(html).find(".header").hasClass("searchOpen")) {
+    if (
+      $(html)
+        .find(".header")
+        .hasClass("searchOpen")
+    ) {
       $(".header").addClass("searchOpen");
     } else {
       $(".header").removeClass("searchOpen");
     }
     /////////
-    if ($(html).find(".header").hasClass("searchPage")) {
+    if (
+      $(html)
+        .find(".header")
+        .hasClass("searchPage")
+    ) {
       $(".header").addClass("searchPage");
     } else {
       $(".header").removeClass("searchPage");

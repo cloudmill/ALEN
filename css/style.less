@@ -3081,6 +3081,11 @@ body {
       border-bottom: 1px solid #dadada;
       padding-bottom: 30px;
       margin-bottom: 35px;
+      &>.default-btn{
+        &+.form{
+          transform: translateY(20px);
+        }
+      }
     }
     &_list {
       .comment_list {
@@ -3356,6 +3361,7 @@ body {
       &__stage {
         transform: translate(0, 45px) !important;
         max-width: ~"calc(100% - 215px)";
+        max-height: ~"calc(100% - 90px)";
         margin-left: 180px;
         transition: all 0.3s linear;
         @media (max-width: 1024px) {
