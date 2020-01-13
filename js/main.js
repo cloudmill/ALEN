@@ -929,19 +929,19 @@ var pages = {
               if (i == 0) {
                 this.src = $(this).attr("data-src");
                 this.autoplay = true;
-              } 
+              }
             }
             if (type == "start") {
               if (i == _this.bgs.activeIndex) {
                 this.src = $(this).attr("data-src");
                 this.autoplay = false;
-              } 
+              }
             }
             if (type == "end") {
               if (i == _this.bgs.activeIndex) {
                 this.autoplay = true;
-                this.play()
-              }else{
+                this.play();
+              } else {
                 this.src = "";
                 this.oncanplay = null;
               }
@@ -1417,6 +1417,7 @@ var pages = {
       createPlaceMark: function(coords, src, sity, name, link) {
         var width = 400;
         if ($(window).width() <= 600) width = 320;
+        console.log(coords,src,sity,name,link)
         return new ymaps.Placemark(
           coords,
           {
@@ -1428,7 +1429,6 @@ var pages = {
               width +
               '"/>' +
               "</div>",
-            // Зададим содержимое основной части балуна.
             balloonContentBody:
               '<div class="yaMap_content">' +
               "<p>" +
@@ -1448,11 +1448,12 @@ var pages = {
           {
             hideIconOnBalloonOpen: false,
             iconLayout: "default#image",
-            iconImageHref: "images/loc.svg",
+            iconImageHref: "/local/templates/main/images/loc.svg",
             iconImageSize: [60, 60],
             iconImageOffset: [-30, -30]
           }
         );
+        
       },
       create: function() {
         var _this = this;
@@ -1463,24 +1464,61 @@ var pages = {
               center: _this.center,
               zoom: 16,
               type: "yandex#satellite",
-              controls: ["zoomControl"]
+              controls: []
             },
             {
               searchControlProvider: "yandex#search"
             }
           );
-          myPlacemark = _this.createPlaceMark(
-            [55.751574, 37.573856],
-            "images/projects/proj_1.jpg",
-            "Санкт-Петербург",
-            "Мультиформатный жилой комплекс «Golden City»",
-            "#"
+          myMap.events.add("click", function() {
+            myMap.balloon.close();
+          });
+          myMap.behaviors.disable("scrollZoom");
+          if ($(".map_data .placeMark").length > 0) {
+            $(".map_data .placeMark").each(function() {
+              myMap.geoObjects.add(
+                _this.createPlaceMark(
+                  $(this)
+                    .attr("data-cords")
+                    .split(","),
+                  $(this).attr("data-img"),
+                  $(this).attr("data-sity"),
+                  $(this).attr("data-name"),
+                  $(this).attr("data-link")
+                )
+              );
+              
+            });
+          }
+          var zoomControl = new ymaps.control.ZoomControl({
+            options: {
+              size: "auto",
+              float: "none",
+            }
+          });
+          
+          myMap.controls.add(zoomControl);
+        });
+      },
+      create_full: function() {
+        var _this = this;
+        ymaps.ready(function() {
+          var myMap = new ymaps.Map(
+            "map",
+            {
+              center: _this.center,
+              zoom: 6,
+              controls: []
+            },
+            {
+              searchControlProvider: "yandex#search"
+            }
           );
           myMap.events.add("click", function() {
             myMap.balloon.close();
           });
           myMap.behaviors.disable("scrollZoom");
-          if ($(".map_data .placeMark").length) {
+          if ($(".map_data .placeMark").length > 0) {
             $(".map_data .placeMark").each(function() {
               myMap.geoObjects.add(
                 _this.createPlaceMark(
@@ -1495,34 +1533,13 @@ var pages = {
               );
             });
           }
-        });
-      },
-      create_full: function() {
-        var _this = this;
-        ymaps.ready(function() {
-          var myMap = new ymaps.Map(
-              "map",
-              {
-                center: _this.center,
-                zoom: 6,
-                controls: []
-              },
-              {
-                searchControlProvider: "yandex#search"
-              }
-            ),
-            myPlacemark = _this.createPlaceMark(
-              [55.751574, 37.573856],
-              "images/projects/proj_1.jpg",
-              "Санкт-Петербург",
-              "Мультиформатный жилой комплекс «Golden City»",
-              "#"
-            );
-          myMap.events.add("click", function() {
-            myMap.balloon.close();
+          var zoomControl = new ymaps.control.ZoomControl({
+            options: {
+              size: "auto",
+              float: "none",
+            }
           });
-          myMap.behaviors.disable("scrollZoom");
-          myMap.geoObjects.add(myPlacemark);
+          myMap.controls.add(zoomControl);
         });
       },
       init: function() {

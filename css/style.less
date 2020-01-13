@@ -3081,8 +3081,8 @@ body {
       border-bottom: 1px solid #dadada;
       padding-bottom: 30px;
       margin-bottom: 35px;
-      &>.default-btn{
-        &+.form{
+      & > .default-btn {
+        & + .form {
           transform: translateY(20px);
         }
       }
@@ -3119,6 +3119,10 @@ body {
   #map {
     ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps ymaps {
       overflow: visible !important;
+    }
+    .ymaps-b-zoom_hints-pos_right {
+      left: auto !important;
+      right: 8px;
     }
   }
 }
@@ -3253,7 +3257,7 @@ body {
       }
     }
   }
-  
+
   &_pp {
     font-family: Rubik;
     font-style: normal;
@@ -3269,7 +3273,7 @@ body {
       opacity: 1;
     }
   }
-  .footer{
+  .footer {
     &_lang {
       font-family: Rubik;
       font-style: normal;
@@ -3282,7 +3286,7 @@ body {
       align-items: center;
       transition: all @animease;
       padding: 0 15px;
-      @media(max-width:1024px){
+      @media (max-width: 1024px) {
         margin-top: 0;
       }
       &::before {
@@ -3354,7 +3358,7 @@ body {
         top: 40px;
         height: ~"calc(100% - 80px)";
         max-width: ~"calc(100% - 30px)";
-        @media(max-width:768px){
+        @media (max-width: 768px) {
           max-width: 100%;
         }
       }
@@ -3399,7 +3403,7 @@ body {
           box-sizing: content-box;
           padding-right: 30px;
           padding-bottom: 30px;
-          @media(max-width:768px){
+          @media (max-width: 768px) {
             padding-right: 0;
             padding-bottom: 0;
           }
@@ -3418,7 +3422,7 @@ body {
                 top: auto !important;
                 right: auto !important;
                 bottom: auto !important;
-                min-width:auto !important;
+                min-width: auto !important;
                 transform: none !important;
                 position: relative !important;
                 display: block !important;
@@ -4200,10 +4204,10 @@ body {
   .wrapper {
     &.only-fp {
       max-height: 100vh;
-      .footer{
+      .footer {
         display: none !important;
       }
-      .textAbout{
+      .textAbout {
         display: none !important;
       }
     }
