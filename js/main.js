@@ -1441,7 +1441,7 @@ var pages = {
               center: _this.center,
               zoom: 16,
               type: "yandex#satellite",
-              controls: []
+              controls: ['zoomControl']
             },
             {
               searchControlProvider: "yandex#search"
