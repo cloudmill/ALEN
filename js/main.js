@@ -1413,11 +1413,17 @@ var pages = {
       }
     },
     yaMapCreate: {
-      center: [55.751574, 37.573856],
+      center:
+        $(".map_data .placeMark").length > 0
+          ? $(".map_data .placeMark")
+              .eq(0)
+              .attr("data-cords")
+              .split(",")
+          : [55.751574, 37.573856],
       createPlaceMark: function(coords, src, sity, name, link) {
         var width = 400;
         if ($(window).width() <= 600) width = 320;
-        console.log(coords,src,sity,name,link)
+        console.log(coords, src, sity, name, link);
         return new ymaps.Placemark(
           coords,
           {
@@ -1453,7 +1459,6 @@ var pages = {
             iconImageOffset: [-30, -30]
           }
         );
-        
       },
       create: function() {
         var _this = this;
@@ -1487,16 +1492,15 @@ var pages = {
                   $(this).attr("data-link")
                 )
               );
-              
             });
           }
           var zoomControl = new ymaps.control.ZoomControl({
             options: {
               size: "auto",
-              float: "none",
+              float: "none"
             }
           });
-          
+
           myMap.controls.add(zoomControl);
         });
       },
@@ -1536,7 +1540,7 @@ var pages = {
           var zoomControl = new ymaps.control.ZoomControl({
             options: {
               size: "auto",
-              float: "none",
+              float: "none"
             }
           });
           myMap.controls.add(zoomControl);
