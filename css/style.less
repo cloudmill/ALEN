@@ -2132,6 +2132,7 @@ body {
         background: #ffffff;
         .m {
           &_label {
+            display: block;
             font-family: Rubik;
             font-style: normal;
             font-weight: normal;
@@ -2142,6 +2143,7 @@ body {
           }
           &_text {
             font-family: Rubik;
+            display: block;
             font-style: normal;
             font-weight: normal;
             font-size: 23px;
@@ -3313,12 +3315,35 @@ body {
   width: 100%;
   height: 100%;
   z-index: 10;
-  background-color: #fff;
   opacity: 0;
   display: none;
-
+  background-color: #fff;
   &.active {
-    display: block;
+    display: flex;
+  }
+  &.inWindow {
+    background: rgba(0, 0, 0, 0.3);
+    align-items: center;
+    justify-content: center;
+    & > .popup_close {
+      display: none;
+    }
+    .popup_item {
+      max-width: 628px;
+      height: auto;
+      position: relative;
+      background-color: #fff;
+      .popup_title {
+        text-align: center;
+        justify-content: center;
+      }
+      .popup_box {
+        align-items: center;
+        text-align: center;
+        width: 100%;
+        padding-bottom: 60px;
+      }
+    }
   }
   &_item {
     justify-content: center;
@@ -3556,6 +3581,11 @@ body {
     align-items: center;
     color: #292929;
     margin-bottom: 84px;
+    &.small {
+      font-size: 23px;
+      line-height: 46px;
+      margin-bottom: 30px;
+    }
   }
   &_close {
     width: 36px;
@@ -3581,6 +3611,33 @@ body {
     }
     &:hover {
       background: #dddddd;
+    }
+  }
+  &_subTitle {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 46px;
+    text-align: center;
+    color: #292929;
+    margin-bottom: 15px;
+  }
+  &_textError {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 14px;
+    line-height: 21px;
+    text-align: center;
+    color: #292929;
+    padding: 25px 33px;
+    display: inline-block;
+    text-align: center;
+    background: #f4f4f4;
+    margin-bottom: 30px;
+    span {
+      color: #ed4747;
     }
   }
 }
@@ -4214,6 +4271,7 @@ body {
   }
   .header {
     height: 62px;
+    justify-content: space-between;
     &.burgerOpen {
       .header_search_wrapper {
         display: flex;

@@ -531,8 +531,9 @@ var templs = {
   },
   popup: {
     basicTimeAnimate: 500,
-    open: function(id) {
+    open: function(id, addClass) {
       $(".popup").addClass("active");
+      if (addClass) $(".popup").addClass(addClass);
       $(".popup_item").removeClass("active");
       $(".popup_item" + id).addClass("active");
       $(".popup").animate(
@@ -557,6 +558,7 @@ var templs = {
         this.basicTimeAnimate,
         function() {
           $(".popup,.popup_item").removeClass("active");
+          $(".popup").removeClass("inWindow");
         }
       );
       $("body").removeClass("scrollDis");
@@ -570,7 +572,8 @@ var templs = {
         e.preventDefault();
         _this.open($(this).attr("href"));
       });
-      $(".popup_close").click(function() {
+      $(".popup_close,.close_but").click(function(e) {
+        e.preventDefault();
         _this.close();
       });
       document.addEventListener("keydown", function(e) {
@@ -900,13 +903,95 @@ var templs = {
       this.events();
     }
   },
+  errorMess: {
+    offsetWords: 20,
+    copyText: function() {
+      var div = document.createElement("div");
+      div.appendChild(
+        window
+          .getSelection()
+          .getRangeAt(0)
+          .cloneContents()
+      );
+      var selectionText = div.innerText.replace(new RegExp("\\r?\\n", "g"), "");
+
+      var allTextInBlock = window.getSelection().anchorNode.parentElement;
+      var allTextInBlockText = allTextInBlock.innerText;
+      posLeft = 0;
+      var pos = allTextInBlockText.indexOf(selectionText);
+      function findstr() {
+        allTextInBlock = allTextInBlock.parentElement;
+        allTextInBlockText = allTextInBlock.innerText;
+        pos = allTextInBlockText.indexOf(selectionText);
+      }
+      //findstr();
+      if (pos > this.offsetWords) {
+        posLeft = pos - this.offsetWords;
+      }
+      posRight = pos + selectionText.length;
+
+      var leftText = allTextInBlockText.substr(posLeft, pos - posLeft);
+      var rightText = allTextInBlockText.substr(posRight, this.offsetWords);
+
+      $("#messError .popup_textError").html(
+        leftText + "<span>" + selectionText + "</span>" + rightText
+      );
+      var url = document.location.href;
+      $("#messError")
+        .find("[name=error]")
+        .val(selectionText);
+      $("#messError")
+        .find("[name=place]")
+        .val(allTextInBlockText);
+      $("#messError")
+        .find("[name=url]")
+        .val(url);
+    },
+    popupOpen: function() {
+      this.copyText();
+      this.parent.popup.open("#messError", "inWindow");
+    },
+    messing: function() {
+      var _this = this;
+      //отправка и последующее открытие окна с информацией
+      $(document).on("submit", "#messError form", function(e) {
+        e.preventDefault();
+        _this.parent.popup.open("#messError_succes", "inWindow");
+      });
+    },
+    events: function() {
+      var _this = this;
+      var ctrlPress = false;
+      $(window).keydown(function(event) {
+        if (event.keyCode == 17 || event.keyCode == 91) {
+          ctrlPress = true;
+        }
+      });
+      $(window).keyup(function(event) {
+        if (event.keyCode == 17 || event.keyCode == 91) {
+          ctrlPress = false;
+        }
+      });
+      $(window).keydown(function(event) {
+        if (event.keyCode == 13 && ctrlPress) {
+          _this.popupOpen();
+        }
+      });
+    },
+    init: function() {
+      this.events();
+      this.messing();
+    }
+  },
   init: function() {
+    this.errorMess.parent = this;
     this.header.init();
     this.footer.init();
     this.popup.init();
     this.form.init();
     this.gallery.init();
     this.body.init();
+    this.errorMess.init();
   }
 };
 var pages = {
@@ -1157,19 +1242,20 @@ var pages = {
       $this.removeClass("is-hidden");
       $this.addClass("is-proccess");
       $this.append("<span class='loadMonitor show'></span>");
-      $this.find(".projects_item_img").load(
-        $this.find(".projects_item_img").attr("data-src"),
-        //callback
-        function() {
-          $(this).attr("src", $(this).attr("data-src"));
-          $this.addClass("is-loaded");
-          $this.find(".loadMonitor").removeClass("show");
-          setTimeout(function() {
-            $this.removeClass("is-proccess");
-            $this.find(".loadMonitor").remove();
-          }, 500);
-        }
-      );
+      if ($this.find(".projects_item_img").attr("data-src"))
+        $this.find(".projects_item_img").load(
+          $this.find(".projects_item_img").attr("data-src"),
+          //callback
+          function() {
+            $(this).attr("src", $(this).attr("data-src"));
+            $this.addClass("is-loaded");
+            $this.find(".loadMonitor").removeClass("show");
+            setTimeout(function() {
+              $this.removeClass("is-proccess");
+              $this.find(".loadMonitor").remove();
+            }, 500);
+          }
+        );
     },
     events: function() {
       _this = this;
@@ -1497,7 +1583,8 @@ var pages = {
           var zoomControl = new ymaps.control.ZoomControl({
             options: {
               size: "auto",
-              float: "none"
+              float: "none",
+              position: { right: 10,  bottom: 40 }
             }
           });
 
@@ -1529,7 +1616,7 @@ var pages = {
                   $(this)
                     .attr("data-cords")
                     .split(","),
-                  "images/projects/proj_1.jpg",
+                  $(this).attr("data-img"),
                   $(this).attr("data-sity"),
                   $(this).attr("data-name"),
                   $(this).attr("data-link")
@@ -1540,9 +1627,11 @@ var pages = {
           var zoomControl = new ymaps.control.ZoomControl({
             options: {
               size: "auto",
-              float: "none"
+              float: "none",
+              position: { right: 10, bottom: 40 }
             }
           });
+
           myMap.controls.add(zoomControl);
         });
       },
@@ -1696,6 +1785,18 @@ var pages = {
           $(".comment")
             .find("*")
             .removeClass("parsley-error");
+          var answerId = $(this)
+            .parent()
+            .attr("data-answer-id");
+          $(".comment")
+            .find(".form")
+            .find('[name="abswer_id"]')
+            .remove();
+          $(".comment")
+            .find(".form")
+            .append(
+              '<input name="abswer_id" type="hidden" value="' + answerId + '"/>'
+            );
           var html = $(".comment")
             .find(".form")
             .eq(0)[0].outerHTML;
@@ -1877,7 +1978,8 @@ var XHRequests = {
         href.indexOf("tel:") != 0 &&
         href.indexOf("mailto:") != 0 &&
         href.indexOf("callto:") != 0 &&
-        href != ""
+        href != "" &&
+        (!$(this).attr('target') || $(this).attr('target') !='_blank' )
       ) {
         if ($(this).attr("data-fail-xhr") == undefined) {
           e.preventDefault();
@@ -2054,3 +2156,22 @@ var XHRequests = {
     this.hidePreloader();
   }
 };
+
+$(document).on("submit", "#comment_form ", function(e) {
+  e.preventDefault();
+
+  $.ajax({
+    url: $("#comment_form").attr("action"),
+    type: "POST", //метод отправки
+    dataType: "html", //формат данных
+    data: $("#comment_form").serialize(),
+    success: function(data) {
+      //Данные отправлены успешно
+      console.log(data);
+      templs.popup.open("#comment_succes", "inWindow");
+    },
+    error: function(response) {
+      alert("Ошибка данных");
+    }
+  });
+});
