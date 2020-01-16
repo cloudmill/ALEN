@@ -1,6 +1,14 @@
 $(document).ready(function() {
   init_js();
+  setWindowHeight();
 });
+var setWindowHeight = function() {
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+};
+$(window).on('resize',function(){
+  setWindowHeight();
+})
 var init_js = function() {
   templs.init();
   pages.init();
@@ -1584,7 +1592,7 @@ var pages = {
             options: {
               size: "auto",
               float: "none",
-              position: { right: 10,  bottom: 40 }
+              position: { right: 10, bottom: 40 }
             }
           });
 
@@ -1979,7 +1987,7 @@ var XHRequests = {
         href.indexOf("mailto:") != 0 &&
         href.indexOf("callto:") != 0 &&
         href != "" &&
-        (!$(this).attr('target') || $(this).attr('target') !='_blank' )
+        (!$(this).attr("target") || $(this).attr("target") != "_blank")
       ) {
         if ($(this).attr("data-fail-xhr") == undefined) {
           e.preventDefault();
