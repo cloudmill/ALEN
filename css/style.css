@@ -432,7 +432,6 @@ body {
   transform: translate(-50%, 0);
   display: flex;
   transition: all 1s;
-  pointer-events: none;
 }
 .header_search_wrapper::before {
   content: "";
@@ -823,6 +822,7 @@ body {
   position: relative;
   z-index: 1;
   margin-bottom: 70px;
+  background: #000000;
   cursor: pointer;
 }
 .page .fpSlider_wrapper * {
@@ -1692,6 +1692,9 @@ body {
 .page .bItems_list.slider {
   width: calc(100% + 20px);
   margin-left: -10px;
+}
+.page .bItems_list .slick-list {
+  width: 100%;
 }
 .page .bItems_list .slick-slide {
   margin: 0 10px;
@@ -4191,6 +4194,62 @@ body {
 .inner .box {
   margin: 0 160px;
 }
+.cookies {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 520px;
+  height: 180px;
+  background: #101010;
+  border-radius: 31px;
+  padding: 40px;
+  z-index: 10;
+}
+.cookies_text {
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 13px;
+  line-height: 20px;
+  color: #ffffff;
+  margin-bottom: 14px;
+}
+.cookies_btn {
+  display: inline-block;
+  border: 0;
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 23.5px;
+  padding: 0 20px;
+  font-family: Rubik;
+  font-style: normal;
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 47px;
+  transition: all 0.3s ease-in-out;
+  text-align: center;
+  color: #ffffff;
+  cursor: pointer;
+}
+.cookies_btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+@media (max-width: 600px) {
+  .cookies {
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+  }
+  .cookies_text {
+    font-size: 11px;
+  }
+  .cookies_btn {
+    font-size: 13px;
+    line-height: 35px;
+  }
+}
 .bg_def {
   background-repeat: no-repeat;
   background-size: contain;
@@ -4228,6 +4287,8 @@ body {
   border-radius: 200px;
   padding: 0 27px;
   transition: all 0.3s ease-in-out;
+  box-shadow: none;
+  border: 0;
 }
 .default-btn.btn-gray {
   color: #292929;
@@ -4835,10 +4896,12 @@ body {
     display: none;
     top: 78px;
     right: 20px;
+    pointer-events: none;
   }
   .header_search_wrapper.open {
     right: 20px;
     transform: none;
+    pointer-events: auto;
   }
   .header_search_wrapper.open .header_search_but {
     opacity: 1;

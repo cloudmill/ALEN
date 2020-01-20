@@ -6,9 +6,9 @@ var setWindowHeight = function() {
   let vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", `${vh}px`);
 };
-$(window).on('resize',function(){
+$(window).on("resize", function() {
   setWindowHeight();
-})
+});
 var init_js = function() {
   templs.init();
   pages.init();
@@ -1067,7 +1067,7 @@ var pages = {
             touchRatio: 0.2,
             slideToClickedSlide: true,
             loop: true,
-            speed: 500,
+            speed: 1300,
             effect: "coverflow",
             coverflowEffect: {
               rotate: 0,
@@ -1496,10 +1496,10 @@ var pages = {
     btnBack: {
       but: null,
       events: function() {
-        this.but.click(function(e) {
-          e.preventDefault();
-          history.back();
-        });
+        // this.but.click(function(e) {
+        //   e.preventDefault();
+        //   history.back();
+        // });
       },
       init: function() {
         this.but = $("#back_page");
@@ -1507,19 +1507,14 @@ var pages = {
       }
     },
     yaMapCreate: {
-      center:
-        $(".map_data .placeMark").length > 0
-          ? $(".map_data .placeMark")
-              .eq(0)
-              .attr("data-cords")
-              .split(",")
-          : [55.751574, 37.573856],
+      center: null,
       createPlaceMark: function(coords, src, sity, name, link) {
         var width = 400;
         if ($(window).width() <= 600) width = 320;
         console.log(coords, src, sity, name, link);
         return new ymaps.Placemark(
           coords,
+
           {
             balloonContentHeader:
               '<div class="yaMap_head">' +
@@ -1639,11 +1634,19 @@ var pages = {
               position: { right: 10, bottom: 40 }
             }
           });
-
+          if ($("#map").hasClass("hasBalloon"))
+            myMap.geoObjects.options.set({ hasBalloon: false });
           myMap.controls.add(zoomControl);
         });
       },
       init: function() {
+        this.center =
+          $(".map_data .placeMark").length > 0
+            ? $(".map_data .placeMark")
+                .eq(0)
+                .attr("data-cords")
+                .split(",")
+            : [55.751574, 37.573856];
         if ($("#map").hasClass("full")) {
           this.create_full();
         } else {
@@ -1987,6 +1990,7 @@ var XHRequests = {
         href.indexOf("mailto:") != 0 &&
         href.indexOf("callto:") != 0 &&
         href != "" &&
+        !$(this).is("[download]") &&
         (!$(this).attr("target") || $(this).attr("target") != "_blank")
       ) {
         if ($(this).attr("data-fail-xhr") == undefined) {

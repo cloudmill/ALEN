@@ -502,7 +502,7 @@ body {
       transform: translate(-50%, 0);
       display: flex;
       transition: all @animSearch;
-      pointer-events: none;
+      
       &::before {
         content: "";
         position: absolute;
@@ -862,6 +862,7 @@ body {
       position: relative;
       z-index: 1;
       margin-bottom: 70px;
+      background: #000000;
       cursor: pointer;
       & * {
         cursor: pointer;
@@ -977,12 +978,12 @@ body {
       width: 60vw;
       overflow: visible;
       opacity: 0;
-      .swiper-slide-prev{
+      .swiper-slide-prev {
         position: relative;
       }
       &.swiper-container-initialized {
         opacity: 1;
-        .swiper-slide-prev{
+        .swiper-slide-prev {
           left: -40px;
         }
       }
@@ -1747,6 +1748,9 @@ body {
         margin-left: -10px;
       }
       .slick {
+        &-list {
+          width: 100%;
+        }
         &-slide {
           margin: 0 10px;
         }
@@ -3666,6 +3670,60 @@ body {
     margin: 0 160px;
   }
 }
+.cookies {
+  position: fixed;
+  bottom: 40px;
+  right: 40px;
+  width: 520px;
+  height: 180px;
+  background: #101010;
+  border-radius: 31px;
+  padding: 40px;
+  z-index: 10;
+  &_text {
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: 300;
+    font-size: 13px;
+    line-height: 20px;
+    color: #ffffff;
+    margin-bottom: 14px;
+  }
+  &_btn {
+    display: inline-block;
+    border: 0;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 23.5px;
+    padding: 0 20px;
+    font-family: Rubik;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 16px;
+    line-height: 47px;
+    transition: all 0.3s ease-in-out;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    &:hover{
+      background: rgba(255, 255, 255, 0.22);
+    }
+  }
+  @media(max-width: 600px){
+    width: 100%;
+    height: auto;
+    padding: 20px;
+    right: 0;
+    bottom: 0;
+    border-radius: 0;
+    &_text{
+      font-size: 11px;
+    }
+    &_btn{
+      font-size: 13px;
+      line-height: 35px;
+    }
+  }
+}
 /////////////////
 .bg_def {
   background-repeat: no-repeat;
@@ -3710,6 +3768,8 @@ body {
     border-radius: 200px;
     padding: 0 27px;
     transition: all @animease;
+    box-shadow: none;
+    border: 0;
     &.btn {
       &-gray {
         color: #292929;
@@ -4405,9 +4465,11 @@ body {
         display: none;
         top: 78px;
         right: 20px;
+        pointer-events: none;
         &.open {
           right: 20px;
           transform: none;
+          pointer-events: auto;
           .header_search {
             &_but {
               opacity: 1;
