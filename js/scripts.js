@@ -50,4 +50,39 @@ $(document).on("submit", "#lab_form", function(e) {
       }
     });
   });
+
+  $(document).on("submit", "#accept_cookies", function(e) {
+    e.preventDefault();
+  
+    $.ajax({
+      url: $("#accept_cookies").attr("action"),
+      type: "POST", //метод отправки
+      dataType: "html", //формат данных
+      data: $("#accept_cookies").serialize(),
+      success: function(data) {
+        //Данные отправлены успешно
+      },
+      error: function(response) {
+        alert("Ошибка данных");
+      }
+    });
+  });
+
+  $(document).on("submit", "#career_form", function(e) {
+    e.preventDefault();
+  
+    $.ajax({
+      url: $("#career_form").attr("action"),
+      type: "POST", //метод отправки
+      dataType: "html", //формат данных
+      data: $("#career_form").serialize(),
+      success: function(data) {
+        //Данные отправлены успешно
+      },
+      error: function(response) {
+        alert("Ошибка данных");
+      }
+    });
+  });
+  
   

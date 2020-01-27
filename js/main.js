@@ -1,20 +1,42 @@
-$(document).ready(function() {
-  init_js();
-  setWindowHeight();
-});
+if (!inited) {
+  var inited = false;
+  var init_js = null;
+  var templs = null;
+  var pages = null;
+  var XHRequests = null;
+  if (!myMap) var myMap;
+  else {
+    myMap.destroy();
+  }
+  if (!myMapFull) var myMapFull;
+  else {
+    myMapFull.destroy();
+  }
+
+  $(document).ready(function() {
+    ymaps.ready(function() {
+      init_js();
+      setWindowHeight();
+      console.log("inited all");
+      inited = true;
+    });
+  });
+}
+var debug = false;
+var stopped = false;
 var setWindowHeight = function() {
-  let vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty("--vh", `${vh}px`);
+  var vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", vh + "px");
 };
 $(window).on("resize", function() {
   setWindowHeight();
 });
-var init_js = function() {
+init_js = function() {
   templs.init();
   pages.init();
   XHRequests.init();
 };
-var templs = {
+templs = {
   header: {
     usersNoScroll: 0,
     box: null,
@@ -34,16 +56,18 @@ var templs = {
       state: "closed",
       animate: false,
       box: null,
-      closeBut: null,
       searchBut: null,
       backgroundPage: "<div class='header_bg bg_search'></div>",
       basicTimeAnimate: 600,
       mobileSearchBut: null,
       _appendBg: function() {
         var _this = this;
-        //this.parent.box.find(".header_bg").remove();
-        this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header_bg.bg_search");
+        $(document)
+          .find(".header")
+          .append(this.backgroundPage);
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_search");
         bg.css("display", "block");
         $(".header_mobile_search").animate(
           {
@@ -66,7 +90,9 @@ var templs = {
       },
       _removeBg: function(callback) {
         var _this = this;
-        var bg = this.parent.box.find(".header_bg.bg_search");
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_search");
         $(".header_mobile_search").animate(
           {
             opacity: 0
@@ -91,9 +117,16 @@ var templs = {
       open: function() {
         this.parent.srcrollFix.add();
         this.animate = true;
-        this.parent.box.toggleClass("searchOpen");
-        this.box.toggleClass("open");
-
+        $(document)
+          .find(".header")
+          .eq(0)
+          .toggleClass("searchOpen");
+        $(document)
+          .find(".header_search_input").eq(0).focus();
+        $(document)
+          .find(".header_search_wrapper")
+          .eq(0)
+          .toggleClass("open");
         var _this = this;
         setTimeout(function() {
           _this._appendBg();
@@ -103,52 +136,67 @@ var templs = {
         this.parent.srcrollFix.del();
         var _this = this;
         this.animate = true;
-        this.box.toggleClass("open");
+        $(document)
+          .find(".header_search_wrapper")
+          .removeClass("open");
         this._removeBg(function() {
           $(document)
             .find(".header_mobileMenu")
             .animate({ opacity: 1 });
-          _this.parent.box.toggleClass("searchOpen");
+          $(document)
+            .find(".header")
+            .toggleClass("searchOpen");
         });
       },
       events: function() {
         var _this = this;
-        this.searchBut.click(function(e) {
-          e.preventDefault();
-          if (!_this.animate) {
-            if (_this.state === "closed") _this.open();
-            else if (_this.state === "opened") {
+        if (!inited) {
+          $(document).on("click", ".header_search_but", function(e) {
+            e.preventDefault();
+            console.log("click btn");
+            console.log(_this);
+            if (!_this.animate) {
+              if (_this.state === "closed") _this.open();
+              else if (_this.state === "opened") {
+                _this.close();
+              }
+            }
+          });
+          $(document).on("click", ".header_mobileMenu_search", function(e) {
+            console.log("click");
+            console.log(_this);
+            if ($(window).width() <= 1024) {
+              e.preventDefault();
+              if (!_this.animate) {
+                if (_this.state === "closed") {
+                  $(".header_mobileMenu").animate({ opacity: 0 });
+                  _this.open();
+                }
+              }
+            }
+          });
+          $(document).on("click", ".header_mobile_search", function(e) {
+            if ($(window).width() <= 1024) {
+              e.preventDefault();
+              if (!_this.animate) {
+                if (_this.state === "opened") {
+                  if (
+                    $(document)
+                      .find(".header_mobileMenu")
+                      .hasClass("open")
+                  )
+                    _this.close();
+                }
+              }
+            }
+          });
+          $(document).on("click", ".header_search_input_close", function(e) {
+            e.preventDefault();
+            if (_this.state === "opened") {
               _this.close();
             }
-          }
-        });
-        this.mobileSearchBut.click(function(e) {
-          if ($(window).width() <= 1024) {
-            e.preventDefault();
-            if (!_this.animate) {
-              if (_this.state === "closed") {
-                $(".header_mobileMenu").animate({ opacity: 0 });
-                _this.open();
-              }
-            }
-          }
-        });
-        $(".header_mobile_search").click(function(e) {
-          if ($(window).width() <= 1024) {
-            e.preventDefault();
-            if (!_this.animate) {
-              if (_this.state === "opened") {
-                if ($(".header_mobileMenu").hasClass("open")) _this.close();
-              }
-            }
-          }
-        });
-        this.closeBut.click(function(e) {
-          e.preventDefault();
-          if (_this.state === "opened") {
-            _this.close();
-          }
-        });
+          });
+        }
         document.addEventListener("keydown", function(e) {
           if (_this.state === "opened" && e.keyCode === 27) {
             _this.close();
@@ -156,12 +204,11 @@ var templs = {
         });
       },
       init: function() {
-        this.box = $(document).find(".header_search_wrapper");
-        this.parent.box = $(document).find(".header");
+        this.state = "closed";
+        this.animate = false;
         this.closeBut = $(document).find(".header_search_input_close");
         this.searchBut = $(document).find(".header_search_but");
-        this.mobileSearchBut = $(document).find(".header_mobileMenu_search");
-        this.events();
+        if (!inited) this.events();
       }
     },
     scrolling: {
@@ -214,7 +261,6 @@ var templs = {
     burger: {
       state: "closed",
       animate: false,
-      but: $(".header_mobile_burger"),
       menu: $(".header_mobileMenu"),
       backgroundPage: "<div class='header_bg bg_burger'></div>",
       basicTimeAnimate: 600,
@@ -292,14 +338,21 @@ var templs = {
           this.list = $(".header_mobileMenu_lang_list");
           this.items = this.list.find(".header_mobileMenu_lang_item");
           this.items.fadeOut();
-          this, this.events();
+          if (!inited) this.events();
         }
       },
       _appendBg: function() {
         var _this = this;
-        this.parent.box.find(".header_bg").remove();
-        this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header_bg.bg_burger");
+        $(document)
+          .find(".header")
+          .find(".header_bg")
+          .remove();
+        $(document)
+          .find(".header")
+          .append(this.backgroundPage);
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_burger");
         bg.css("display", "block");
         bg.animate(
           {
@@ -315,7 +368,9 @@ var templs = {
       },
       _removeBg: function(callback) {
         var _this = this;
-        var bg = this.parent.box.find(".header_bg.bg_burger");
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_burger");
         bg.animate(
           {
             opacity: 0
@@ -332,7 +387,7 @@ var templs = {
       },
       events: function() {
         var _this = this;
-        this.but.click(function(e) {
+        click = function(e) {
           e.preventDefault();
           if (!_this.animate) {
             _this.animate = true;
@@ -344,7 +399,16 @@ var templs = {
               _this.parent.srcrollFix.del();
             }
           }
-        });
+        };
+        if (!inited)
+          $(document).on("click", ".header_mobile_burger", function(e) {
+            click(e);
+          });
+        $(document)
+          .find(
+            ".header_mobileMenu_item:not(.header_mobileMenu_search):not(.language)"
+          )
+          .unbind("click");
         $(
           ".header_mobileMenu_item:not(.header_mobileMenu_search):not(.language)"
         ).click(function() {
@@ -387,7 +451,9 @@ var templs = {
       },
       open: function() {
         this.menu.addClass("open");
-        this.parent.box.addClass("burgerOpen");
+        $(document)
+          .find(".header")
+          .addClass("burgerOpen");
         var _this = this;
         $(".header_mobileMenu_item");
         this._elementsFadeIn();
@@ -412,20 +478,27 @@ var templs = {
           this.basicTimeAnimate,
           function() {
             _this._removeBg();
-            _this.parent.box.removeClass("burgerOpen");
+            $(document)
+              .find(".header")
+              .removeClass("burgerOpen");
           }
         );
       },
       init: function() {
-        this.but = $(".header_mobile_burger");
+        this.but = null;
+
+        this.menu = null;
         this.menu = $(".header_mobileMenu");
         this.language.init();
+        $(document)
+          .find(".header_mobile_burger")
+          .off();
         this.events();
       }
     },
     dropDown: {
       events: function() {
-        $(".header_menuSub").click(function() {
+        $(document).on("click", ".header_menuSub", function() {
           if ($(window).width() <= 1024) {
             if ($(this).hasClass("active")) {
               $(this).attr("style", "");
@@ -441,7 +514,7 @@ var templs = {
         });
       },
       init: function() {
-        this.events();
+        if (!inited) this.events();
       }
     },
     menu: {
@@ -481,7 +554,7 @@ var templs = {
       if (!this.animed) {
         this.animed = true;
         var i = 0;
-        var items = $(
+        var items = $(document).find(
           ".footer_menu_wrapper,.footer_col:last-child, .footer_col:last-child .footer_title"
         );
         var intrvl = setInterval(function() {
@@ -496,10 +569,13 @@ var templs = {
     },
     checkAnim: function() {
       var _this = this;
-      if ($(".footer").length > 0) {
+      if ($(document).find(".footer").length > 0) {
         if (
           $(window).height() + $(document).scrollTop() >
-          $(".footer").offset().top + 100
+          $(document)
+            .find(".footer")
+            .offset().top +
+            100
         ) {
           _this.anim();
         }
@@ -507,8 +583,7 @@ var templs = {
     },
     events: function() {
       var _this = this;
-      this.eventsInited = true;
-      this.menus.click(function() {
+      $(document).on("click", ".footer_menu_wrapper", function() {
         if ($(window).width() <= 1024) {
           if ($(this).hasClass("active")) {
             _this.close($(this));
@@ -531,10 +606,10 @@ var templs = {
       targetC.height(50);
     },
     init: function() {
+      this.animed = false;
       this.box = $(".footer");
-      this.menus = $(".footer_menu_wrapper");
       this.checkAnim();
-      if (!this.eventsInited) this.events();
+      this.events();
     }
   },
   popup: {
@@ -619,65 +694,82 @@ var templs = {
       var _this = this;
       event.stopPropagation();
       event.preventDefault();
-      var data = new FormData();
+      var succesTextLoad = inputFile.attr("succesTextLoad");
+      var errorTextLoad = inputFile.attr("errorTextLoad");
+      var proccesTextLoad = inputFile.attr("proccesTextLoad");
       this.files.forEach(function(item, key) {
-        console.log(item, key);
-        data.append(key, item.file);
+        var data_ = new FormData();
+        data_.append(key, item.file);
         item.box
           .find(".text")
-          .html("Подождите идет загрузка…")
+          .html(proccesTextLoad)
           .parent()
           .removeClass("error");
-      });
-      $.ajax({
-        url: "upload.php",
-        type: "POST",
-        data: data,
-        cache: false,
-        dataType: "json",
-        processData: false,
-        contentType: false,
-        success: function(data, textStatus, jqXHR) {
-          _this.files.forEach(function(item, key) {
-            if (data[key].error) {
+        $.ajax({
+          url: "/local/templates/main/ajax_file_upload/upload.php",
+          type: "POST",
+          data: data_,
+          cache: false,
+          processData: false,
+          contentType: false,
+          success: function(a, textStatus, jqXHR) {
+            console.log(a);
+            if (a.error_text) {
               item.box.remove();
             } else {
               $.ajax({
                 type: "POST",
-                url: "files.php",
+                url: "/local/templates/main/ajax_file_upload/files.php",
                 data: {
-                  data: data[key]
+                  data: a
                 },
                 success: function(a) {
+                  console.log(a);
                   if (a) {
                     var file = a.split("#")[0];
                     var size = a.split("#")[1];
-                    // inputFile
-                    //   .parent()
-                    //   .find("label")
-                    //   .html("Файл загружен <span>" + size + "</span>");
-
-                    item.box.find(".text").html(file);
+                    item.box
+                      .find(".text")
+                      .html(
+                        succesTextLoad +
+                          " <span>" +
+                          file.replace("/upload/", "") +
+                          " " +
+                          size +
+                          "</span>"
+                      );
                     item.box.removeClass("loading");
+                    item.box.append(
+                      '<input style="display:none" type="file" name="file_' +
+                        key +
+                        '" value="' +
+                        file +
+                        '"/>'
+                    );
                     item.box.addClass("load");
                   } else {
-                    item.box.remove();
+                    item.box.find(".text").html(errorTextLoad);
+                    item.box.removeClass("loading");
+                    item.box.addClass("error");
                   }
+                },
+                error: function(a, textError, c) {
+                  console.log(textError);
                 }
               });
             }
-          });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          _this.files.forEach(function(item, key) {
-            item.box.find(".text").html("Ошибка загрузки");
-            item.box.removeClass("loading");
-            item.box.addClass("error");
-          });
-
-          console.log("ERRORS: " + textStatus);
-        }
+          },
+          error: function(jqXHR, textStatus, errorThrown, aa) {
+            _this.files.forEach(function(item, key) {
+              item.box.find(".text").html("Ошибка загрузки");
+              item.box.removeClass("loading");
+              item.box.addClass("error");
+            });
+            console.log("ERRORS: " + textStatus);
+          }
+        });
       });
+      inputFile.val("");
     },
     prepareUpload: function(event, inputFile) {
       var _this = this;
@@ -695,19 +787,18 @@ var templs = {
           box: inputFile.parent().find(".form_fileList .list li:last-child")
         });
       });
-      this.uploadFiles(event);
+      this.uploadFiles(event, inputFile);
     },
     events: function() {
       var _this = this;
       $("input[type=file]").change(function(event) {
-        var inputFile = $(this);
-        _this.prepareUpload(event, inputFile);
+        _this.prepareUpload(event, $(this));
+        $(".form_fileList .list").html();
       });
-      $(".form_fileList .list .item .del").click(function() {
+      $(document).on("click", ".form_fileList .list .item .del", function() {
         var num = $(this)
           .parent()
-          .index();
-        $(".form_box [type=file]")[0].files;
+          .remove();
       });
     },
     init: function() {
@@ -1000,9 +1091,26 @@ var templs = {
     this.gallery.init();
     this.body.init();
     this.errorMess.init();
+    if (document.location.href.split("#")[1]) {
+      var elem = $(document)
+        .find("#" + document.location.href.split("#")[1])
+        .eq(0);
+      var top =
+        elem.offset().top -
+        $(".header").height() -
+        $(".header_menuSub").height()
+          ? $(".header_menuSub").height()
+          : 0;
+      $("body,html").animate(
+        {
+          scrollTop: top
+        },
+        1000
+      );
+    }
   }
 };
-var pages = {
+pages = {
   main: {
     slider: {
       boxClass: "fpSlider",
@@ -1016,7 +1124,7 @@ var pages = {
       startCurrentVideo: function(type) {
         var _this = this;
         if (this.videos.length > 0) {
-          let i = 0;
+          var i = 0;
           this.videos.each(function() {
             if (type == "init") {
               if (i == 0) {
@@ -1465,9 +1573,9 @@ var pages = {
           } else if ($(window).width() <= 768) {
             if (!$(".infSlider_select").hasClass("active")) {
               $(".infSlider_select").addClass("active");
-              var scroll = $(document).scrollTop();
+              /* var scroll = $(document).scrollTop();
               $(document).scrollTop(scroll + 1);
-              $(document).scrollTop(scroll);
+              $(document).scrollTop(scroll); */
             } else {
               $(".infSlider_select").removeClass("active");
             }
@@ -1544,102 +1652,107 @@ var pages = {
             hideIconOnBalloonOpen: false,
             iconLayout: "default#image",
             iconImageHref: "/local/templates/main/images/loc.svg",
-            iconImageSize: [60, 60],
-            iconImageOffset: [-30, -30]
+            iconImageSize: [40, 40],
+            iconImageOffset: [-20, -20]
           }
         );
       },
       create: function() {
         var _this = this;
-        ymaps.ready(function() {
-          var myMap = new ymaps.Map(
-            "map",
-            {
-              center: _this.center,
-              zoom: 16,
-              type: "yandex#satellite",
-              controls: []
-            },
-            {
-              searchControlProvider: "yandex#search"
-            }
-          );
-          myMap.events.add("click", function() {
-            myMap.balloon.close();
-          });
-          myMap.behaviors.disable("scrollZoom");
-          if ($(".map_data .placeMark").length > 0) {
-            $(".map_data .placeMark").each(function() {
-              myMap.geoObjects.add(
-                _this.createPlaceMark(
-                  $(this)
-                    .attr("data-cords")
-                    .split(","),
-                  $(this).attr("data-img"),
-                  $(this).attr("data-sity"),
-                  $(this).attr("data-name"),
-                  $(this).attr("data-link")
-                )
-              );
-            });
+        myMap = new ymaps.Map(
+          "map",
+          {
+            center: _this.center,
+            zoom: 16,
+            type: "yandex#satellite",
+            controls: []
+          },
+          {
+            searchControlProvider: "yandex#search"
           }
-          var zoomControl = new ymaps.control.ZoomControl({
-            options: {
-              size: "auto",
-              float: "none",
-              position: { right: 10, bottom: 40 }
-            }
-          });
-
-          myMap.controls.add(zoomControl);
+        );
+        myMap.events.add("click", function() {
+          myMap.balloon.close();
         });
+        myMap.behaviors.disable("scrollZoom");
+        if ($(".map_data .placeMark").length > 0) {
+          $(".map_data .placeMark").each(function() {
+            myMap.geoObjects.add(
+              _this.createPlaceMark(
+                $(this)
+                  .attr("data-cords")
+                  .split(","),
+                $(this).attr("data-img"),
+                $(this).attr("data-sity"),
+                $(this).attr("data-name"),
+                $(this).attr("data-link")
+              )
+            );
+          });
+        }
+        var zoomControl = new ymaps.control.ZoomControl({
+          options: {
+            size: "auto",
+            float: "none",
+            position: { right: 10, bottom: 40 }
+          }
+        });
+        if ($(window).width() < 768) {
+          myMap.behaviors.disable("drag");
+        }
+        myMap.controls.add(zoomControl);
       },
       create_full: function() {
         var _this = this;
-        ymaps.ready(function() {
-          var myMap = new ymaps.Map(
-            "map",
-            {
-              center: _this.center,
-              zoom: 6,
-              controls: []
-            },
-            {
-              searchControlProvider: "yandex#search"
-            }
-          );
-          myMap.events.add("click", function() {
-            myMap.balloon.close();
-          });
-          myMap.behaviors.disable("scrollZoom");
-          if ($(".map_data .placeMark").length > 0) {
-            $(".map_data .placeMark").each(function() {
-              myMap.geoObjects.add(
-                _this.createPlaceMark(
-                  $(this)
-                    .attr("data-cords")
-                    .split(","),
-                  $(this).attr("data-img"),
-                  $(this).attr("data-sity"),
-                  $(this).attr("data-name"),
-                  $(this).attr("data-link")
-                )
-              );
-            });
+        var zoom = $("#map").hasClass("hasBalloon") ? 13 : 6;
+
+        myMapFull = new ymaps.Map(
+          "map",
+          {
+            center: _this.center,
+            zoom: zoom,
+            controls: []
+          },
+          {
+            searchControlProvider: "yandex#search"
           }
-          var zoomControl = new ymaps.control.ZoomControl({
-            options: {
-              size: "auto",
-              float: "none",
-              position: { right: 10, bottom: 40 }
-            }
-          });
-          if ($("#map").hasClass("hasBalloon"))
-            myMap.geoObjects.options.set({ hasBalloon: false });
-          myMap.controls.add(zoomControl);
+        );
+        myMapFull.events.add("click", function() {
+          myMapFull.balloon.close();
         });
+        myMapFull.behaviors.disable("scrollZoom");
+        if ($(".map_data .placeMark").length > 0) {
+          $(".map_data .placeMark").each(function() {
+            myMapFull.geoObjects.add(
+              _this.createPlaceMark(
+                $(this)
+                  .attr("data-cords")
+                  .split(","),
+                $(this).attr("data-img"),
+                $(this).attr("data-sity"),
+                $(this).attr("data-name"),
+                $(this).attr("data-link")
+              )
+            );
+          });
+        }
+        var zoomControl = new ymaps.control.ZoomControl({
+          options: {
+            size: "auto",
+            float: "none",
+            position: { right: 10, bottom: 40 }
+          }
+        });
+        if ($("#map").hasClass("hasBalloon"))
+          myMapFull.geoObjects.options.set({ hasBalloon: false });
+        if ($(window).width() < 768) {
+          myMapFull.behaviors.disable("drag");
+        }
+        myMapFull.controls.add(zoomControl);
       },
       init: function() {
+        console.log("map_init");
+        var _this = this;
         this.center =
           $(".map_data .placeMark").length > 0
             ? $(".map_data .placeMark")
@@ -1647,11 +1760,17 @@ var pages = {
                 .attr("data-cords")
                 .split(",")
             : [55.751574, 37.573856];
-        if ($("#map").hasClass("full")) {
-          this.create_full();
-        } else {
-          this.create();
+        function initMap() {
+          console.log("map_ready");
+          if ($("#map").hasClass("full")) {
+            _this.create_full();
+          } else {
+            _this.create();
+          }
         }
+        ymaps.ready(function() {
+          initMap();
+        });
       }
     },
     init: function() {
@@ -1894,7 +2013,7 @@ var pages = {
     this.newDetail.init();
   }
 };
-var XHRequests = {
+XHRequests = {
   store: [],
   currentPage_id: 0,
   offsetPage: 0,
@@ -1918,20 +2037,40 @@ var XHRequests = {
     this.XHR.open("POST", href, true);
 
     function handleResponse(request) {
+      if (debug) {
+        console.log(request);
+        if (stopped) {
+          return true;
+        }
+      }
       setTimeout(function() {
-        if (request.status == 200 && request.status == 404) {
+        var elem_ = document.getElementsByClassName("iframeDoc");
+        if (elem_.length > 1) {
+          elem_[1].parentNode.removeChild(elem_[1]);
+        }
+
+        if (request.status == 200 || request.status == 404) {
           succes();
-          var html = request.response;
-          _this.reloadPageDoing(html);
+          var temp_html = request.response;
+          _this.reloadPageDoing(temp_html);
           _this.hidePreloader();
+          _this.XHR.onload = null;
         } else {
           failed();
         }
       }, 500);
     }
 
-    this.XHR.onerror = function() {
+    this.XHR.onerror = function(e) {
+      if (debug) {
+        console.log(e);
+        debugger;
+        if (stopped) {
+          return true;
+        }
+      }
       failed();
+      _this.XHR.onerror = null;
     };
     this.XHR.send();
   },
@@ -1952,14 +2091,17 @@ var XHRequests = {
       this.store.push(pageInf);
       history.pushState(pageInf, null, href);
       this.currentPage_id = next_id;
-      $("body,html").animate(
-        {
-          scrollTop: 0
-        },
-        1000
-      );
+      if (!document.location.href.split("#")[1])
+        $("body,html").animate(
+          {
+            scrollTop: 0
+          },
+          1000
+        );
     }.bind(this);
     failed = function() {
+      console.log("failed__________new-page");
+      debugger;
       target.attr("data-fail-xhr", "fail");
       target[0].click();
     }.bind(this);
@@ -1968,8 +2110,12 @@ var XHRequests = {
   backPage: function(href) {
     this.currentPage_id--;
     this.offsetPage--;
-    succes = function() {}.bind(this);
-    failed = function() {}.bind(this);
+    succes = function() {
+      console.log("succes");
+    }.bind(this);
+    failed = function() {
+      console.log("failed");
+    }.bind(this);
 
     this.newRequest(href, succes, failed);
   },
@@ -1996,6 +2142,9 @@ var XHRequests = {
         if ($(this).attr("data-fail-xhr") == undefined) {
           e.preventDefault();
           _this.newPage(href, $(this), e);
+          if ($(this).hasClass("header_mobileMenu_lang_title")) {
+            templs.header.burger.close();
+          }
         }
       }
     });
@@ -2077,89 +2226,68 @@ var XHRequests = {
       }, 50);
     } else func();
   },
-  reloadPageDoing: function(html) {
-    $(".wrapper .page").html($(html).find(".wrapper .page > *"));
-    if ($(html).find(".wrapper.only-fp").length > 0) {
-      $(".wrapper").addClass("only-fp");
-    } else {
-      $(".wrapper").removeClass("only-fp");
-    }
-    /////////
-    $("head")
-      .find('*:not(link[rel="stylesheet"])')
-      .remove();
-    $("head").append($(html).find('head >*:not(link[rel="stylesheet"])'));
-    /////////
-    if (
-      $(html)
-        .find(".header")
-        .hasClass("scrolled") &&
-      $(html)
-        .find(".header")
-        .hasClass("scrolled-ever")
-    ) {
-      $(".header")
-        .addClass("scrolled-ever")
-        .addClass("scrolled");
-    } else {
-      $(".header")
-        .removeClass("scrolled-ever")
-        .removeClass("scrolled");
-    }
-    /////////
-    if (
-      $(html)
-        .find(".header_search_wrapper")
-        .hasClass("open")
-    ) {
-      $(".header_search_wrapper").addClass("open");
-    } else {
-      $(".header_search_wrapper").removeClass("open");
-    }
-    /////////
-    if (
-      $(html)
-        .find(".header")
-        .hasClass("searchOpen")
-    ) {
-      $(".header").addClass("searchOpen");
-    } else {
-      $(".header").removeClass("searchOpen");
-    }
-    /////////
-    if (
-      $(html)
-        .find(".header")
-        .hasClass("searchPage")
-    ) {
-      $(".header").addClass("searchPage");
-    } else {
-      $(".header").removeClass("searchPage");
-    }
-    /////////
-    if ($(html).find(".footer").length == 0) {
-      $(".wrapper .footer").remove();
-    } else if ($(".wrapper .footer").length == 0) {
-      $(".wrapper").append($(html).find(".footer"));
-    }
-    /////////
-    if ($(".wrapper .header_menuSub").length == 0) {
-      $(".wrapper .header").append("<div class='header_menuSub hide'></div>");
-    }
-    $(".wrapper .header_menuSub >*").remove();
-    if ($(html).find(".wrapper .header_menuSub >*").length > 0) {
-      $(".wrapper .header_menuSub").removeClass("hide");
-      $(".wrapper .header_menuSub").append(
-        $(html).find(".wrapper .header_menuSub >*")
-      );
-    } else {
-      $(".wrapper .header_menuSub").addClass("hide");
-    }
-    /////////
-    templs.init();
-    pages.init();
+  subDocument: function(string) {
+    var iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.className = "iframeDoc";
+    document.body.appendChild(iframe);
+    var head = string.slice(
+      string.indexOf("<head>") + 6,
+      string.indexOf("</head>")
+    );
+    var body = string.slice(
+      string.indexOf("<body>") + 6,
+      string.indexOf("</body>")
+    );
+    iframe.contentDocument.body.innerHTML = body;
 
-    $("body").removeClass("scrollDis");
+    iframe.contentDocument.head.innerHTML = head;
+    return iframe;
+  },
+  reloadPageDoing: function(temp_html) {
+    var iframe = this.subDocument(temp_html);
+    var _this = this;
+    var loadedIframe = function(item) {
+      var html = item.contentDocument;
+      console.log("reload ________");
+      var replaceDOM = function(_class, _parent) {
+        var _old = document.getElementsByClassName(_class)[0];
+        var _new = html.getElementsByClassName(_class)[0];
+        if (!_old) {
+          _parent.append(_new);
+        } else {
+          _parent.replaceChild(_new, _old);
+        }
+      };
+      var wrapper = document.getElementsByClassName("wrapper")[0];
+      var newWrapper = document.getElementsByClassName("wrapper")[0];
+      replaceDOM("page", wrapper);
+      replaceDOM("header", wrapper);
+      replaceDOM("footer", wrapper);
+      document.documentElement.replaceChild(html.head, document.head);
+      wrapper.classList.remove("only-fp");
+      wrapper.classList.add(newWrapper.classList);
+      if (document.readyState === "complete") {
+        templs.init();
+        pages.init();
+      } else {
+        window.onload = function() {
+          ymaps.ready(function() {
+            templs.init();
+            pages.init();
+          });
+          window.onload = null;
+        };
+      }
+      $("body").removeClass("scrollDis");
+    };
+    if (iframe.contentWindow.document.readyState == "complete") {
+      loadedIframe(iframe);
+    } else {
+      iframe.onload = function() {
+        loadedIframe(this);
+      };
+    }
   },
   init: function() {
     this.XHR = new XMLHttpRequest();
@@ -2168,7 +2296,6 @@ var XHRequests = {
     this.hidePreloader();
   }
 };
-
 $(document).on("submit", "#comment_form ", function(e) {
   e.preventDefault();
 
