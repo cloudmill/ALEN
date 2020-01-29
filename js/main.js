@@ -24,10 +24,16 @@ if (!inited) {
 }
 var debug = false;
 var stopped = false;
+var testing = false;
 var setWindowHeight = function() {
   var vh = window.innerHeight * 0.01;
   document.documentElement.style.setProperty("--vh", vh + "px");
 };
+$(window).on("load", function() {
+  $(document)
+    .find("head .toRemove")
+    .remove();
+});
 $(window).on("resize", function() {
   setWindowHeight();
 });
@@ -122,7 +128,9 @@ templs = {
           .eq(0)
           .toggleClass("searchOpen");
         $(document)
-          .find(".header_search_input").eq(0).focus();
+          .find(".header_search_input")
+          .eq(0)
+          .focus();
         $(document)
           .find(".header_search_wrapper")
           .eq(0)
@@ -841,12 +849,12 @@ templs = {
       var tDelta = 0;
       var moved = false;
       function onWheel(e) {
+        e = e || window.event;
         if (
           $("#photorama:hover").length > 0 &&
           !($(".fotorama__loaded--img.zoomed:hover").length > 0)
         ) {
           var slider = $(".fotorama-box").data("fotorama");
-          e = e || window.event;
           var delta = e.deltaY || e.detail || e.wheelDelta;
           tDelta += delta;
           if ($("#photorama").hasClass("active") && !moved) {
@@ -867,6 +875,13 @@ templs = {
               }, 300);
             }
           }
+        }
+        if (
+          $(document)
+            .find("#photorama")
+            .hasClass("active")
+        ) {
+          e.preventDefault();
         }
       }
       if (document.addEventListener) {
@@ -890,6 +905,9 @@ templs = {
           .text(slider.activeIndex + 1 + " / " + slider.size);
         $(".fotorama__loaded--img").removeClass("zoomed");
         $(".fotorama__stage").removeClass("zoomed");
+        $(document)
+          .find(".fotorama__stage__frame")
+          .css("opacity", 0);
         grabbed = false;
         zommed = false;
         down = false;
@@ -1094,19 +1112,21 @@ templs = {
     if (document.location.href.split("#")[1]) {
       var elem = $(document)
         .find("#" + document.location.href.split("#")[1])
-        .eq(0);
-      var top =
-        elem.offset().top -
-        $(".header").height() -
-        $(".header_menuSub").height()
-          ? $(".header_menuSub").height()
-          : 0;
-      $("body,html").animate(
-        {
-          scrollTop: top
-        },
-        1000
-      );
+        if(elem.length>0){
+          elem = elem.eq(0)
+          var top =
+          elem.offset().top -
+          $(".header").height() -
+          ($(".header_menuSub").height() ? $(".header_menuSub").height() : 0);
+        //console.log('scrollTop',top,elem.offset().top,$(".header").height(),$(".header_menuSub").height())
+        $("body,html").animate(
+          {
+            scrollTop: top
+          },
+          1000
+        );
+        }
+      
     }
   }
 };
@@ -1591,7 +1611,14 @@ pages = {
         this.box.on("afterChange", function() {
           _this.animate = false;
         });
-        this.moveBar(0, _this.buts.eq(0).width());
+        this.moveBar(
+          _this.buts.eq(0).offset().left -
+            _this.buts
+              .eq(0)
+              .parent()
+              .offset().left,
+          _this.buts.eq(0).width()
+        );
       },
       init: function() {
         this.box = $(".infSlider_list");
@@ -1697,6 +1724,8 @@ pages = {
             position: { right: 10, bottom: 40 }
           }
         });
+        if ($("#map").hasClass("hasBalloon"))
+          myMap.geoObjects.options.set({ hasBalloon: false });
         if ($(window).width() < 768) {
           myMap.behaviors.disable("drag");
         }
@@ -2227,10 +2256,10 @@ XHRequests = {
     } else func();
   },
   subDocument: function(string) {
-    var iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.className = "iframeDoc";
-    document.body.appendChild(iframe);
+    var _iframe = document.createElement("iframe");
+    _iframe.style.display = "none";
+    _iframe.className = "iframeDoc";
+    document.body.appendChild(_iframe);
     var head = string.slice(
       string.indexOf("<head>") + 6,
       string.indexOf("</head>")
@@ -2239,34 +2268,59 @@ XHRequests = {
       string.indexOf("<body>") + 6,
       string.indexOf("</body>")
     );
-    iframe.contentDocument.body.innerHTML = body;
-
-    iframe.contentDocument.head.innerHTML = head;
-    return iframe;
+    _iframe.contentDocument.body.innerHTML = body;
+    _iframe.contentDocument.head.innerHTML = head;
+    return _iframe;
   },
   reloadPageDoing: function(temp_html) {
     var iframe = this.subDocument(temp_html);
-    var _this = this;
-    var loadedIframe = function(item) {
-      var html = item.contentDocument;
+    var __html = this.subDocument(temp_html).contentDocument;
+    var loadedIframe = function(_html) {
       console.log("reload ________");
       var replaceDOM = function(_class, _parent) {
         var _old = document.getElementsByClassName(_class)[0];
-        var _new = html.getElementsByClassName(_class)[0];
+        var _new = _html.getElementsByClassName(_class)[0];
         if (!_old) {
           _parent.append(_new);
         } else {
+          console.log(_class)
+          console.log(_new)
           _parent.replaceChild(_new, _old);
         }
       };
       var wrapper = document.getElementsByClassName("wrapper")[0];
       var newWrapper = document.getElementsByClassName("wrapper")[0];
+      console.log(_html)
+      //debugger
       replaceDOM("page", wrapper);
       replaceDOM("header", wrapper);
       replaceDOM("footer", wrapper);
-      document.documentElement.replaceChild(html.head, document.head);
+      if (!0) {
+        Array.prototype.slice
+          .call(document.head.querySelectorAll('title,meta,[type="image/png"]'))
+          .forEach(function(elem) {
+            if (elem.remove) elem.remove();
+          });
+        Array.prototype.slice
+          .call(_html.head.querySelectorAll("*"))
+          .forEach(function(elem) {
+            var find = false;
+            Array.prototype.slice
+              .call(document.head.querySelectorAll("*"))
+              .forEach(function(elem2) {
+                if (elem2.outerHTML == elem.outerHTML) find = true;
+              });
+            if (!find && elem.tagName) document.head.appendChild(elem);
+          });
+      } else {
+        document.documentElement.replaceChild(_html.head, document.head);
+      }
+
       wrapper.classList.remove("only-fp");
-      wrapper.classList.add(newWrapper.classList);
+      for (var i = 0; i < newWrapper.classList.length; i++) {
+        wrapper.classList.add(newWrapper.classList[i]);
+      }
+
       if (document.readyState === "complete") {
         templs.init();
         pages.init();
@@ -2282,10 +2336,10 @@ XHRequests = {
       $("body").removeClass("scrollDis");
     };
     if (iframe.contentWindow.document.readyState == "complete") {
-      loadedIframe(iframe);
+      loadedIframe(__html);
     } else {
       iframe.onload = function() {
-        loadedIframe(this);
+        loadedIframe(__html);
       };
     }
   },
