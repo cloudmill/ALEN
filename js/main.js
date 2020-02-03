@@ -1,12 +1,58 @@
-$(document).ready(function() {
-  init_js();
+if (!inited) {
+  var inited = false;
+  var init_js = null;
+  var templs = null;
+  var pages = null;
+  var XHRequests = null;
+  var scrollToHash = 0;
+  if (!myMap) var myMap;
+  else {
+    myMap.destroy();
+  }
+  if (!myMapFull) var myMapFull;
+  else {
+    myMapFull.destroy();
+  }
+
+  $(document).ready(function() {
+    ymaps.ready(function() {
+      init_js();
+      setWindowHeight();
+      console.log("inited all");
+      inited = true;
+    });
+    if (window.location.hash.length > 0) {
+      window.hashName = window.location.hash;
+      scrollToHash = $(window.hashName).offset().top - $(window).height() / 2 - $(window.hashName).height()/2;
+    }else{
+      scrollToHash = 0;
+    }
+    console.log(scrollToHash)
+    //document.scrollTop = scrollToHash;
+   // $(document).scrollTop(scrollToHash)
+  });
+}
+var debug = false;
+var stopped = false;
+var testing = false;
+var setWindowHeight = function() {
+  var vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", vh + "px");
+};
+$(window).on("load", function() {
+  $('html,body').animate({
+    scrollTop:scrollToHash,
+  },1000)
 });
-var init_js = function() {
+$(window).on("resize", function() {
+  setWindowHeight();
+});
+init_js = function() {
   templs.init();
   pages.init();
   XHRequests.init();
 };
-var templs = {
+templs = {
   header: {
     usersNoScroll: 0,
     box: null,
@@ -26,16 +72,18 @@ var templs = {
       state: "closed",
       animate: false,
       box: null,
-      closeBut: null,
       searchBut: null,
       backgroundPage: "<div class='header_bg bg_search'></div>",
       basicTimeAnimate: 600,
       mobileSearchBut: null,
       _appendBg: function() {
         var _this = this;
-        //this.parent.box.find(".header_bg").remove();
-        this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header_bg.bg_search");
+        $(document)
+          .find(".header")
+          .append(this.backgroundPage);
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_search");
         bg.css("display", "block");
         $(".header_mobile_search").animate(
           {
@@ -58,7 +106,9 @@ var templs = {
       },
       _removeBg: function(callback) {
         var _this = this;
-        var bg = this.parent.box.find(".header_bg.bg_search");
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_search");
         $(".header_mobile_search").animate(
           {
             opacity: 0
@@ -83,9 +133,18 @@ var templs = {
       open: function() {
         this.parent.srcrollFix.add();
         this.animate = true;
-        this.parent.box.toggleClass("searchOpen");
-        this.box.toggleClass("open");
-
+        $(document)
+          .find(".header")
+          .eq(0)
+          .toggleClass("searchOpen");
+        $(document)
+          .find(".header_search_input")
+          .eq(0)
+          .focus();
+        $(document)
+          .find(".header_search_wrapper")
+          .eq(0)
+          .toggleClass("open");
         var _this = this;
         setTimeout(function() {
           _this._appendBg();
@@ -95,50 +154,67 @@ var templs = {
         this.parent.srcrollFix.del();
         var _this = this;
         this.animate = true;
-        this.box.toggleClass("open");
+        $(document)
+          .find(".header_search_wrapper")
+          .removeClass("open");
         this._removeBg(function() {
-          $(document).find(".header_mobileMenu").animate({ opacity: 1 });
-          _this.parent.box.toggleClass("searchOpen");
+          $(document)
+            .find(".header_mobileMenu")
+            .animate({ opacity: 1 });
+          $(document)
+            .find(".header")
+            .toggleClass("searchOpen");
         });
       },
       events: function() {
         var _this = this;
-        this.searchBut.click(function(e) {
-          e.preventDefault();
-          if (!_this.animate) {
-            if (_this.state === "closed") _this.open();
-            else if (_this.state === "opened") {
+        if (!inited) {
+          $(document).on("click", ".header_search_but", function(e) {
+            e.preventDefault();
+            console.log("click btn");
+            console.log(_this);
+            if (!_this.animate) {
+              if (_this.state === "closed") _this.open();
+              else if (_this.state === "opened") {
+                _this.close();
+              }
+            }
+          });
+          $(document).on("click", ".header_mobileMenu_search", function(e) {
+            console.log("click");
+            console.log(_this);
+            if ($(window).width() <= 1024) {
+              e.preventDefault();
+              if (!_this.animate) {
+                if (_this.state === "closed") {
+                  $(".header_mobileMenu").animate({ opacity: 0 });
+                  _this.open();
+                }
+              }
+            }
+          });
+          $(document).on("click", ".header_mobile_search", function(e) {
+            if ($(window).width() <= 1024) {
+              e.preventDefault();
+              if (!_this.animate) {
+                if (_this.state === "opened") {
+                  if (
+                    $(document)
+                      .find(".header_mobileMenu")
+                      .hasClass("open")
+                  )
+                    _this.close();
+                }
+              }
+            }
+          });
+          $(document).on("click", ".header_search_input_close", function(e) {
+            e.preventDefault();
+            if (_this.state === "opened") {
               _this.close();
             }
-          }
-        });
-        this.mobileSearchBut.click(function(e) {
-          if ($(window).width() <= 1024) {
-            e.preventDefault();
-            if (!_this.animate) {
-              if (_this.state === "closed") {
-                $(".header_mobileMenu").animate({ opacity: 0 });
-                _this.open();
-              }
-            }
-          }
-        });
-        $(".header_mobile_search").click(function(e) {
-          if ($(window).width() <= 1024) {
-            e.preventDefault();
-            if (!_this.animate) {
-              if (_this.state === "opened") {
-                if ($(".header_mobileMenu").hasClass("open")) _this.close();
-              }
-            }
-          }
-        });
-        this.closeBut.click(function(e) {
-          e.preventDefault();
-          if (_this.state === "opened") {
-            _this.close();
-          }
-        });
+          });
+        }
         document.addEventListener("keydown", function(e) {
           if (_this.state === "opened" && e.keyCode === 27) {
             _this.close();
@@ -146,12 +222,11 @@ var templs = {
         });
       },
       init: function() {
-        this.box = $(document).find(".header_search_wrapper");
-        this.parent.box = $(document).find(".header");
+        this.state = "closed";
+        this.animate = false;
         this.closeBut = $(document).find(".header_search_input_close");
         this.searchBut = $(document).find(".header_search_but");
-        this.mobileSearchBut = $(document).find(".header_mobileMenu_search");
-        this.events();
+        if (!inited) this.events();
       }
     },
     scrolling: {
@@ -204,7 +279,6 @@ var templs = {
     burger: {
       state: "closed",
       animate: false,
-      but: $(".header_mobile_burger"),
       menu: $(".header_mobileMenu"),
       backgroundPage: "<div class='header_bg bg_burger'></div>",
       basicTimeAnimate: 600,
@@ -282,14 +356,21 @@ var templs = {
           this.list = $(".header_mobileMenu_lang_list");
           this.items = this.list.find(".header_mobileMenu_lang_item");
           this.items.fadeOut();
-          this, this.events();
+          if (!inited) this.events();
         }
       },
       _appendBg: function() {
         var _this = this;
-        this.parent.box.find(".header_bg").remove();
-        this.parent.box.append(this.backgroundPage);
-        var bg = this.parent.box.find(".header_bg.bg_burger");
+        $(document)
+          .find(".header")
+          .find(".header_bg")
+          .remove();
+        $(document)
+          .find(".header")
+          .append(this.backgroundPage);
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_burger");
         bg.css("display", "block");
         bg.animate(
           {
@@ -305,7 +386,9 @@ var templs = {
       },
       _removeBg: function(callback) {
         var _this = this;
-        var bg = this.parent.box.find(".header_bg.bg_burger");
+        var bg = $(document)
+          .find(".header")
+          .find(".header_bg.bg_burger");
         bg.animate(
           {
             opacity: 0
@@ -322,7 +405,7 @@ var templs = {
       },
       events: function() {
         var _this = this;
-        this.but.click(function(e) {
+        click = function(e) {
           e.preventDefault();
           if (!_this.animate) {
             _this.animate = true;
@@ -334,7 +417,16 @@ var templs = {
               _this.parent.srcrollFix.del();
             }
           }
-        });
+        };
+        if (!inited)
+          $(document).on("click", ".header_mobile_burger", function(e) {
+            click(e);
+          });
+        $(document)
+          .find(
+            ".header_mobileMenu_item:not(.header_mobileMenu_search):not(.language)"
+          )
+          .unbind("click");
         $(
           ".header_mobileMenu_item:not(.header_mobileMenu_search):not(.language)"
         ).click(function() {
@@ -351,7 +443,7 @@ var templs = {
       _elementsFadeIn: function() {
         var _this = this;
         var num2 = 0;
-        var elems = $(document).find(".header_mobileMenu_item")
+        var elems = $(document).find(".header_mobileMenu_item");
         var fadeInEl = setInterval(function() {
           if (num2 < elems.length) {
             elems.eq(num2).addClass("faded");
@@ -362,7 +454,7 @@ var templs = {
         }, _this.basicDelay);
       },
       _elementsFadeOut: function(callback) {
-        var elems = $(document).find(".header_mobileMenu_item")
+        var elems = $(document).find(".header_mobileMenu_item");
         var _this = this;
         var num = elems.length - 1;
         var fadeOutEl = setInterval(function() {
@@ -377,7 +469,9 @@ var templs = {
       },
       open: function() {
         this.menu.addClass("open");
-        this.parent.box.addClass("burgerOpen");
+        $(document)
+          .find(".header")
+          .addClass("burgerOpen");
         var _this = this;
         $(".header_mobileMenu_item");
         this._elementsFadeIn();
@@ -388,6 +482,7 @@ var templs = {
           _this.basicTimeAnimate
         );
         this._appendBg();
+        console.log
       },
       close: function() {
         var _this = this;
@@ -402,32 +497,46 @@ var templs = {
           this.basicTimeAnimate,
           function() {
             _this._removeBg();
-            _this.parent.box.removeClass("burgerOpen");
+            $(document)
+              .find(".header")
+              .removeClass("burgerOpen");
           }
         );
       },
       init: function() {
-        this.but = $(".header_mobile_burger");
+        this.but = null;
+
+        this.menu = null;
         this.menu = $(".header_mobileMenu");
         this.language.init();
+        $(document)
+          .find(".header_mobile_burger")
+          .off();
         this.events();
+        this.animate = false;
+        this.state = 'closed';
+        this.close();
       }
     },
     dropDown: {
       events: function() {
-        $(".header_menuSub").click(function() {
+        $(document).on("click", ".header_menuSub", function() {
           if ($(window).width() <= 1024) {
             if ($(this).hasClass("active")) {
               $(this).attr("style", "");
             } else {
-              $(this).height($(this).find(".header_menuSub_box").height() + 15);
+              $(this).height(
+                $(this)
+                  .find(".header_menuSub_box")
+                  .height() + 15
+              );
             }
           }
           $(this).toggleClass("active");
         });
       },
       init: function() {
-        this.events();
+        if (!inited) this.events();
       }
     },
     menu: {
@@ -467,7 +576,7 @@ var templs = {
       if (!this.animed) {
         this.animed = true;
         var i = 0;
-        var items = $(
+        var items = $(document).find(
           ".footer_menu_wrapper,.footer_col:last-child, .footer_col:last-child .footer_title"
         );
         var intrvl = setInterval(function() {
@@ -482,10 +591,13 @@ var templs = {
     },
     checkAnim: function() {
       var _this = this;
-      if ($(".footer").length > 0) {
+      if ($(document).find(".footer").length > 0) {
         if (
           $(window).height() + $(document).scrollTop() >
-          $(".footer").offset().top + 100
+          $(document)
+            .find(".footer")
+            .offset().top +
+            100
         ) {
           _this.anim();
         }
@@ -493,8 +605,8 @@ var templs = {
     },
     events: function() {
       var _this = this;
-      this.eventsInited = true;
-      this.menus.click(function() {
+      if(!inited)
+      $(document).on("click", ".footer_menu_wrapper", function() {
         if ($(window).width() <= 1024) {
           if ($(this).hasClass("active")) {
             _this.close($(this));
@@ -517,16 +629,17 @@ var templs = {
       targetC.height(50);
     },
     init: function() {
+      this.animed = false;
       this.box = $(".footer");
-      this.menus = $(".footer_menu_wrapper");
       this.checkAnim();
-      if (!this.eventsInited) this.events();
+      this.events();
     }
   },
   popup: {
     basicTimeAnimate: 500,
-    open: function(id) {
+    open: function(id, addClass) {
       $(".popup").addClass("active");
+      if (addClass) $(".popup").addClass(addClass);
       $(".popup_item").removeClass("active");
       $(".popup_item" + id).addClass("active");
       $(".popup").animate(
@@ -551,10 +664,13 @@ var templs = {
         this.basicTimeAnimate,
         function() {
           $(".popup,.popup_item").removeClass("active");
+          $(".popup").removeClass("inWindow");
         }
       );
       $("body").removeClass("scrollDis");
-      $(".fotorama-box").data("fotorama").stopVideo();
+      $(".fotorama-box")
+        .data("fotorama")
+        .stopVideo();
     },
     events: function() {
       var _this = this;
@@ -562,7 +678,8 @@ var templs = {
         e.preventDefault();
         _this.open($(this).attr("href"));
       });
-      $(".popup_close").click(function() {
+      $(".popup_close,.close_but").click(function(e) {
+        e.preventDefault();
         _this.close();
       });
       document.addEventListener("keydown", function(e) {
@@ -575,8 +692,12 @@ var templs = {
         var _this = this;
         $(".popup_item#careers form").submit(function(e) {
           e.preventDefault();
-          $(this).find("input,textarea").val("");
-          $(this).find(".form_fileList .list .item").remove();
+          $(this)
+            .find("input,textarea")
+            .val("");
+          $(this)
+            .find(".form_fileList .list .item")
+            .remove();
           _this.popups.open("#careers-succes");
         });
       },
@@ -596,65 +717,82 @@ var templs = {
       var _this = this;
       event.stopPropagation();
       event.preventDefault();
-      var data = new FormData();
+      var succesTextLoad = inputFile.attr("succesTextLoad");
+      var errorTextLoad = inputFile.attr("errorTextLoad");
+      var proccesTextLoad = inputFile.attr("proccesTextLoad");
       this.files.forEach(function(item, key) {
-        console.log(item, key);
-        data.append(key, item.file);
+        var data_ = new FormData();
+        data_.append(key, item.file);
         item.box
           .find(".text")
-          .html("Подождите идет загрузка…")
+          .html(proccesTextLoad)
           .parent()
           .removeClass("error");
-      });
-      $.ajax({
-        url: "upload.php",
-        type: "POST",
-        data: data,
-        cache: false,
-        dataType: "json",
-        processData: false,
-        contentType: false,
-        success: function(data, textStatus, jqXHR) {
-          _this.files.forEach(function(item, key) {
-            if (data[key].error) {
+        $.ajax({
+          url: "/local/templates/main/ajax_file_upload/upload.php",
+          type: "POST",
+          data: data_,
+          cache: false,
+          processData: false,
+          contentType: false,
+          success: function(a, textStatus, jqXHR) {
+            console.log(a);
+            if (a.error_text) {
               item.box.remove();
             } else {
               $.ajax({
                 type: "POST",
-                url: "files.php",
+                url: "/local/templates/main/ajax_file_upload/files.php",
                 data: {
-                  data: data[key]
+                  data: a
                 },
                 success: function(a) {
+                  console.log(a);
                   if (a) {
                     var file = a.split("#")[0];
                     var size = a.split("#")[1];
-                    // inputFile
-                    //   .parent()
-                    //   .find("label")
-                    //   .html("Файл загружен <span>" + size + "</span>");
-
-                    item.box.find(".text").html(file);
+                    item.box
+                      .find(".text")
+                      .html(
+                        succesTextLoad +
+                          " <span>" +
+                          file.replace("/upload/", "") +
+                          " " +
+                          size +
+                          "</span>"
+                      );
                     item.box.removeClass("loading");
+                    item.box.append(
+                      '<input style="display:none" type="file" name="file_' +
+                        key +
+                        '" value="' +
+                        file +
+                        '"/>'
+                    );
                     item.box.addClass("load");
                   } else {
-                    item.box.remove();
+                    item.box.find(".text").html(errorTextLoad);
+                    item.box.removeClass("loading");
+                    item.box.addClass("error");
                   }
+                },
+                error: function(a, textError, c) {
+                  console.log(textError);
                 }
               });
             }
-          });
-        },
-        error: function(jqXHR, textStatus, errorThrown) {
-          _this.files.forEach(function(item, key) {
-            item.box.find(".text").html("Ошибка загрузки");
-            item.box.removeClass("loading");
-            item.box.addClass("error");
-          });
-
-          console.log("ERRORS: " + textStatus);
-        }
+          },
+          error: function(jqXHR, textStatus, errorThrown, aa) {
+            _this.files.forEach(function(item, key) {
+              item.box.find(".text").html("Ошибка загрузки");
+              item.box.removeClass("loading");
+              item.box.addClass("error");
+            });
+            console.log("ERRORS: " + textStatus);
+          }
+        });
       });
+      inputFile.val("");
     },
     prepareUpload: function(event, inputFile) {
       var _this = this;
@@ -672,17 +810,18 @@ var templs = {
           box: inputFile.parent().find(".form_fileList .list li:last-child")
         });
       });
-      this.uploadFiles(event);
+      this.uploadFiles(event, inputFile);
     },
     events: function() {
       var _this = this;
       $("input[type=file]").change(function(event) {
-        var inputFile = $(this);
-        _this.prepareUpload(event, inputFile);
+        _this.prepareUpload(event, $(this));
+        $(".form_fileList .list").html();
       });
-      $(".form_fileList .list .item .del").click(function() {
-        var num = $(this).parent().index();
-        $(".form_box [type=file]")[0].files;
+      $(document).on("click", ".form_fileList .list .item .del", function() {
+        var num = $(this)
+          .parent()
+          .remove();
       });
     },
     init: function() {
@@ -691,10 +830,12 @@ var templs = {
   },
   gallery: {
     setImgs: function() {
-      $('[href="#photorama"]').find(".data-imgs input").each(function() {
-        var item = '<a href="' + this.value + '"></a>';
-        $(".popup_item#photorama .fotorama-box").append(item);
-      });
+      $('[href="#photorama"]')
+        .find(".data-imgs input")
+        .each(function() {
+          var item = '<a href="' + this.value + '"></a>';
+          $(".popup_item#photorama .fotorama-box").append(item);
+        });
     },
     fotoramaInit: function() {
       var tsize = 145;
@@ -703,10 +844,11 @@ var templs = {
       }
       var fotorama = $(".fotorama-box").fotorama({
         width: $(window).width(),
-        maxwidth: "100%",
+        maxwidth: "200%",
         height: $(window).height() - ($(window).width() > 768 ? 90 : 110),
         allowfullscreen: false,
         nav: "thumbs",
+        loop: true,
         transition: "crossfade",
         trackpad: false,
         swipe: $(window).width() < 768,
@@ -720,35 +862,59 @@ var templs = {
     events: function() {
       var _this = this;
       var del = 120;
+      if (navigator.userAgent.search(/Firefox/) > 0) {
+        del = 3;
+      }
+      if (navigator.userAgent.search(/Chrome/) > 0) {
+        del = 100;
+      }
+      if (navigator.userAgent.search(/YaBrowser/) > 0) {
+        del = 100;
+      }
       var tDelta = 0;
       var moved = false;
       function onWheel(e) {
+        e = e || window.event;
         if (
-          $("#photorama:hover").length > 0 &&
+          $("#photorama").hasClass("active") &&
           !($(".fotorama__loaded--img.zoomed:hover").length > 0)
         ) {
           var slider = $(".fotorama-box").data("fotorama");
-          e = e || window.event;
           var delta = e.deltaY || e.detail || e.wheelDelta;
           tDelta += delta;
+          if (delta > 0) {
+            if (tDelta < 0) tDelta = 0;
+            tDelta += delta;
+          }
+          if (delta < 0) {
+            if (tDelta > 0) tDelta = 0;
+            tDelta += delta;
+          }
+          console.log(tDelta, delta);
           if ($("#photorama").hasClass("active") && !moved) {
-            if (tDelta > del) {
+            if (tDelta >= del) {
               tDelta = 0;
-              if (slider.activeIndex < slider.size - 1)
-                slider.show(slider.activeIndex + 1);
+              slider.show(">");
               moved = true;
               setTimeout(function() {
                 moved = false;
               }, 300);
             } else if (tDelta < -del) {
               tDelta = 0;
-              if (slider.activeIndex > 0) slider.show(slider.activeIndex - 1);
+              slider.show("<");
               moved = true;
               setTimeout(function() {
                 moved = false;
               }, 300);
             }
           }
+        }
+        if (
+          $(document)
+            .find("#photorama")
+            .hasClass("active")
+        ) {
+          e.preventDefault();
         }
       }
       if (document.addEventListener) {
@@ -772,9 +938,30 @@ var templs = {
           .text(slider.activeIndex + 1 + " / " + slider.size);
         $(".fotorama__loaded--img").removeClass("zoomed");
         $(".fotorama__stage").removeClass("zoomed");
+        $(document)
+          .find(".fotorama__stage__frame")
+          .css("opacity", 0);
+        $(".fotorama__loaded--img.fotorama__active").removeClass("auto-width");
+        if ($(".fotorama__loaded--img.fotorama__active img").length > 0)
+          if (
+            $(".fotorama__loaded--img.fotorama__active img")[0].naturalWidth <
+            parseInt($(".fotorama__loaded--img.fotorama__active").width())
+          ) {
+            $(".fotorama__loaded--img.fotorama__active").addClass("auto-width");
+          }
         grabbed = false;
         zommed = false;
         down = false;
+      });
+      $(document).on("fotorama:load", ".fotorama-box", function(a, slider) {
+        $(".fotorama__loaded--img.fotorama__active").removeClass("auto-width");
+        if ($(".fotorama__loaded--img.fotorama__active img").length > 0)
+          if (
+            $(".fotorama__loaded--img.fotorama__active img")[0].naturalWidth <
+            parseInt($(".fotorama__loaded--img.fotorama__active").width())
+          ) {
+            $(".fotorama__loaded--img.fotorama__active").addClass("auto-width");
+          }
       });
       $(document).on("click", ".mobile_nav .left", function() {
         var slider = $(".fotorama-box").data("fotorama");
@@ -785,18 +972,20 @@ var templs = {
         if (slider.activeIndex < slider.size)
           slider.show(slider.activeIndex + 1);
       });
-      $('a[href="#photorama"]').click(function() {
+      $(document).on("click", 'a[href="#photorama"]', function() {
         $(".popup_item#photorama .popup_full").html(
           '<div class="fotorama-box" ></div><div class="mobile_nav"><div class="str left"></div><div class="count">1 / 9</div> <div class="str right"></div></div>'
         );
-        $(this).find(".data-imgs input").each(function() {
-          var poster = "";
-          if ($(this).attr("poster")) {
-            poster = '<img src="' + $(this).attr("poster") + '"/>';
-          }
-          var item = '<a href="' + this.value + '">' + poster + "</a>";
-          $(".popup_item#photorama .fotorama-box").append(item);
-        });
+        $(this)
+          .find(".data-imgs input")
+          .each(function() {
+            var poster = "";
+            if ($(this).attr("poster")) {
+              poster = '<img src="' + $(this).attr("poster") + '"/>';
+            }
+            var item = '<a href="' + this.value + '">' + poster + "</a>";
+            $(".popup_item#photorama .fotorama-box").append(item);
+          });
         _this.fotoramaInit();
       });
 
@@ -806,19 +995,32 @@ var templs = {
       var down = false;
       var smove = 0;
       var pos = { x: 0, y: 0 };
-      $(
-        document
-      ).on(
+      $(document).on(
         "click",
         ".fotorama__loaded--img:not(.fotorama__stage__frame--video)",
         function(e) {
           if (!grabbed && $(this).hasClass("zoomed")) {
             $(this).removeClass("zoomed");
+
+            $(this)
+              .find("img")
+              .css("min-width", "auto");
+            $(this)
+              .find("img")
+              .css("min-height", "auto");
             $(".fotorama__stage").removeClass("zoomed");
             zommed = false;
-          } else {
+          } else if (!$(this).hasClass("auto-width")) {
             zommed = true;
+            var img = $(this)
+              .find("img")
+              .eq(0)[0];
+            img.style.cssText +=
+              "min-width:" + img.naturalWidth + "px !important;";
+            img.style.cssText +=
+              "min-height:" + img.naturalHeight + "px !important;";
             $(this).addClass("zoomed");
+
             $(".fotorama__stage").addClass("zoomed");
           }
         }
@@ -838,9 +1040,10 @@ var templs = {
           if (grabbed) {
             $(this).scrollTop($(this).scrollTop() + pos.y - e.pageY);
             $(this).scrollLeft($(this).scrollLeft() + pos.x - e.pageX);
+
+            pos.x = e.pageX;
+            pos.y = e.pageY;
           }
-          pos.x = e.pageX;
-          pos.y = e.pageY;
         }
       });
       $(document).on("mouseleave", ".fotorama__loaded--img", function(у) {
@@ -859,8 +1062,7 @@ var templs = {
     },
     init: function() {
       this.setImgs();
-      this.fotoramaInit();
-      this.events();
+      if (!inited) this.events();
     }
   },
   body: {
@@ -884,16 +1086,98 @@ var templs = {
       this.events();
     }
   },
+  errorMess: {
+    offsetWords: 20,
+    copyText: function() {
+      var div = document.createElement("div");
+      div.appendChild(
+        window
+          .getSelection()
+          .getRangeAt(0)
+          .cloneContents()
+      );
+      var selectionText = div.innerText.replace(new RegExp("\\r?\\n", "g"), "");
+
+      var allTextInBlock = window.getSelection().anchorNode.parentElement;
+      var allTextInBlockText = allTextInBlock.innerText;
+      posLeft = 0;
+      var pos = allTextInBlockText.indexOf(selectionText);
+      function findstr() {
+        allTextInBlock = allTextInBlock.parentElement;
+        allTextInBlockText = allTextInBlock.innerText;
+        pos = allTextInBlockText.indexOf(selectionText);
+      }
+      //findstr();
+      if (pos > this.offsetWords) {
+        posLeft = pos - this.offsetWords;
+      }
+      posRight = pos + selectionText.length;
+
+      var leftText = allTextInBlockText.substr(posLeft, pos - posLeft);
+      var rightText = allTextInBlockText.substr(posRight, this.offsetWords);
+
+      $("#messError .popup_textError").html(
+        leftText + "<span>" + selectionText + "</span>" + rightText
+      );
+      var url = document.location.href;
+      $("#messError")
+        .find("[name=error]")
+        .val(selectionText);
+      $("#messError")
+        .find("[name=place]")
+        .val(allTextInBlockText);
+      $("#messError")
+        .find("[name=url]")
+        .val(url);
+    },
+    popupOpen: function() {
+      this.copyText();
+      this.parent.popup.open("#messError", "inWindow");
+    },
+    messing: function() {
+      var _this = this;
+      //отправка и последующее открытие окна с информацией
+      $(document).on("submit", "#messError form", function(e) {
+        e.preventDefault();
+        _this.parent.popup.open("#messError_succes", "inWindow");
+      });
+    },
+    events: function() {
+      var _this = this;
+      var ctrlPress = false;
+      $(window).keydown(function(event) {
+        if (event.keyCode == 17 || event.keyCode == 91) {
+          ctrlPress = true;
+        }
+      });
+      $(window).keyup(function(event) {
+        if (event.keyCode == 17 || event.keyCode == 91) {
+          ctrlPress = false;
+        }
+      });
+      $(window).keydown(function(event) {
+        if (event.keyCode == 13 && ctrlPress) {
+          _this.popupOpen();
+        }
+      });
+    },
+    init: function() {
+      this.events();
+      this.messing();
+    }
+  },
   init: function() {
+    this.errorMess.parent = this;
     this.header.init();
     this.footer.init();
     this.popup.init();
     this.form.init();
     this.gallery.init();
     this.body.init();
+    this.errorMess.init();
   }
 };
-var pages = {
+pages = {
   main: {
     slider: {
       boxClass: "fpSlider",
@@ -907,34 +1191,27 @@ var pages = {
       startCurrentVideo: function(type) {
         var _this = this;
         if (this.videos.length > 0) {
-          let i = 0;
+          var i = 0;
           this.videos.each(function() {
             if (type == "init") {
-              this.pause();
               if (i == 0) {
-                this.load();
-                this.oncanplay = function() {
-                  this.play();
-                };
+                this.src = $(this).attr("data-src");
+                this.autoplay = true;
               }
             }
             if (type == "start") {
-              this.oncanplay = null;
-              this.pause();
               if (i == _this.bgs.activeIndex) {
-                this.load();
+                this.src = $(this).attr("data-src");
+                this.autoplay = false;
               }
             }
             if (type == "end") {
               if (i == _this.bgs.activeIndex) {
-                console.log(this.readyState);
-                if (this.readyState == 4) {
-                  this.play();
-                } else {
-                  this.oncanplay = function() {
-                    this.play();
-                  };
-                }
+                this.autoplay = true;
+                this.play();
+              } else {
+                this.src = "";
+                this.oncanplay = null;
               }
             }
             i++;
@@ -950,10 +1227,6 @@ var pages = {
               disableOnInteraction: false
             },
             speed: 1300,
-            /* lazy: {
-              loadPrevNext: true,
-              loadOnTransitionStart: true
-            }, */
             init: false,
             navigation: {
               nextEl: ".swiper-button-next",
@@ -969,7 +1242,7 @@ var pages = {
             touchRatio: 0.2,
             slideToClickedSlide: true,
             loop: true,
-            speed: 500,
+            speed: 1300,
             effect: "coverflow",
             coverflowEffect: {
               rotate: 0,
@@ -1063,16 +1336,28 @@ var pages = {
       },
       init: function() {
         this.muteInit();
-        $("audio").eq(0)[0].load();
+        $("audio")
+          .eq(0)[0]
+          .load();
       }
     },
     init: function() {
-      if ($(window).width() <= 650) {
-        $(".fpSlider").find("video").remove();
-      }else{
-        $(".fpSlider").find("video").each(function(){
-          $(this).attr('src',$(this).attr('data-src'));
-        })
+      if ($(window).width() <= 650 || $(window).width() <= 950 && $(window).height() <= 450) {
+        $(".fpSlider")
+          .find("video")
+          .remove();
+          $(".fpSlider_wrapper")
+          .find("audio")
+          .remove();
+      } else {
+        $(".fpSlider_wrapper")
+          .find("audio").eq(0).attr('src',$(".fpSlider_wrapper")
+          .find("audio").eq(0).attr('data-src'))
+        // $(".fpSlider")
+        //   .find("video")
+        //   .each(function() {
+        //     $(this).attr("src", $(this).attr("data-src"));
+        //   });
       }
       this.slider.init();
       if ($("audio").length > 0) this.sound.init();
@@ -1146,19 +1431,19 @@ var pages = {
       $this.removeClass("is-hidden");
       $this.addClass("is-proccess");
       $this.append("<span class='loadMonitor show'></span>");
-      $this.find(".projects_item_img").load(
-        $this.find(".projects_item_img").attr("data-src"),
-        //callback
-        function() {
-          $(this).attr("src", $(this).attr("data-src"));
+      if ($this.find(".projects_item_img").attr("data-src")) {
+        $this.find(".projects_item_img").on("load", function() {
           $this.addClass("is-loaded");
           $this.find(".loadMonitor").removeClass("show");
           setTimeout(function() {
             $this.removeClass("is-proccess");
             $this.find(".loadMonitor").remove();
           }, 500);
-        }
-      );
+        });
+        $this
+          .find(".projects_item_img")
+          .attr("src", $this.find(".projects_item_img").attr("data-src"));
+      }
     },
     events: function() {
       _this = this;
@@ -1208,12 +1493,20 @@ var pages = {
           //callback
           function() {
             $(this).attr("src", $(this).attr("data-src"));
-            $(this).parent().addClass("is-loaded");
-            $(this).parent().find(".loadMonitor").removeClass("show");
+            $(this)
+              .parent()
+              .addClass("is-loaded");
+            $(this)
+              .parent()
+              .find(".loadMonitor")
+              .removeClass("show");
             var $this = $(this);
             setTimeout(function() {
               $this.parent().removeClass("is-proccess");
-              $this.parent().find(".loadMonitor").remove();
+              $this
+                .parent()
+                .find(".loadMonitor")
+                .remove();
             }, 500);
           }
         );
@@ -1240,6 +1533,12 @@ var pages = {
               }
             }
           });
+        });
+        $(document).on("click", ".fpPhoto_box", function() {
+          $(this)
+            .parent()
+            .find(".js-popup")
+            .click();
         });
       },
       show: function(item) {
@@ -1343,15 +1642,18 @@ var pages = {
             _this.animate = true;
             _this.box.slick("slickGoTo", $(this).attr("slide-id"));
             _this.moveBar(
-              $(this).offset().left - $(this).parent().offset().left,
+              $(this).offset().left -
+                $(this)
+                  .parent()
+                  .offset().left,
               $(this).width()
             );
           } else if ($(window).width() <= 768) {
             if (!$(".infSlider_select").hasClass("active")) {
               $(".infSlider_select").addClass("active");
-              var scroll = $(document).scrollTop();
+              /* var scroll = $(document).scrollTop();
               $(document).scrollTop(scroll + 1);
-              $(document).scrollTop(scroll);
+              $(document).scrollTop(scroll); */
             } else {
               $(".infSlider_select").removeClass("active");
             }
@@ -1367,7 +1669,14 @@ var pages = {
         this.box.on("afterChange", function() {
           _this.animate = false;
         });
-        this.moveBar(0, _this.buts.eq(0).width());
+        this.moveBar(
+          _this.buts.eq(0).offset().left -
+            _this.buts
+              .eq(0)
+              .parent()
+              .offset().left,
+          _this.buts.eq(0).width()
+        );
       },
       init: function() {
         this.box = $(".infSlider_list");
@@ -1380,10 +1689,10 @@ var pages = {
     btnBack: {
       but: null,
       events: function() {
-        this.but.click(function(e) {
-          e.preventDefault();
-          history.back();
-        });
+        // this.but.click(function(e) {
+        //   e.preventDefault();
+        //   history.back();
+        // });
       },
       init: function() {
         this.but = $("#back_page");
@@ -1391,12 +1700,14 @@ var pages = {
       }
     },
     yaMapCreate: {
-      center: [55.751574, 37.573856],
+      center: null,
       createPlaceMark: function(coords, src, sity, name, link) {
         var width = 400;
         if ($(window).width() <= 600) width = 320;
+        console.log(coords, src, sity, name, link);
         return new ymaps.Placemark(
           coords,
+
           {
             balloonContentHeader:
               '<div class="yaMap_head">' +
@@ -1406,7 +1717,6 @@ var pages = {
               width +
               '"/>' +
               "</div>",
-            // Зададим содержимое основной части балуна.
             balloonContentBody:
               '<div class="yaMap_content">' +
               "<p>" +
@@ -1426,87 +1736,148 @@ var pages = {
           {
             hideIconOnBalloonOpen: false,
             iconLayout: "default#image",
-            iconImageHref: "images/loc.svg",
-            iconImageSize: [60, 60],
-            iconImageOffset: [-30, -30]
+            iconImageHref: "/local/templates/main/images/loc.svg",
+            iconImageSize: [40, 40],
+            iconImageOffset: [-20, -20]
           }
         );
       },
       create: function() {
         var _this = this;
-        ymaps.ready(function() {
-          var myMap = new ymaps.Map(
-            "map",
-            {
-              center: _this.center,
-              zoom: 16,
-              type: "yandex#satellite",
-              controls: []
-            },
-            {
-              searchControlProvider: "yandex#search"
-            }
-          );
-          myPlacemark = _this.createPlaceMark(
-            [55.751574, 37.573856],
-            "images/projects/proj_1.jpg",
-            "Санкт-Петербург",
-            "Мультиформатный жилой комплекс «Golden City»",
-            "#"
-          );
-          myMap.events.add("click", function() {
-            myMap.balloon.close();
+        myMap = new ymaps.Map(
+          "map",
+          {
+            center: _this.center,
+            zoom: 16,
+            type: "yandex#satellite",
+            controls: []
+          },
+          {
+            searchControlProvider: "yandex#search"
+          }
+        );
+        myMap.events.add("click", function() {
+          myMap.balloon.close();
+        });
+        myMap.behaviors.disable("scrollZoom");
+        if ($(".map_data .placeMark").length > 0) {
+          $(".map_data .placeMark").each(function() {
+            myMap.geoObjects.add(
+              _this.createPlaceMark(
+                $(this)
+                  .attr("data-cords")
+                  .split(","),
+                $(this).attr("data-img"),
+                $(this).attr("data-sity"),
+                $(this).attr("data-name"),
+                $(this).attr("data-link")
+              )
+            );
           });
-          myMap.behaviors.disable("scrollZoom");
-          if ($(".map_data .placeMark").length) {
-            $(".map_data .placeMark").each(function() {
-              myMap.geoObjects.add(
-                _this.createPlaceMark(
-                  $(this).attr("data-cords").split(","),
-                  "images/projects/proj_1.jpg",
-                  $(this).attr("data-sity"),
-                  $(this).attr("data-name"),
-                  $(this).attr("data-link")
-                )
-              );
-            });
+        }
+        var zoomControl = new ymaps.control.ZoomControl({
+          options: {
+            size: "auto",
+            float: "none",
+            position: { right: 10, bottom: 40 }
           }
         });
+        if ($("#map").hasClass("hasBalloon"))
+          myMap.geoObjects.options.set({ hasBalloon: false });
+        if ($(window).width() < 768) {
+          myMap.behaviors.disable("drag");
+        }
+        myMap.controls.add(zoomControl);
       },
       create_full: function() {
         var _this = this;
-        ymaps.ready(function() {
-          var myMap = new ymaps.Map(
-              "map",
-              {
-                center: _this.center,
-                zoom: 6,
-                controls: []
-              },
-              {
-                searchControlProvider: "yandex#search"
-              }
-            ),
-            myPlacemark = _this.createPlaceMark(
-              [55.751574, 37.573856],
-              "images/projects/proj_1.jpg",
-              "Санкт-Петербург",
-              "Мультиформатный жилой комплекс «Golden City»",
-              "#"
-            );
-          myMap.events.add("click", function() {
-            myMap.balloon.close();
-          });
-          myMap.behaviors.disable("scrollZoom");
-          myMap.geoObjects.add(myPlacemark);
+        var zoom = $("#map").hasClass("hasBalloon") ? 13 : 6;
+
+        myMapFull = new ymaps.Map(
+          "map",
+          {
+            center: _this.center,
+            zoom: zoom,
+            controls: []
+          },
+          {
+            searchControlProvider: "yandex#search"
+          }
+        );
+        clusterer = new ymaps.Clusterer({
+          preset: "islands#invertedVioletClusterIcons",
+          clusterIcons: [
+            {
+              href: "/local/templates/main/images/map_claster.svg",
+              size: [50, 50],
+              offset: [-25, -25]
+            }
+          ],
+          groupByCoordinates: false,
+          clusterIconColor: "black",
+          clusterDisableClickZoom: true,
+          clusterHideIconOnBalloonOpen: false,
+          geoObjectHideIconOnBalloonOpen: false
         });
+        clusterer.options.set({
+          gridSize: 80,
+          clusterDisableClickZoom: false
+        });
+        myMapFull.events.add("click", function() {
+          myMapFull.balloon.close();
+        });
+        myMapFull.behaviors.disable("scrollZoom");
+        if ($(".map_data .placeMark").length > 0) {
+          $(".map_data .placeMark").each(function() {
+            clusterer.add(
+              _this.createPlaceMark(
+                $(this)
+                  .attr("data-cords")
+                  .split(","),
+                $(this).attr("data-img"),
+                $(this).attr("data-sity"),
+                $(this).attr("data-name"),
+                $(this).attr("data-link")
+              )
+            );
+          });
+        }
+        myMapFull.geoObjects.add(clusterer);
+        var zoomControl = new ymaps.control.ZoomControl({
+          options: {
+            size: "auto",
+            float: "none",
+            position: { right: 10, bottom: 40 }
+          }
+        });
+        if ($("#map").hasClass("hasBalloon"))
+          myMapFull.geoObjects.options.set({ hasBalloon: false });
+        if ($(window).width() < 768) {
+          myMapFull.behaviors.disable("drag");
+        }
+        myMapFull.controls.add(zoomControl);
       },
       init: function() {
-        if ($("#map").hasClass("full")) {
-          this.create_full();
-        } else {
-          this.create();
+        console.log("map_init");
+        var _this = this;
+        this.center =
+          $(".map_data .placeMark").length > 0
+            ? $(".map_data .placeMark")
+                .eq(0)
+                .attr("data-cords")
+                .split(",")
+            : [55.751574, 37.573856];
+        function initMap() {
+          console.log("map_ready");
+          if ($("#map").hasClass("full")) {
+            _this.create_full();
+          } else {
+            _this.create();
+          }
         }
+        ymaps.ready(function() {
+          initMap();
+        });
       }
     },
     init: function() {
@@ -1561,7 +1932,11 @@ var pages = {
       if (item.hasClass("open")) {
         item.height(
           item.find(".vacancy_title").height() +
-            item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+            item
+              .find(".vacancy_title")
+              .css("padding-top")
+              .replace("px", "") *
+              2
         );
         item.removeClass("open");
       } else {
@@ -1572,7 +1947,11 @@ var pages = {
     setVacancy: function(item) {
       item.height(
         item.find(".vacancy_title").height() +
-          item.find(".vacancy_title").css("padding-top").replace("px", "") * 2
+          item
+            .find(".vacancy_title")
+            .css("padding-top")
+            .replace("px", "") *
+            2
       );
     },
     dropDownPrize: function(item) {
@@ -1623,9 +2002,74 @@ var pages = {
   },
   newDetail: {
     events: function() {
+      var _this = this;
       $(".boxHide_but").click(function(e) {
         e.preventDefault();
-        $(this).parent().toggleClass("active");
+        $(this)
+          .parent()
+          .toggleClass("active");
+      });
+      $(document).on("click", ".comment_item > .default-btn", function(e) {
+        e.preventDefault();
+        if (
+          $(this)
+            .parent()
+            .find(">.form").length == 0
+        ) {
+          $(".comment")
+            .find(".parsley-required")
+            .remove();
+          $(".comment")
+            .find("*")
+            .removeClass("parsley-error");
+          var answerId = $(this)
+            .parent()
+            .attr("data-answer-id");
+          $(".comment")
+            .find(".form")
+            .find('[name="abswer_id"]')
+            .remove();
+          $(".comment")
+            .find(".form")
+            .append(
+              '<input name="abswer_id" type="hidden" value="' + answerId + '"/>'
+            );
+          var html = $(".comment")
+            .find(".form")
+            .eq(0)[0].outerHTML;
+          $(".comment")
+            .find(".form")
+            .remove();
+          $(html).css("margin-bottom", 0);
+          $(this)[0].outerHTML = $(this)[0].outerHTML + html;
+          _this.validate();
+
+          if ($(".comment").find(".simpleCommentBut").length == 0) {
+            $(".comment_title:last-child").html(
+              '<a href="" class="default-btn btn-gray simpleCommentBut">Оставить коментарий</a>'
+            );
+          }
+        }
+      });
+      $(document).on("click", ".simpleCommentBut", function(e) {
+        e.preventDefault();
+        $(".comment_title:last-child").html("Оставить коментарий");
+        $(".comment")
+          .find(".parsley-required")
+          .remove();
+        $(".comment")
+          .find("*")
+          .removeClass("parsley-error");
+        var html = $(".comment")
+          .find(".form")
+          .eq(0)[0].outerHTML;
+        $(".comment")
+          .find(".form")
+          .remove();
+        $(html).attr("style", "");
+        $(".comment_title:last-child").eq(0)[0].outerHTML =
+          $(".comment_title:last-child").eq(0)[0].outerHTML + html;
+        _this.validate();
       });
     },
     sliderInit: function() {
@@ -1676,7 +2120,7 @@ var pages = {
     this.newDetail.init();
   }
 };
-var XHRequests = {
+XHRequests = {
   store: [],
   currentPage_id: 0,
   offsetPage: 0,
@@ -1684,7 +2128,6 @@ var XHRequests = {
   newRequest: function(href, succes, failed) {
     this.showPreloader();
     this.preloader = true;
-    
 
     if (window.XMLHttpRequest) {
       // firefox etc
@@ -1701,20 +2144,39 @@ var XHRequests = {
     this.XHR.open("POST", href, true);
 
     function handleResponse(request) {
+      if (debug) {
+        console.log(request);
+        if (stopped) {
+          return true;
+        }
+      }
       setTimeout(function() {
-        if (request.status == 200 && request.status == 404) {
+        var elem_ = document.getElementsByClassName("iframeDoc");
+        if (elem_.length > 1) {
+          elem_[1].parentNode.removeChild(elem_[1]);
+        }
+
+        if (request.status == 200 || request.status == 404) {
           succes();
-          var html = request.response;
-          _this.reloadPageDoing(html);
-          _this.hidePreloader();
+          var temp_html = request.response;
+          _this.reloadPageDoing(temp_html);
+
+          _this.XHR.onload = null;
         } else {
           failed();
         }
       }, 500);
     }
 
-    this.XHR.onerror = function() {
+    this.XHR.onerror = function(e) {
+      if (debug) {
+        console.log(e);
+        if (stopped) {
+          return true;
+        }
+      }
       failed();
+      _this.XHR.onerror = null;
     };
     this.XHR.send();
   },
@@ -1735,14 +2197,9 @@ var XHRequests = {
       this.store.push(pageInf);
       history.pushState(pageInf, null, href);
       this.currentPage_id = next_id;
-      $("body,html").animate(
-        {
-          scrollTop: 0
-        },
-        1000
-      );
     }.bind(this);
     failed = function() {
+      console.log("failed__________new-page");
       target.attr("data-fail-xhr", "fail");
       target[0].click();
     }.bind(this);
@@ -1751,8 +2208,12 @@ var XHRequests = {
   backPage: function(href) {
     this.currentPage_id--;
     this.offsetPage--;
-    succes = function() {}.bind(this);
-    failed = function() {}.bind(this);
+    succes = function() {
+      console.log("succes");
+    }.bind(this);
+    failed = function() {
+      console.log("failed");
+    }.bind(this);
 
     this.newRequest(href, succes, failed);
   },
@@ -1772,11 +2233,16 @@ var XHRequests = {
         href.indexOf("tel:") != 0 &&
         href.indexOf("mailto:") != 0 &&
         href.indexOf("callto:") != 0 &&
-        href != ""
+        href != "" &&
+        !$(this).is("[download]") &&
+        (!$(this).attr("target") || $(this).attr("target") != "_blank")
       ) {
         if ($(this).attr("data-fail-xhr") == undefined) {
           e.preventDefault();
           _this.newPage(href, $(this), e);
+          if ($(this).hasClass("header_mobileMenu_lang_title")) {
+            templs.header.burger.close();
+          }
         }
       }
     });
@@ -1815,22 +2281,38 @@ var XHRequests = {
     var color = $(".header").hasClass("scrolled") ? "white" : "black";
     loader = loader.replace("color", color);
     $(".wrapper").append(loader);
-    $(".wrapper").find(".bgLoadPage").animate({
-      opacity: 1
-    }, 500, function() {
-      _this.preloader = false;
-    });
+    $(".wrapper")
+      .find(".bgLoadPage")
+      .animate(
+        {
+          opacity: 1
+        },
+        500,
+        function() {
+          _this.preloader = false;
+        }
+      );
   },
   hidePreloader: function() {
     var _this = this;
     func = function() {
-      $(".wrapper").find(".bgLoadPage").addClass("loaded");
+      $(".wrapper")
+        .find(".bgLoadPage")
+        .addClass("loaded");
       setTimeout(function() {
-        $(".wrapper").find(".bgLoadPage").animate({
-          opacity: 0
-        }, 500, function() {
-          $(".wrapper").find(".bgLoadPage").remove();
-        });
+        $(".wrapper")
+          .find(".bgLoadPage")
+          .animate(
+            {
+              opacity: 0
+            },
+            500,
+            function() {
+              $(".wrapper")
+                .find(".bgLoadPage")
+                .remove();
+            }
+          );
       }, 300);
     };
     if (_this.preloader) {
@@ -1842,72 +2324,152 @@ var XHRequests = {
       }, 50);
     } else func();
   },
-  reloadPageDoing: function(html) {
-    $(".wrapper .page").html($(html).find(".wrapper .page > *"));
-    if ($(html).find(".wrapper.only-fp").length > 0) {
-      $(".wrapper").addClass("only-fp");
-    } else {
-      $(".wrapper").removeClass("only-fp");
-    }
-    /////////
-    $("head").find('*:not(link[rel="stylesheet"])').remove();
-    $("head").append($(html).find('head >*:not(link[rel="stylesheet"])'));
-    /////////
-    if (
-      $(html).find(".header").hasClass("scrolled") &&
-      $(html).find(".header").hasClass("scrolled-ever")
-    ) {
-      $(".header").addClass("scrolled-ever").addClass("scrolled");
-    } else {
-      $(".header").removeClass("scrolled-ever").removeClass("scrolled");
-    }
-    /////////
-    if ($(html).find(".header_search_wrapper").hasClass("open")) {
-      $(".header_search_wrapper").addClass("open");
-    } else {
-      $(".header_search_wrapper").removeClass("open");
-    }
-    /////////
-    if ($(html).find(".header").hasClass("searchOpen")) {
-      $(".header").addClass("searchOpen");
-    } else {
-      $(".header").removeClass("searchOpen");
-    }
-    /////////
-    if ($(html).find(".header").hasClass("searchPage")) {
-      $(".header").addClass("searchPage");
-    } else {
-      $(".header").removeClass("searchPage");
-    }
-    /////////
-    if ($(html).find(".footer").length == 0) {
-      $(".wrapper .footer").remove();
-    } else if ($(".wrapper .footer").length == 0) {
-      $(".wrapper").append($(html).find(".footer"));
-    }
-    /////////
-    if ($(".wrapper .header_menuSub").length == 0) {
-      $(".wrapper .header").append("<div class='header_menuSub hide'></div>");
-    }
-    $(".wrapper .header_menuSub >*").remove();
-    if ($(html).find(".wrapper .header_menuSub >*").length > 0) {
-      $(".wrapper .header_menuSub").removeClass("hide");
-      $(".wrapper .header_menuSub").append(
-        $(html).find(".wrapper .header_menuSub >*")
-      );
-    } else {
-      $(".wrapper .header_menuSub").addClass("hide");
-    }
-    /////////
-    templs.init();
-    pages.init();
+  subDocument: function(string) {
+    var _iframe = document.createElement("iframe");
+    _iframe.style.display = "none";
+    _iframe.className = "iframeDoc";
+    document.body.appendChild(_iframe);
+    var head = string.slice(
+      string.indexOf("<head>") + 6,
+      string.indexOf("</head>")
+    );
+    var body = string.slice(
+      string.indexOf("<body>") + 6,
+      string.indexOf("</body>")
+    );
+    _iframe.contentDocument.body.innerHTML = body;
+    _iframe.contentDocument.head.innerHTML = head;
+    return _iframe;
+  },
+  reloadPageDoing: function(temp_html) {
+    var _this = this;
+    var iframe = this.subDocument(temp_html);
+    var __html = this.subDocument(temp_html).contentDocument;
+    var loadedIframe = function(_html) {
+      console.log("reload ________");
+      var replaceDOM = function(_class, _parent) {
+        var _old = document.getElementsByClassName(_class)[0];
+        var _new = _html.getElementsByClassName(_class)[0];
+        if (!_old) {
+          _parent.append(_new);
+        } else {
+          _parent.replaceChild(_new, _old);
+        }
+      };
+      var wrapper = document.getElementsByClassName("wrapper")[0];
+      var newWrapper = _html.getElementsByClassName("wrapper")[0];
+      replaceDOM("page", wrapper);
+      replaceDOM("header", wrapper);
+      replaceDOM("footer", wrapper);
+      if (!0) {
+        function getArray(selector, parent) {
+          return Array.prototype.slice.call(parent.querySelectorAll(selector));
+        }
+        getArray('title,meta,[type="image/png"]', document.head).forEach(
+          function(elem) {
+            if (elem.remove) elem.remove();
+          }
+        );
+        getArray("*", _html.head).forEach(function(elem) {
+          var find = false;
+          getArray("*", document.head).forEach(function(elem2) {
+            if (elem2.outerHTML == elem.outerHTML) find = true;
+          });
+          if (!find && elem.tagName) document.head.appendChild(elem);
+        });
+      } else {
+        document.documentElement.replaceChild(_html.head, document.head);
+      }
+      // getArray("*", document.head).forEach(function(elem, key) {
+      //   var find = false;
+      //   getArray("*", document.head).forEach(function(elem2, key2) {
+      //     if (key != key2) {
+      //       if (elem2.outerHTML == elem.outerHTML) {
+      //         find = true;
+      //       }
+      //     }
+      //   });
+      //   if (find) {
+      //     elem.remove();
+      //   }
+      // });
 
-    $("body").removeClass("scrollDis");
+      wrapper.classList.remove("only-fp");
+      if (newWrapper.classList.contains("only-fp"))
+        wrapper.classList.add("only-fp");
+      /* for (var i = 0; i < newWrapper.classList.length; i++) {
+        wrapper.classList.add(newWrapper.classList[i]);
+      } */
+      if (window.location.hash.length > 0) {
+        window.hashName = window.location.hash;
+        scrollToHash = $(window.hashName).offset().top - $(window).height() / 2 - $(window.hashName).height()/2;
+      }else{
+        scrollToHash = 0;
+      }
+      function doo() {
+        templs.init();
+        pages.init();
+        console.log("scripts inited");
+        _this.hidePreloader();
+        $(document).scrollTop(scrollToHash)
+      }
+      if (document.readyState === "complete") {
+        doo();
+      } else {
+        window.onload = function() {
+          ymaps.ready(function() {
+            doo();
+          });
+          window.onload = null;
+        };
+      }
+      $("body").removeClass("scrollDis");
+    };
+
+    if (iframe.contentWindow.document.readyState == "complete") {
+      loadedIframe(__html);
+    } else {
+      iframe.onload = function() {
+        loadedIframe(__html);
+      };
+    }
   },
   init: function() {
     this.XHR = new XMLHttpRequest();
     this.pullState();
     this.events();
-    this.hidePreloader();
+    console.log("XHR inited");
+    //if (!inited) this.hidePreloader();
   }
 };
+$(document).on("submit", "#comment_form ", function(e) {
+  e.preventDefault();
+
+  $.ajax({
+    url: $("#comment_form").attr("action"),
+    type: "POST", //метод отправки
+    dataType: "html", //формат данных
+    data: $("#comment_form").serialize(),
+    success: function(data) {
+      //Данные отправлены успешно
+      console.log(data);
+      templs.popup.open("#comment_succes", "inWindow");
+    },
+    error: function(response) {
+      alert("Ошибка данных");
+    }
+  });
+});
+$(window).on('load',function(){
+    XHRequests.hidePreloader();
+})
+if (document.readyState === "complete") {
+  XHRequests.hidePreloader();
+} else {
+  window.onload = function() {
+    ymaps.ready(function() {
+      XHRequests.hidePreloader();
+    });
+    window.onload = null;
+  };
+}
