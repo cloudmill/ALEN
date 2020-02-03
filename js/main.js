@@ -2160,7 +2160,6 @@ XHRequests = {
           succes();
           var temp_html = request.response;
           _this.reloadPageDoing(temp_html);
-
           _this.XHR.onload = null;
         } else {
           failed();
@@ -2425,7 +2424,6 @@ XHRequests = {
       }
       $("body").removeClass("scrollDis");
     };
-
     if (iframe.contentWindow.document.readyState == "complete") {
       loadedIframe(__html);
     } else {

@@ -1,461 +1,702 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
-        <title>Главная</title>
-        <link rel="icon" href="images/favicon.png" type="image/png">
-        <meta property="og:image" content="images/facebook_banner.jpg">
-<link rel='stylesheet' href='libs/ps/perfect-scrollbar.css' />
-        <link rel="stylesheet" href="libs/slick/slick.css" />
-        <link rel="stylesheet" href="libs/swiper/swiper.min.css" />
-        <link href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet">
-        <link rel="stylesheet" href="css/style.css" />
-    </head>
-    <body>
-        <div class="wrapper only-fp">
-            <div class="header">
-                <a href="index.html" class="header_logo"></a>
-                <div class="header_search_wrapper">
-                    <a href="" class="header_search_but"></a>
-                    <form action='search.html' class="header_search_input_wrapper">
-                        <input name="s" type="text" class="header_search_input" />
-                        <label for="s">Поиск</label>
-                        <a href="" class="header_search_input_close"></a>
-                    </form>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Главная</title>
+    <link rel="icon" href="images/favicon.png" type="image/png" />
+    <meta property="og:image" content="images/facebook_banner.jpg" />
+    <link rel="stylesheet" href="libs/ps/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="libs/slick/slick.css" />
+    <link rel="stylesheet" href="libs/swiper/swiper.min.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div class="wrapper only-fp">
+      <div class="header">
+        <a href="index.html" class="header_logo"></a>
+        <div class="header_search_wrapper">
+          <a href="" class="header_search_but"></a>
+          <form action="search.html" class="header_search_input_wrapper">
+            <input name="s" type="text" class="header_search_input" />
+            <label for="s">Поиск</label>
+            <a href="" class="header_search_input_close"></a>
+          </form>
+        </div>
+        <div class="header_menu">
+          <a href="projects.html" class="header_menu_item">Проекты</a>
+          <a href="about.html" class="header_menu_item">Компания</a>
+          <a href="services.html" class="header_menu_item">Услуги</a>
+          <a href="lab.html" class="header_menu_item">Лаборатория</a>
+          <a href="press-center.html" class="header_menu_item">Пресс-центр</a>
+          <a href="contacts.html" class="header_menu_item">Контакты</a>
+        </div>
+        <div class="header_mobileButs">
+          <a href="" class="header_mobile_call">
+            <i class="icon icon-phone"></i>
+          </a>
+          <a href="" class="header_mobile_burger">
+            <span></span>
+          </a>
+        </div>
+        <a href="" class="header_mobile_search">
+          <span></span>
+        </a>
+        <div class="header_mobileMenu">
+          <div class="header_mobileMenu_list">
+            <a href="" class="header_mobileMenu_item header_mobileMenu_search">
+              Поиск
+            </a>
+            <a href="projects.html" class="header_mobileMenu_item">
+              Проекты
+            </a>
+            <a href="about.html" class="header_mobileMenu_item"> Компания </a>
+            <a href="services.html" class="header_mobileMenu_item">
+              Услуги
+            </a>
+            <a href="lab.html" class="header_mobileMenu_item">
+              Лаборатория
+            </a>
+            <a href="press-center.html" class="header_mobileMenu_item">
+              Пресс-центр
+            </a>
+            <a href="contacts.html" class="header_mobileMenu_item">
+              Контакты
+            </a>
+            <div class="header_mobileMenu_item language">
+              <div class="header_mobileMenu_lang_title">
+                English
+              </div>
+              <div class="header_mobileMenu_lang_wrapper">
+                <div class="header_mobileMenu_lang_list">
+                  <a href="" class="header_mobileMenu_lang_item active">
+                    English
+                  </a>
+                  <a href="" class="header_mobileMenu_lang_item">
+                    English
+                  </a>
                 </div>
-                <div class="header_menu">
-                    <a href="projects.html" class="header_menu_item">Проекты</a>
-                    <a href="about.html" class="header_menu_item">Компания</a>
-                    <a href="services.html" class="header_menu_item">Услуги</a>
-                    <a href="lab.html" class="header_menu_item">Лаборатория</a>
-                    <a href="press-center.html" class="header_menu_item">Пресс-центр</a>
-                    <a href="contacts.html" class="header_menu_item">Контакты</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page">
+        <div class="fpSlider_wrapper">
+          <div class="fpSlider swiper-container">
+            <div class="swiper-wrapper">
+              <a href="projects_detail.html" class="swiper-slide">
+                <div class="fpSlider_item swiper-slide-container">
+                  <div class="fpSlider_item_bg">
+                    <img src="videos/poster_1.jpg" alt="" />
+                    <video
+                      loop=""
+                      muted=""
+                      playsinline=""
+                      data-src="videos/01.mp4"
+                    ></video>
+                  </div>
                 </div>
-                <div class="header_mobileButs">
-                    <a href="" class="header_mobile_call">
-                        <i class="icon icon-phone"></i>
-                    </a>
-                    <a href="" class="header_mobile_burger">
-                        <span></span>
-                    </a>
+              </a>
+              <a href="projects_detail.html" class="swiper-slide">
+                <div class="fpSlider_item swiper-slide-container">
+                  <div class="fpSlider_item_bg">
+                    <img src="videos/poster_2.jpg" alt="" />
+                    <video
+                      loop=""
+                      muted=""
+                      playsinline=""
+                      data-src="videos/02.mp4"
+                    ></video>
+                  </div>
                 </div>
-                <a href="" class="header_mobile_search">
-                    <span></span>
+              </a>
+              <a href="projects_detail.html" class="swiper-slide">
+                <div class="fpSlider_item swiper-slide-container">
+                  <div class="fpSlider_item_bg">
+                    <img src="videos/poster_3.jpg" alt="" />
+                    <video
+                      loop=""
+                      muted=""
+                      playsinline=""
+                      data-src="videos/03.mp4"
+                    ></video>
+                  </div>
+                </div>
+              </a>
+              <a href="projects_detail.html" class="swiper-slide">
+                <div class="fpSlider_item swiper-slide-container">
+                  <div class="fpSlider_item_bg">
+                    <img src="videos/poster_4.jpg" alt="" />
+                    <video
+                      loop=""
+                      muted=""
+                      playsinline=""
+                      data-src="videos/04.mp4"
+                    ></video>
+                  </div>
+                </div>
+              </a>
+              <a href="projects_detail.html" class="swiper-slide">
+                <div class="fpSlider_item swiper-slide-container">
+                  <div class="fpSlider_item_bg">
+                    <img src="videos/poster_5.jpg" alt="" />
+                    <video
+                      loop=""
+                      muted=""
+                      playsinline=""
+                      data-src="videos/05.mp4"
+                    ></video>
+                  </div>
+                </div>
+              </a>
+            </div>
+            <!-- Add Arrows -->
+            <div class="fpSlider_box right">
+              <div class="swiper-button-next"></div>
+            </div>
+            <div class="fpSlider_box left">
+              <div class="swiper-button-prev"></div>
+            </div>
+
+            <!-- Add pagination -->
+          </div>
+          <div class="fpSlider_labels swiper-container">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <div class="fpSlider_labels_item swiper-slide-container">
+                  <div class="fpSlider_labels_item_text">
+                    <div class="fpSlider_labels_item_text_title">
+                      Санкт-Петербург
+                    </div>
+                    <div class="fpSlider_labels_item_text_name">
+                      Жилой комплекс <br />
+                      «Светлый мир «Я-Романтик...»
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="fpSlider_labels_item swiper-slide-container">
+                  <div class="fpSlider_labels_item_text">
+                    <div class="fpSlider_labels_item_text_title">
+                      Санкт-Петербург
+                    </div>
+                    <div class="fpSlider_labels_item_text_name">
+                      «Хоккейный город» <br />
+                      Спортивный комплекс хоккейного клуба СКА
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="fpSlider_labels_item swiper-slide-container">
+                  <div class="fpSlider_labels_item_text">
+                    <div class="fpSlider_labels_item_text_title">
+                      Санкт-Петербург
+                    </div>
+                    <div class="fpSlider_labels_item_text_name">
+                      Жилой комплекс «Кристаллы Крестовского» <br />
+                      Дома «Малахит» и «Лазурит»
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="fpSlider_labels_item swiper-slide-container">
+                  <div class="fpSlider_labels_item_text">
+                    <div class="fpSlider_labels_item_text_title">
+                      Санкт-Петербург
+                    </div>
+                    <div class="fpSlider_labels_item_text_name">
+                      Дилерский центр Mercedes-Benz
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="swiper-slide">
+                <div class="fpSlider_labels_item swiper-slide-container">
+                  <div class="fpSlider_labels_item_text">
+                    <div class="fpSlider_labels_item_text_title">
+                      Санкт-Петербург
+                    </div>
+                    <div class="fpSlider_labels_item_text_name">
+                      Апарт-комплекс <br />
+                      «Парк здоровья «Светлый мир «Внутри…»
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fpSlider_botContent">
+            <audio loop src="sounds/sound.mp3"></audio>
+            <div
+              class="fpSlider_mute"
+              data-word-on="Выкл. звук"
+              data-word-off="Вкл. звук"
+            >
+              Вкл. звук
+            </div>
+            <a href="" class="fpSlider_botContent_but">
+              English
+            </a>
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="textAbout">
+          <div class="container">
+            <div class="textAbout_row scrollanimChild fadeUp">
+              <div class="textAbout_col">
+                <h2>
+                  Архитектурное бюро «А.Лен»
+                </h2>
+                <h4>
+                  «А.Лен» – архитектурная мастерская
+                  <span class="noWrap">и генпроектная</span> организация,
+                  основанная <span class="noWrap">в 1991</span> году Сергеем
+                  Орешкиным
+                </h4>
+                <a href="" class="default-btn btn-gray">
+                  О компании
                 </a>
-                <div class="header_mobileMenu">
-                    <div class="header_mobileMenu_list">
-                        <a href="" class="header_mobileMenu_item header_mobileMenu_search">
-                            Поиск
-                        </a>
-                        <a href="projects.html" class="header_mobileMenu_item">
-                            Проекты
-                        </a>
-                        <a href="about.html" class="header_mobileMenu_item">
-                            Компания </a>
-                        <a href="services.html" class="header_mobileMenu_item">
-                            Услуги
-                        </a>
-                        <a href="lab.html" class="header_mobileMenu_item">
-                            Лаборатория
-                        </a>
-                        <a href="press-center.html" class="header_mobileMenu_item">
-                            Пресс-центр
-                        </a>
-                        <a href="contacts.html" class="header_mobileMenu_item">
-                            Контакты
-                        </a>
-                        <div class="header_mobileMenu_item language">
-                            <div class="header_mobileMenu_lang_title">
-                                English
-                            </div>
-                            <div class="header_mobileMenu_lang_wrapper">
-                                <div class="header_mobileMenu_lang_list">
-                                    <a href="" class="header_mobileMenu_lang_item active">
-                                        English
-                                    </a>
-                                    <a href="" class="header_mobileMenu_lang_item">
-                                        English
-                                    </a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              </div>
+              <div class="textAbout_col">
+                <p>
+                  Заказчикам строительства
+                  <span class="noWrap">и девелоперам</span> Архитектурное бюро
+                  «А.Лен» предлагает свой многолетний опыт проектирования зданий
+                  <span class="noWrap">и сооружений</span> для создания
+                  объектов, обладающих отличительными чертами авторской
+                  архитектуры:
+                </p>
+                <ul>
+                  <li>
+                    Проектирует красивое
+                    <span class="noWrap">и функциональное</span> здание
+                  </li>
+                  <li>
+                    Определяет «золотую середину» между экономикой
+                    <span class="noWrap">и архитектурой</span> жилого дома,
+                    бизнес-центра, торгового комплекса
+                  </li>
+                  <li>
+                    Придает жизнь камню, металлу, стеклу
+                  </li>
+                  <li>
+                    Вписывает новую постройку
+                    <span class="noWrap">в сложившуюся</span> среду, выделяя
+                    здание среди массы похожих, придав ему индивидуальность,
+                    неординарность
+                  </li>
+                </ul>
+              </div>
             </div>
-            <div class="page">
-                <div class="fpSlider_wrapper">
-                    <div class="fpSlider swiper-container">
-                        <div class="swiper-wrapper">
-                            <a href="projects_detail.html" class="swiper-slide">
-                                <div class="fpSlider_item swiper-slide-container">
-                                    <div class="fpSlider_item_bg">
-                                        <img src="videos/poster_1.jpg" alt="">
-                                        <video loop="" muted="" playsinline="" data-src="videos/01.mp4"></video>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="projects_detail.html" class="swiper-slide">
-                                <div class="fpSlider_item swiper-slide-container">
-                                    <div class="fpSlider_item_bg">
-                                        <img src="videos/poster_2.jpg" alt="">
-                                        <video loop="" muted="" playsinline="" data-src="videos/02.mp4"></video>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="projects_detail.html" class="swiper-slide">
-                                <div class="fpSlider_item swiper-slide-container">
-                                    <div class="fpSlider_item_bg">
-                                        <img src="videos/poster_3.jpg" alt="">
-                                        <video loop="" muted="" playsinline="" data-src="videos/03.mp4"></video>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="projects_detail.html" class="swiper-slide">
-                                <div class="fpSlider_item swiper-slide-container">
-                                    <div class="fpSlider_item_bg">
-                                        <img src="videos/poster_4.jpg" alt="">
-                                        <video loop="" muted="" playsinline="" data-src="videos/04.mp4"></video>
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="projects_detail.html" class="swiper-slide">
-                                <div class="fpSlider_item swiper-slide-container">
-                                    <div class="fpSlider_item_bg">
-                                        <img src="videos/poster_5.jpg" alt="">
-                                        <video loop="" muted="" playsinline="" data-src="videos/05.mp4"></video>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <!-- Add Arrows -->
-                        <div class="fpSlider_box right">
-                            <div class="swiper-button-next"></div>
-                        </div>
-                        <div class="fpSlider_box left">
-                            <div class="swiper-button-prev"></div>
-                        </div>
-
-
-                        <!-- Add pagination -->
-                    </div>
-                    <div class="fpSlider_labels swiper-container">
-                        <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="fpSlider_labels_item swiper-slide-container">
-                                    <div class="fpSlider_labels_item_text">
-                                        <div class="fpSlider_labels_item_text_title">
-                                            Санкт-Петербург
-
-                                        </div>
-                                        <div class="fpSlider_labels_item_text_name">
-                                            Жилой комплекс <br>
-                                            «Светлый мир «Я-Романтик...»
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="fpSlider_labels_item swiper-slide-container">
-                                    <div class="fpSlider_labels_item_text">
-                                        <div class="fpSlider_labels_item_text_title">
-                                            Санкт-Петербург
-                                        </div>
-                                        <div class="fpSlider_labels_item_text_name">
-
-                                            «Хоккейный город» <br>
-                                            Спортивный комплекс хоккейного клуба СКА
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="fpSlider_labels_item swiper-slide-container">
-                                    <div class="fpSlider_labels_item_text">
-                                        <div class="fpSlider_labels_item_text_title">
-                                            Санкт-Петербург
-                                        </div>
-                                        <div class="fpSlider_labels_item_text_name">
-
-                                            Жилой комплекс «Кристаллы Крестовского» <br>
-                                            Дома «Малахит» и «Лазурит»
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="fpSlider_labels_item swiper-slide-container">
-                                    <div class="fpSlider_labels_item_text">
-                                        <div class="fpSlider_labels_item_text_title">
-                                            Санкт-Петербург
-                                        </div>
-                                        <div class="fpSlider_labels_item_text_name">
-                                            Дилерский центр Mercedes-Benz
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="fpSlider_labels_item swiper-slide-container">
-                                    <div class="fpSlider_labels_item_text">
-                                        <div class="fpSlider_labels_item_text_title">
-                                            Санкт-Петербург
-                                        </div>
-                                        <div class="fpSlider_labels_item_text_name">
-                                            Апарт-комплекс <br>
-                                            «Парк здоровья «Светлый мир «Внутри…»
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="fpSlider_botContent">
-                        <audio loop src="sounds/sound.mp3"></audio>
-                        <div class="fpSlider_mute" data-word-on="Выкл. звук" data-word-off="Вкл. звук">
-                            Вкл. звук
-                        </div>
-                        <a href="" class="fpSlider_botContent_but">
-                            English
-                        </a>
-                    </div>
-                    <div class="swiper-pagination">
-                    </div>
-                </div>
-                <div class="textAbout">
-                    <div class="container">
-                        <div class="textAbout_row scrollanimChild fadeUp">
-                            <div class="textAbout_col">
-                                <h2>
-                                    Архитектурное бюро «А.Лен»
-                                </h2>
-                                <h4>
-                                    «А.Лен» – архитектурная мастерская <span class="noWrap">и генпроектная</span> организация, основанная <span class="noWrap">в 1991</span> году Сергеем Орешкиным
-                                </h4>
-                                <a href="" class="default-btn btn-gray">
-                                    О компании
-                                </a>
-                            </div>
-                            <div class="textAbout_col">
-                                <p>
-                                    Заказчикам строительства <span class="noWrap">и девелоперам</span> Архитектурное бюро «А.Лен» предлагает свой многолетний опыт проектирования зданий <span class="noWrap">и сооружений</span> для создания объектов, обладающих отличительными чертами авторской архитектуры:
-                                </p>
-                                <ul>
-                                    <li>
-                                        Проектирует красивое <span class="noWrap">и функциональное</span> здание
-
-                                    </li>
-                                    <li>
-                                        Определяет «золотую середину» между экономикой <span class="noWrap">и архитектурой</span> жилого дома, бизнес-центра, торгового комплекса
-                                    </li>
-                                    <li>
-                                        Придает жизнь камню, металлу, стеклу
-                                    </li>
-                                    <li>
-                                        Вписывает новую постройку <span class="noWrap">в сложившуюся</span> среду, выделяя здание среди массы похожих, придав ему индивидуальность, неординарность
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="footer_col">
+          <div class="footer_menu_wrapper">
+            <div class="footer_title">Проекты</div>
+            <div class="footer_menu">
+              <a href="" class="footer_link">Жилые здания и комплексы</a>
+              <a href="" class="footer_link">Отели и апартаменты</a>
+              <a href="" class="footer_link"
+                >Градостроительные проекты, мастер-планы</a
+              >
+              <a href="" class="footer_link">Торговые и офисные центры</a>
+              <a href="" class="footer_link">Спортивные объекты</a>
+              <a href="" class="footer_link">Социальные объекты</a>
+              <a href="" class="footer_link">Автоцентры</a>
+              <a href="" class="footer_link"
+                >Объекты транспортной инфраструктуры</a
+              >
+              <a href="" class="footer_link">Дизайн-проекты интерьеров</a>
+              <a href="" class="footer_link">Автоцентры</a>
+              <a href="" class="footer_link"> Коттеджи и коттеджные поселки</a>
+              <a href="" class="footer_link">Прочие объекты</a>
+              <a href="" class="footer_link">Авторский надзор</a>
             </div>
-            <div class="footer">
-                <div class="footer_col">
-                    <div class="footer_menu_wrapper">
-                        <div class="footer_title">Проекты</div>
-                        <div class="footer_menu">
-                            <a href="" class="footer_link">Жилые здания и комплексы</a>
-                            <a href="" class="footer_link">Отели и апартаменты</a>
-                            <a href="" class="footer_link">Градостроительные проекты, мастер-планы</a>
-                            <a href="" class="footer_link">Торговые и офисные центры</a>
-                            <a href="" class="footer_link">Спортивные объекты</a>
-                            <a href="" class="footer_link">Социальные объекты</a>
-                            <a href="" class="footer_link">Автоцентры</a>
-                            <a href="" class="footer_link">Объекты транспортной инфраструктуры</a>
-                            <a href="" class="footer_link">Дизайн-проекты интерьеров</a>
-                            <a href="" class="footer_link">Автоцентры</a>
-                            <a href="" class="footer_link"> Коттеджи и коттеджные поселки</a>
-                            <a href="" class="footer_link">Прочие объекты</a>
-                            <a href="" class="footer_link">Авторский надзор</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer_col">
-                    <div class="footer_menu_wrapper">
-                        <div class="footer_title">Компания</div>
-                        <div class="footer_menu">
-                            <a href="" class="footer_link">Сергей Орешкин </a>
-                            <a href="" class="footer_link">История</a>
-                            <a href="" class="footer_link">Награды</a>
-                            <a href="" class="footer_link">Сертификаты</a>
-                            <a href="" class="footer_link">Карьера</a>
-                        </div>
-                    </div>
-                    <div class="footer_menu_wrapper">
-                        <div class="footer_title">Лаборатория</div>
-                        <div class="footer_menu">
-                            <a href="" class="footer_link">Идеальные квартиры «А.Лен»</a>
-                            <a href="" class="footer_link">Цветовая лаборатория «А.Лен»</a>
-                            <a href="" class="footer_link">A.Len Architectural Toolkit</a>
-                            <a href="" class="footer_link">A.Len Brickwork</a>
-                            <a href="" class="footer_link">Архитектурный маркетинг «А.Лен»</a>
-                            <a href="" class="footer_link">Маркетинговая инфографика «А.Лен»</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer_col">
-                    <div class="footer_menu_wrapper">
-                        <div class="footer_title">Услуги</div>
-                        <div class="footer_menu">
-                            <a href="" class="footer_link"> Генеральное проектирование </a>
-                            <a href="" class="footer_link"> Градостроительная оценка </a>
-                            <a href="" class="footer_link"> Разработка архитектурной концепции </a>
-                            <a href="" class="footer_link"> Брендинг проекта </a>
-                            <a href="" class="footer_link"> Разрешение на УРВИ </a>
-                            <a href="" class="footer_link"> Разрешение на отклонение </a>
-                            <a href="" class="footer_link"> Разработка материалов АГО, АГР </a>
-                            <a href="" class="footer_link"> Разработка проектно-сметной
-                                документации (ПД) </a>
-                            <a href="" class="footer_link"> Разработка рабочей
-                                документации (РД) </a>
-                            <a href="" class="footer_link"> Согласование проектов </a>
-                            <a href="" class="footer_link"> Авторский надзор </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer_col">
-                    <a href="" class="footer_title">Пресс-центр</a>
-                    <a href="" class="footer_title">Контакты</a>
-                    <div class="footer_adress">Россия, Санкт-Петербург, <br> ул. Короленко, д. 7</div>
-                    <a href="tel:+7 (812) 579-55-81" class="footer_phone">+7 (812) 579-55-81</a>
-                    <div class="footer_social">
-                        <a href="https://www.facebook.com/alenarchitecture/?fb_dtsg_ag=AdxLq6P5xpZRGmqQBJFSQH_Vc_hU2XGGyjWUiY8f5ft54g%3AAdzYiONnQhpZqq5QsRjaGvKEvWfkSWrNyqNSGPTCSl3rag" class="footer_social_item">
-                            <i class="icon icon-fb"></i>
-                        </a>
-                        <a href="https://vk.com/id491581209" class="footer_social_item">
-                            <i class="icon icon-vk"></i>
-                        </a>
-                        <a href="https://www.instagram.com/sergei.oreshkin/" class="footer_social_item">
-                            <i class="icon icon-inst"></i>
-                        </a>
-                        <a href="https://www.pinterest.ru/oreshkinci/" class="footer_social_item">
-                            <i class="icon icon-pent"></i>
-                        </a>
-                        <a href="https://www.behance.net/oreshkin838b" class="footer_social_item">
-                            <i class="icon icon-beh"></i>
-                        </a>
-                    </div>
-
-                    <a href="" class="footer_lang default-btn btn-gray">English</a><a href="pp.html" class="footer_pp">Политика конфиденциальности</a><div class="footer_inf">Нашли ошибку? <br>
-                        Выделите ее и нажмите <span>Ctrl+Enter</span></div>
-                    <div class="footer_copy">
-                        © Архитектурное бюро «А.Лен». <br> Все права защищены.
-                    </div>
-                </div>
+          </div>
+        </div>
+        <div class="footer_col">
+          <div class="footer_menu_wrapper">
+            <div class="footer_title">Компания</div>
+            <div class="footer_menu">
+              <a href="" class="footer_link">Сергей Орешкин </a>
+              <a href="" class="footer_link">История</a>
+              <a href="" class="footer_link">Награды</a>
+              <a href="" class="footer_link">Сертификаты</a>
+              <a href="" class="footer_link">Карьера</a>
             </div>
-            <div class="popup">
-                <div class="popup_item center" id="brochure">
-                    <div class="popup_box">
-                        <div class="popup_title">
-                            Запросить брошюру о программе «Идеальные квартиры «А.Лен»
-                        </div>
-                        <div class="popup_form">
-                            <form class="form" data-parsley-validate>
-                                <div class="form_box">
-                                    <label for="name2" class="form_label">Имя<span>*</span></label>
-                                    <input type="text" class="form_input" name="name" id="name2" required="" data-parsley-required-message="Поле пустое">
-                                </div>
-                                <div class="form_box">
-                                    <label for="mail2" class="form_label">E-mail<span>*</span></label>
-                                    <input type="text" class="form_input" name="mail" id="mail2" required="" data-parsley-trigger="change" data-parsley-type="email"
-                                        data-parsley-required-message="Поле пустое" data-parsley-type-message="введите почту в правильном формате">
-                                </div>
-                                <div class="form_box">
-                                    <label for="comment2" class="form_label">Вопрос или комментарий</label>
-                                    <textarea type="text" class="form_input" name="comment" id="comment2"></textarea>
-                                </div>
-                                <div class="form_box">
-                                    <div class="form_checkbox">
-                                        <input required="" name="pp" id="pp2" type="checkbox" data-parsley-trigger="change">
-                                        <label for="pp2">Даю согласие на обработку персональных данных в соответствии с <a href="pp.html">политикой конфиденциальности</a></label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="default-btn btn-gray">Отправить</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="popup_item" id="careers">
-                    <div class="popup_box">
-                        <div class="popup_title">
-                            Отправить резюме
-                        </div>
-                        <div class="popup_form">
-                            <form class="form" data-parsley-validate>
-                                <div class="form_box">
-                                    <label for="name3" class="form_label">Имя<span>*</span></label>
-                                    <input type="text" class="form_input" name="name" id="name3" required="" data-parsley-required-message="Поле пустое">
-                                </div>
-                                <div class="form_box">
-                                    <label for="lastname3" class="form_label">Фамилия<span>*</span></label>
-                                    <input type="text" class="form_input" name="lastname" id="lastname3" required="" data-parsley-required-message="Поле пустое">
-                                </div>
-                                <div class="form_box">
-                                    <label for="mail3" class="form_label">E-mail<span>*</span></label>
-                                    <input type="text" class="form_input" name="mail" id="mail3" required="" data-parsley-trigger="change" data-parsley-type="email"
-                                        data-parsley-required-message="Поле пустое" data-parsley-type-message="введите почту в правильном формате">
-                                </div>
-                                <div class="form_box">
-                                    <label for="phone3" class="form_label">Телефон<span>*</span></label>
-                                    <input type="text" class="form_input" name="phone" id="phone3" required="" data-parsley-required-message="Поле пустое">
-                                </div>
-                                <div class="form_box">
-                                    <label for="comment3" class="form_label">Сопроводительное письмо</label>
-                                    <textarea type="text" class="form_input" name="comment" id="comment3" data-parsley-required-message="Поле пустое"></textarea>
-                                </div>
-                                <div class="form_box file">
-                                    <label for="file3" class="form_label">Прикрепить резюме</label>
-                                    <input type="file" name="file" id="file3" multiple="multiple">
-                                    <div class="form_fileList">
-                                        <label for="file3" class="form_input form_fileLoad">Выберите файл</label>
-                                        <ul class="list">
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="form_box">
-                                    <div class="form_checkbox">
-                                        <input required="" name="pp" id="pp3" type="checkbox" data-parsley-trigger="change">
-                                        <label for="pp3">Даю согласие на обработку персональных данных в соответствии с <a href="pp.html">политикой конфиденциальности</a></label>
-                                    </div>
-                                </div>
-                                <button type="submit" class="default-btn btn-gray">Отправить</button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="popup_item center" id="careers-succes">
-                    <div class="popup_box inf">
-                        <div class="popup_title">
-                            Запросить брошюру о программе «Идеальные квартиры «А.Лен»
-                        </div>
-                        <a href='#careers' class="default-btn btn-gray js-popup">Отправить еще одно резюме</a>
-                    </div>
-                </div>
-                <div class="popup_close"></div>
+          </div>
+          <div class="footer_menu_wrapper">
+            <div class="footer_title">Лаборатория</div>
+            <div class="footer_menu">
+              <a href="" class="footer_link">Идеальные квартиры «А.Лен»</a>
+              <a href="" class="footer_link">Цветовая лаборатория «А.Лен»</a>
+              <a href="" class="footer_link">A.Len Architectural Toolkit</a>
+              <a href="" class="footer_link">A.Len Brickwork</a>
+              <a href="" class="footer_link">Архитектурный маркетинг «А.Лен»</a>
+              <a href="" class="footer_link"
+                >Маркетинговая инфографика «А.Лен»</a
+              >
             </div>
-            <div class="bgLoadPage black show">
-                <div class="loadMonitor"></div>
-            </div></div>
-    </body>
-    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e1896f31-31e3-4c2e-ac57-a094f3dc545d" type="text/javascript"></script>
-    <script src="js/jquery-3.3.1.js"></script>
-    <script src='libs/ps/perfect-scrollbar.jquery.js'></script>
-    <script src="libs/slick/slick.min.js"></script>
-    <script src="libs/swiper/swiper.js"></script>
-    <script src="libs/parsley/parsley.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
-    <script src="js/main.js"></script>
+          </div>
+        </div>
+        <div class="footer_col">
+          <div class="footer_menu_wrapper">
+            <div class="footer_title">Услуги</div>
+            <div class="footer_menu">
+              <a href="" class="footer_link"> Генеральное проектирование </a>
+              <a href="" class="footer_link"> Градостроительная оценка </a>
+              <a href="" class="footer_link">
+                Разработка архитектурной концепции
+              </a>
+              <a href="" class="footer_link"> Брендинг проекта </a>
+              <a href="" class="footer_link"> Разрешение на УРВИ </a>
+              <a href="" class="footer_link"> Разрешение на отклонение </a>
+              <a href="" class="footer_link">
+                Разработка материалов АГО, АГР
+              </a>
+              <a href="" class="footer_link">
+                Разработка проектно-сметной документации (ПД)
+              </a>
+              <a href="" class="footer_link">
+                Разработка рабочей документации (РД)
+              </a>
+              <a href="" class="footer_link"> Согласование проектов </a>
+              <a href="" class="footer_link"> Авторский надзор </a>
+            </div>
+          </div>
+        </div>
+        <div class="footer_col">
+          <a href="" class="footer_title">Пресс-центр</a>
+          <a href="" class="footer_title">Контакты</a>
+          <div class="footer_adress">
+            Россия, Санкт-Петербург, <br />
+            ул. Короленко, д. 7
+          </div>
+          <a href="tel:+7 (812) 579-55-81" class="footer_phone"
+            >+7 (812) 579-55-81</a
+          >
+          <div class="footer_social">
+            <a
+              href="https://www.facebook.com/alenarchitecture/?fb_dtsg_ag=AdxLq6P5xpZRGmqQBJFSQH_Vc_hU2XGGyjWUiY8f5ft54g%3AAdzYiONnQhpZqq5QsRjaGvKEvWfkSWrNyqNSGPTCSl3rag"
+              class="footer_social_item"
+            >
+              <i class="icon icon-fb"></i>
+            </a>
+            <a href="https://vk.com/id491581209" class="footer_social_item">
+              <i class="icon icon-vk"></i>
+            </a>
+            <a
+              href="https://www.instagram.com/sergei.oreshkin/"
+              class="footer_social_item"
+            >
+              <i class="icon icon-inst"></i>
+            </a>
+            <a
+              href="https://www.pinterest.ru/oreshkinci/"
+              class="footer_social_item"
+            >
+              <i class="icon icon-pent"></i>
+            </a>
+            <a
+              href="https://www.behance.net/oreshkin838b"
+              class="footer_social_item"
+            >
+              <i class="icon icon-beh"></i>
+            </a>
+          </div>
 
+          <a href="" class="footer_lang default-btn btn-gray">English</a
+          ><a href="pp.html" class="footer_pp">Политика конфиденциальности</a>
+          <div class="footer_inf">
+            Нашли ошибку? <br />
+            Выделите ее и нажмите <span>Ctrl+Enter</span>
+          </div>
+          <div class="footer_copy">
+            © Архитектурное бюро «А.Лен». <br />
+            Все права защищены.
+          </div>
+        </div>
+      </div>
+      <div class="popup">
+        <div class="popup_item center" id="brochure">
+          <div class="popup_box">
+            <div class="popup_title">
+              Запросить брошюру о программе «Идеальные квартиры «А.Лен»
+            </div>
+            <div class="popup_form">
+              <form class="form" data-parsley-validate>
+                <div class="form_box">
+                  <label for="name2" class="form_label"
+                    >Имя<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="name"
+                    id="name2"
+                    required=""
+                    data-parsley-required-message="Поле пустое"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="mail2" class="form_label"
+                    >E-mail<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="mail"
+                    id="mail2"
+                    required=""
+                    data-parsley-trigger="change"
+                    data-parsley-type="email"
+                    data-parsley-required-message="Поле пустое"
+                    data-parsley-type-message="введите почту в правильном формате"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="comment2" class="form_label"
+                    >Вопрос или комментарий</label
+                  >
+                  <textarea
+                    type="text"
+                    class="form_input"
+                    name="comment"
+                    id="comment2"
+                  ></textarea>
+                </div>
+                <div class="form_box">
+                  <div class="form_checkbox">
+                    <input
+                      required=""
+                      name="pp"
+                      id="pp2"
+                      type="checkbox"
+                      data-parsley-trigger="change"
+                    />
+                    <label for="pp2"
+                      >Даю согласие на обработку персональных данных в
+                      соответствии с
+                      <a href="pp.html">политикой конфиденциальности</a></label
+                    >
+                  </div>
+                </div>
+                <button type="submit" class="default-btn btn-gray">
+                  Отправить
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="popup_item" id="careers">
+          <div class="popup_box">
+            <div class="popup_title">
+              Отправить резюме
+            </div>
+            <div class="popup_form">
+              <form class="form" data-parsley-validate>
+                <div class="form_box">
+                  <label for="name3" class="form_label"
+                    >Имя<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="name"
+                    id="name3"
+                    required=""
+                    data-parsley-required-message="Поле пустое"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="lastname3" class="form_label"
+                    >Фамилия<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="lastname"
+                    id="lastname3"
+                    required=""
+                    data-parsley-required-message="Поле пустое"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="mail3" class="form_label"
+                    >E-mail<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="mail"
+                    id="mail3"
+                    required=""
+                    data-parsley-trigger="change"
+                    data-parsley-type="email"
+                    data-parsley-required-message="Поле пустое"
+                    data-parsley-type-message="введите почту в правильном формате"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="phone3" class="form_label"
+                    >Телефон<span>*</span></label
+                  >
+                  <input
+                    type="text"
+                    class="form_input"
+                    name="phone"
+                    id="phone3"
+                    required=""
+                    data-parsley-required-message="Поле пустое"
+                  />
+                </div>
+                <div class="form_box">
+                  <label for="comment3" class="form_label"
+                    >Сопроводительное письмо</label
+                  >
+                  <textarea
+                    type="text"
+                    class="form_input"
+                    name="comment"
+                    id="comment3"
+                    data-parsley-required-message="Поле пустое"
+                  ></textarea>
+                </div>
+                <div class="form_box file">
+                  <label for="file3" class="form_label"
+                    >Прикрепить резюме</label
+                  >
+                  <input
+                    type="file"
+                    name="file"
+                    id="file3"
+                    multiple="multiple"
+                  />
+                  <div class="form_fileList">
+                    <label for="file3" class="form_input form_fileLoad"
+                      >Выберите файл</label
+                    >
+                    <ul class="list"></ul>
+                  </div>
+                </div>
+                <div class="form_box">
+                  <div class="form_checkbox">
+                    <input
+                      required=""
+                      name="pp"
+                      id="pp3"
+                      type="checkbox"
+                      data-parsley-trigger="change"
+                    />
+                    <label for="pp3"
+                      >Даю согласие на обработку персональных данных в
+                      соответствии с
+                      <a href="pp.html">политикой конфиденциальности</a></label
+                    >
+                  </div>
+                </div>
+                <button type="submit" class="default-btn btn-gray">
+                  Отправить
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="popup_item center" id="careers-succes">
+          <div class="popup_box inf">
+            <div class="popup_title">
+              Запросить брошюру о программе «Идеальные квартиры «А.Лен»
+            </div>
+            <a href="#careers" class="default-btn btn-gray js-popup"
+              >Отправить еще одно резюме</a
+            >
+          </div>
+        </div>
+        <div class="popup_item center" id="messError">
+          <div class="popup_box inf">
+            <div class="popup_title small">
+              Сообщение об ошибке
+            </div>
+            <div class="popup_subTitle">
+              Орфографическая ошибка в тексте:
+            </div>
+
+            <div class="popup_textError"></div>
+            <form action="" class="popup_form">
+              <input type="hidden" name="error" />
+              <input type="hidden" name="place" />
+              <input type="hidden" name="url" />
+              <button
+                href="#messError_succes"
+                class="default-btn btn-gray"
+                type="submit"
+              >
+                Отправить
+              </button>
+            </form>
+
+            <div class="popup_close"></div>
+          </div>
+        </div>
+        <div class="popup_item center" id="messError_succes">
+          <div class="popup_box inf">
+            <div class="popup_title small">
+              Спасибо за вашу внимательность. Мы исправим эти ошибки в ближайшее
+              время.
+            </div>
+            <a href="" class="close_but default-btn btn-gray">Закрыть</a>
+          </div>
+        </div>
+        <div class="popup_item center" id="comment_succes">
+          <div class="popup_box inf">
+            <div class="popup_title small">
+              Ваш комментарий принят и отправлен на модерацию.
+            </div>
+            <a href="" class="close_but default-btn btn-gray">Закрыть</a>
+          </div>
+        </div>
+
+        <div class="popup_close"></div>
+      </div>
+      <div class="cookies">
+        <div class="cookies_text">
+          Сайт использует файлы cookie. Для того, чтобы продолжить работу с
+          Сайтом, Вам необходимо принять использование cookie-файлов.
+        </div>
+        <form
+          id="accept_cookies"
+          action="/ajax/accept_cookies.php"
+          method="POST"
+        >
+          <input type="hidden" name="accept_cookies" />
+          <button class="cookies_btn" type="submit">Я принимаю</button>
+        </form>
+      </div>
+      <div class="bgLoadPage black show">
+        <div class="loadMonitor"></div>
+      </div>
+    </div>
+  </body>
+  <script
+    src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&amp;apikey=e1896f31-31e3-4c2e-ac57-a094f3dc545d"
+    type="text/javascript"
+  ></script>
+  <script src="js/jquery-3.3.1.js"></script>
+  <script src="libs/ps/perfect-scrollbar.jquery.js"></script>
+  <script src="libs/slick/slick.min.js"></script>
+  <script src="libs/swiper/swiper.js"></script>
+  <script src="libs/parsley/parsley.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script>
+  <script src="js/main.js"></script>
 </html>
